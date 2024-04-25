@@ -19,7 +19,7 @@ The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version suppo
 - Enter `make` into the terminal
 
 # Usage
-- Convert between dyck path to bit string in no worse than `O(nlog(n/k))`.
+- Convert between dyck path bit string and tree in no worse than `O(nlog(n/k))`.
 - Output full `k`-ary tree as a file and read from it to recreate it.
 - Plot the `k`-ary tree.
 
