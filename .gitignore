@@ -1,0 +1,7 @@
+tree
+*.o
+.*
+
+visualizer/*
+!visualizer/*.py
+!.gitignore
