@@ -18,6 +18,7 @@
 #include <thread>
 #include <unistd.h>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -27,6 +28,8 @@
 // seed generator once
 std::random_device rd;
 xoshiro256ss g_256ss(rd());
+
+void plot_all_trees(int);
 
 int main(int argc, const char *argv[]) {
   std::string prev_dyck_path{};
@@ -54,6 +57,9 @@ int main(int argc, const char *argv[]) {
         store_tree_into_file(tree, TREE_OUTPUT_FILENAME);
         free_tree(tree);
         plot_tree(TREE_OUTPUT_FILENAME);
+      } else if (cmd == "all" || cmd == "a") {
+        int num_of_internal_nodes = get_num(tokens.at(1));
+        plot_all_trees(num_of_internal_nodes);
       } else if (cmd == "decode" || cmd == "d") {
         std::string dyck_path{tokens.at(1)};
         auto tree{dyck_path_to_tree(dyck_path)};
@@ -321,6 +327,21 @@ void plot_tree(std::string file) {
     std::this_thread::sleep_for(100ms);
     std::system(cmd.c_str());
     std::exit(EXIT_SUCCESS);
+  }
+}
+
+void plot_all_trees(int num_of_internal_nodes) {
+  std::unordered_set<std::string> seen{};
+  while (seen.size() < 14) {
+    std::string path{get_random_dyck_path(2, 2 * num_of_internal_nodes)};
+    if (!seen.contains(path)) {
+      seen.insert(path);
+      auto tree{dyck_path_to_tree(path)};
+      std::string file{".t" + std::to_string(seen.size())};
+      store_tree_into_file(tree, file);
+      free_tree(tree);
+      plot_tree(file);
+    }
   }
 }
 
