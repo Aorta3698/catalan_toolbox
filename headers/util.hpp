@@ -69,3 +69,11 @@ int get_catalan(int n);
  * @return an array of size 2 containing the rotated coordinates
  */
 std::array<double, 2> rotate(double x, double y, double deg);
+
+/**
+ * Fork a child process and plot the input graph with the given script
+ *
+ * @param script  : Python visualizer script to executa
+ * @param file    : The input file to the script
+ */
+void plot(std::string script, std::string file);

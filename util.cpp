@@ -7,6 +7,7 @@
 #include <iterator>
 #include <numbers>
 #include <sstream>
+#include <thread>
 
 template <typename T> void print_vector(const T &t) {
   std::copy(t.cbegin(), t.cend(),
@@ -64,4 +65,16 @@ std::array<double, 2> rotate(double x, double y, double deg) {
   double ny{x * std::sin(radian) + y * std::cos(radian)};
 
   return {nx, ny};
+}
+
+void plot(std::string script, std::string file) {
+  if (fork() == 0) { // TODO: calling fork inside thread is not good
+    std::string python{"./visualizer/bin/python3 "};
+    std::string plotter{"./visualizer/" + script + " "};
+    std::string cmd{python + plotter + file};
+    using namespace std::chrono_literals;
+    std::this_thread::sleep_for(100ms);
+    std::system(cmd.c_str());
+    std::exit(EXIT_SUCCESS);
+  }
 }

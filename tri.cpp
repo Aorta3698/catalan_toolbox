@@ -1,3 +1,5 @@
+#include "global.hpp"
+#include "tree.hpp"
 #include "tri.hpp"
 #include "util.hpp"
 
@@ -8,7 +10,6 @@
 #include <iostream>
 #include <ranges>
 #include <stdexcept>
-#include <thread>
 #include <unordered_set>
 
 Poly tree_to_poly(const Node *root) {
@@ -32,9 +33,20 @@ Poly tree_to_poly(const Node *root) {
   return lines;
 }
 
-// TODO: extracting plot into util.cpp
-// TODO: look into:
-// https://stackoverflow.com/questions/46784028/edge-length-in-networkx
+Poly get_random_poly(int num_of_sides) {
+  auto tree{get_random_tree(2, num_of_sides - 2)};
+  Poly res{tree_to_poly(tree)};
+  free_tree(tree);
+  return res;
+}
+
+void plot_random_poly(int num_of_sides, int count) {
+  while (count--) {
+    auto poly{get_random_poly(num_of_sides)};
+    plot_poly(poly, ".poly" + std::to_string(count));
+  }
+}
+
 void plot_poly(Poly poly, std::string file) {
   std::ofstream out{file};
   if (!out) {
@@ -43,6 +55,7 @@ void plot_poly(Poly poly, std::string file) {
   }
 
   int num_of_sides{int(poly.size()) + 2};
+
   // points and coordinates
   out << num_of_sides << "\n";
   double x{};
@@ -62,15 +75,7 @@ void plot_poly(Poly poly, std::string file) {
     out << a << "," << b << "\n";
   }
 
-  if (fork() == 0) { // TODO: calling fork inside thread is not good
-    std::string python{"./visualizer/bin/python3 "};
-    std::string script{"./visualizer/plot-poly.py "};
-    std::string cmd{python + script + file};
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(100ms);
-    std::system(cmd.c_str());
-    std::exit(EXIT_SUCCESS);
-  }
+  plot(POLY_PLOT_SCRIPT, file);
 }
 
 void plot_all_poly(int num_of_sides) {

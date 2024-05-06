@@ -5,17 +5,21 @@
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <numbers>
 #include <numeric>
-#include <thread>
+#include <stdexcept>
 #include <unordered_set>
 
 Node *get_random_tree(int branches, int num_nodes) {
+  if (num_nodes < 1) {
+    std::cerr << "internal node count cannot be < 1\n";
+    throw std::invalid_argument("");
+  }
+
   // randomly select internal nodes
   int upper{branches * num_nodes + 1};
   bool seq[upper];
@@ -134,17 +138,7 @@ Node *get_tree_from_file(std::string file) {
   return build(root, -1);
 }
 
-void plot_tree(std::string file) {
-  if (fork() == 0) { // TODO: calling fork inside thread is not good
-    std::string python{"./visualizer/bin/python3 "};
-    std::string script{"./visualizer/plot-tree.py "};
-    std::string cmd{python + script + file};
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(100ms);
-    std::system(cmd.c_str());
-    std::exit(EXIT_SUCCESS);
-  }
-}
+void plot_tree(std::string file) { plot(TREE_PLOT_SCRIPT, file); }
 
 void plot_all_trees(int num_of_internal_nodes) {
   if (num_of_internal_nodes < 1 || num_of_internal_nodes > 4) {

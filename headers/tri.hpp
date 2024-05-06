@@ -10,3 +10,6 @@ using Poly = std::vector<std::array<int, 2>>;
 Poly tree_to_poly(const Node *root);
 void plot_poly(Poly poly, std::string file);
 void plot_all_poly(int num_of_sides);
+
+Poly get_random_poly(int num_of_sides);
+void plot_random_poly(int num_of_sides, int count);

@@ -26,6 +26,10 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "+") {
         int num_of_sides{get_num(tokens.at(1))};
         plot_all_poly(num_of_sides);
+      } else if (cmd == "-") {
+        int num_of_sides{get_num(tokens.at(1))};
+        int count{get_num(tokens.at(2))};
+        plot_random_poly(num_of_sides, count);
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
