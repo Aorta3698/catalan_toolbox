@@ -19,10 +19,10 @@ util.o: util.cpp $(H)/util.hpp
 tree.o: tree.cpp $(H)/tree.hpp $(H)/global.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
-dyck.o: dyck.cpp $(H)/dyck.hpp $(H)/global.hpp
+dyck.o: dyck.cpp $(H)/dyck.hpp $(H)/global.hpp $(H)/tree.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
-tri.o: tri.cpp $(H)/tri.hpp $(H)/global.hpp
+tri.o: tri.cpp $(H)/tri.hpp $(H)/global.hpp $(H)/tree.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
