@@ -6,6 +6,7 @@ from netgraph import Graph
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
 G = []
+T = []
 node_positions = {}
 
 ## TODO: why does when num_of_points = 4, it just plots a straight line?
@@ -18,7 +19,17 @@ with open(sys.argv[1]) as infile:
         node_positions[i] = {float(x), float(y)}
     for line in infile:
         u, v = line.strip().split(",")
-        G.append((int(u), int(v)))
+        e = (int(u), int(v))
+        G.append(e)
+        T.append(e)
 
-Graph(G, node_layout=node_positions)
+P = Graph(G, node_layout=node_positions)
+
+T = T[num_of_points::]
+
+for e in T:
+    P.edge_artists[e].set_color("red")
+    P.edge_artists[e].set_alpha(1.0)
+    P.edge_artists[e].update_width(0.02)
+
 plt.show()
