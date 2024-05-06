@@ -1,3 +1,5 @@
+#pragma once
+
 const static char *TREE_OUTPUT_FILENAME = ".tree_db";
 
 /**
