@@ -5,6 +5,7 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <ranges>
 #include <stdexcept>
 #include <thread>
 #include <unordered_set>
@@ -40,17 +41,17 @@ void plot_poly(Poly poly, std::string file) {
     throw std::invalid_argument("");
   }
 
-  int num_of_vertices{int(poly.size()) + 3};
-  for (int i{}; i < num_of_vertices; ++i) {
-    out << i << "," << (i + 1) % num_of_vertices << "\n";
+  int num_of_sides{int(poly.size()) + 2};
+  for (int i{}; i < num_of_sides - 1; ++i) {
+    out << i << "," << i + 1 << "\n";
   }
-  for (auto [a, b] : poly) {
+  for (auto [a, b] : poly | std::views::reverse) {
     out << a << "," << b << "\n";
   }
 
   if (fork() == 0) { // TODO: calling fork inside thread is not good
     std::string python{"./visualizer/bin/python3 "};
-    std::string script{"./visualizer/plot-tree.py "};
+    std::string script{"./visualizer/plot-poly.py "};
     std::string cmd{python + script + file};
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(100ms);
