@@ -13,24 +13,26 @@ Poly tree_to_poly(const Node *root) {
   Poly lines;
 
   int count{};
-  enum Dir { Left, Right };
+  enum Dir { Left, Right, None };
 
   std::function<int(const Node *, Dir)> build = [&](const Node *cur_node, Dir dir) {
-    assert(int(cur_node->children.size()) == 2);
-    auto left{cur_node->children[0]};
-    auto right{cur_node->children[1]};
-    if (left == nullptr && right == nullptr) {
+    if (cur_node->children.empty()) {
       return ++count - (Dir::Left == dir);
     }
-    int l{build(left, Dir::Left)};
-    int r{build(right, Dir::Right)};
+    assert(int(cur_node->children.size()) == 2);
+    int l{build(cur_node->children[0], Dir::Left)};
+    int r{build(cur_node->children[1], Dir::Right)};
     lines.push_back({l, r});
     return dir == Dir::Left ? l : r;
   };
 
+  build(root, Dir::None);
   return lines;
 }
 
+// TODO: extracting plot into util.cpp
+// TODO: look into:
+// https://stackoverflow.com/questions/46784028/edge-length-in-networkx
 void plot_poly(Poly poly, std::string file) {
   std::ofstream out{file};
   if (!out) {
@@ -48,7 +50,7 @@ void plot_poly(Poly poly, std::string file) {
 
   if (fork() == 0) { // TODO: calling fork inside thread is not good
     std::string python{"./visualizer/bin/python3 "};
-    std::string script{"./visualizer/plot-poly.py "};
+    std::string script{"./visualizer/plot-tree.py "};
     std::string cmd{python + script + file};
     using namespace std::chrono_literals;
     std::this_thread::sleep_for(100ms);
