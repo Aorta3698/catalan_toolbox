@@ -13,11 +13,11 @@ node_positions = {}
 with open(sys.argv[1]) as infile:
     num_of_points = int(infile.readline())
     for i in range(num_of_points):
-        line=infile.readline()
-        x, y = line.strip().split(',')
-        node_positions[i]={float(x),float(y)}
+        line = infile.readline()
+        x, y = line.strip().split(",")
+        node_positions[i] = {float(x), float(y)}
     for line in infile:
-        u, v = line.strip().split(',')
+        u, v = line.strip().split(",")
         G.append((int(u), int(v)))
 
 Graph(G, node_layout=node_positions)
