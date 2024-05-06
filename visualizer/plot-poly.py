@@ -9,8 +9,6 @@ G = []
 T = []
 node_positions = {}
 
-## TODO: why does when num_of_points = 4, it just plots a straight line?
-## I think it is a bug in Netgraph... oh well.
 with open(sys.argv[1]) as infile:
     num_of_points = int(infile.readline())
     for i in range(num_of_points):
