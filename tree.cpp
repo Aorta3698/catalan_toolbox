@@ -1,9 +1,6 @@
-#include "dyck.hpp"
 #include "global.hpp"
+#include "tree.hpp"
 #include "util.hpp"
-// #include "tree.hpp"
-// TODO: write a serialize function for tree instead of relying on dyck path hpp
-// TODO: it reduces coupling.
 
 #include <algorithm>
 #include <cassert>
@@ -158,16 +155,32 @@ void plot_all_trees(int num_of_internal_nodes) {
   std::unordered_set<std::string> seen{};
   int sz{get_catalan(num_of_internal_nodes)};
   while (int(seen.size()) < sz) {
-    std::string path{get_random_dyck_path(2, 2 * num_of_internal_nodes)};
-    if (!seen.contains(path)) {
-      seen.insert(path);
-      auto tree{dyck_path_to_tree(path)};
+    auto tree{get_random_tree(2, num_of_internal_nodes)};
+    std::string id{serialize_tree(tree)};
+    if (!seen.contains(id)) {
+      seen.insert(id);
       std::string file{".t" + std::to_string(seen.size())};
       store_tree_into_file(tree, file);
-      free_tree(tree);
       plot_tree(file);
     }
+    free_tree(tree);
   }
+}
+
+std::string serialize_tree(const Node *root) {
+  std::string encoded_result{};
+  std::function<void(const Node *)> encode = [&](const Node *cur_node) {
+    int zero{};
+    for (const auto next_node : cur_node->children) {
+      zero = encoded_result.size();
+      encoded_result += "1";
+      encode(next_node);
+    }
+    encoded_result[zero] -= cur_node->is_internal_node();
+  };
+
+  encode(root);
+  return encoded_result;
 }
 
 void free_tree(Node *cur_node) {

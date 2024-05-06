@@ -74,6 +74,15 @@ Node *get_tree_from_file(std::string file);
 void plot_tree(std::string file);
 
 /**
+ * It serializes a tree into string.
+ * Different tree has its own unique serialization.
+ *
+ * @param root: Root of the tree
+ * @return The unique serialization of the tree
+ */
+std::string serialize_tree(const Node *root);
+
+/**
  * Free memory used by the tree nodes.
  *
  * @param root: Root of a tree
