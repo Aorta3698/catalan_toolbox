@@ -25,8 +25,14 @@ with open(sys.argv[1]) as infile:
 
 P = Graph(G, node_layout=node_positions)
 
-T = T[num_of_points::]
+## style root
+root = T[num_of_points - 1]
+P.edge_artists[root].set_color("green")
+P.edge_artists[root].set_alpha(0.5)
+P.edge_artists[root].update_width(0.02)
 
+## style inner edges
+T = T[num_of_points::]
 for e in T:
     P.edge_artists[e].set_color("pink")
     P.edge_artists[e].set_alpha(1.0)
