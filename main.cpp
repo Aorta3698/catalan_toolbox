@@ -30,6 +30,7 @@ std::random_device rd;
 xoshiro256ss g_256ss(rd());
 
 void plot_all_trees(int);
+int get_catalan(int);
 
 int main(int argc, const char *argv[]) {
   std::string prev_dyck_path{};
@@ -331,8 +332,14 @@ void plot_tree(std::string file) {
 }
 
 void plot_all_trees(int num_of_internal_nodes) {
+  if (num_of_internal_nodes < 1 || num_of_internal_nodes > 4) {
+    std::cerr << "can't plot that many!\n";
+    throw std::invalid_argument("");
+  }
+
   std::unordered_set<std::string> seen{};
-  while (seen.size() < 14) {
+  int sz{get_catalan(num_of_internal_nodes)};
+  while (int(seen.size()) < sz) {
     std::string path{get_random_dyck_path(2, 2 * num_of_internal_nodes)};
     if (!seen.contains(path)) {
       seen.insert(path);
@@ -412,6 +419,14 @@ std::string &strip(std::string &str) {
   str.erase(str.find_last_not_of(' ') + 1);
   str.erase(0, str.find_first_not_of(' '));
   return str;
+}
+
+int get_catalan(int num) {
+  auto cata = std::to_array({1,       1,        2,         5,         14,
+                             42,      132,      429,       1430,      4862,
+                             16796,   58786,    208012,    742900,    2674440,
+                             9694845, 35357670, 129644790, 477638700, 1767263190});
+  return cata.at(num);
 }
 
 void test_functionality() {
@@ -512,6 +527,7 @@ void print_usage() {
       {"plot [dyck path]", "(p) Plot a full k-ary tree from (given/prev) dyck path"},
       {"encode <file>", "(e) Encode a tree (1 edge on each line) into dyck path"},
       {"decode <dyck path>", "(d) Decode a dyck path into tree and then plot it"},
+      {"all <num>", "(a) Plot all binary trees with internal nodes <= 4"},
       {"save <dyck path> <file>", "(s) Save the dyck path as a tree in file"},
       {"test", "(t) Run randomized test cases"},
       {"help", "(h) Print this message"},

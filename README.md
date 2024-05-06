@@ -3,6 +3,7 @@
 - `Networkx`
 - `Matplotlib`
 - `Pydot`
+- `PyQt6`
 
 ## Install graphviz
 ### MacOS
@@ -17,6 +18,11 @@ The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version suppo
 - First create a Python venv named `visualizer` 
 - Install all needed dependenceis listed way above
 - Enter `make` into the terminal
+
+## How to Update Python venv
+```
+python -m venv /path/to/new/virtual/environment
+```
 
 # Usage
 - Convert between dyck path bit string and tree in no worse than `O(nlog(n/k))`.
