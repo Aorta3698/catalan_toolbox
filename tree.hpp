@@ -1,8 +1,6 @@
 #include <string>
 #include <vector>
 
-const static char *TREE_OUTPUT_FILENAME = ".tree_db";
-
 /**
  * Node class represents a tree node
  *

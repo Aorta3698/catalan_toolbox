@@ -1,5 +1,6 @@
 #include "dyck.hpp"
 #include "main.hpp"
+#include "tri.hpp"
 #include "util.hpp"
 
 #include <exception>
