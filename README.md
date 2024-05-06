@@ -4,6 +4,7 @@
 - `Matplotlib`
 - `Pydot`
 - `PyQt6`
+- `Netgraph`
 
 ## Install graphviz
 ### MacOS

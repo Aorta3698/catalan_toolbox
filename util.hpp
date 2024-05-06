@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <string>
 #include <vector>
 
@@ -56,3 +57,15 @@ template <typename T> void print_c_array(const T *arr, int len);
  * @return n^{th} Catalan number
  */
 int get_catalan(int n);
+
+/**
+ * Rotate coordinate (x, y) around origin by deg counter-clockwise
+ * From: https://en.wikipedia.org/wiki/Rotation_matrix#In_two_dimensions
+ *
+ * @param x  : x coordinate
+ * @param y  : y coordinate
+ * @param deg: degree in 360 format
+ *
+ * @return an array of size 2 containing the rotated coordinates
+ */
+std::array<double, 2> rotate(double x, double y, double deg);

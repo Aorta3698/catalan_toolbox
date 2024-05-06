@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <iostream>
 #include <iterator>
+#include <numbers>
 #include <sstream>
 
 template <typename T> void print_vector(const T &t) {
@@ -53,4 +55,13 @@ int get_catalan(int num) {
                              16796,   58786,    208012,    742900,    2674440,
                              9694845, 35357670, 129644790, 477638700, 1767263190});
   return cata.at(num);
+}
+
+std::array<double, 2> rotate(double x, double y, double deg) {
+  double radian{deg * (std::numbers::pi / 180)};
+
+  double nx{x * std::cos(radian) - y * std::sin(radian)};
+  double ny{x * std::sin(radian) + y * std::cos(radian)};
+
+  return {nx, ny};
 }

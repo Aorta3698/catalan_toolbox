@@ -4,6 +4,7 @@
 #include <cassert>
 #include <fstream>
 #include <functional>
+#include <iomanip>
 #include <iostream>
 #include <ranges>
 #include <stdexcept>
@@ -42,6 +43,18 @@ void plot_poly(Poly poly, std::string file) {
   }
 
   int num_of_sides{int(poly.size()) + 2};
+  // points and coordinates
+  out << num_of_sides << "\n";
+  double x{};
+  double y{1.0};
+  for (int i{}; i < num_of_sides; ++i) {
+    out << std::fixed << std::setprecision(3) << x << "," << y << "\n";
+    auto [nx, ny] = rotate(x, y, 360.0 / num_of_sides);
+    x = nx;
+    y = ny;
+  }
+
+  // edges
   for (int i{}; i < num_of_sides - 1; ++i) {
     out << i << "," << i + 1 << "\n";
   }
