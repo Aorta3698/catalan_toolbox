@@ -18,7 +18,7 @@ Poly tree_to_poly(const Node *root) {
   enum Dir { Left, Right, None };
 
   std::function<int(const Node *, Dir)> build = [&](const Node *cur_node, Dir dir) {
-    if (cur_node->children.empty()) {
+    if (cur_node->is_leaf()) {
       return ++count - (Dir::Left == dir);
     }
     assert(int(cur_node->children.size()) == 2);

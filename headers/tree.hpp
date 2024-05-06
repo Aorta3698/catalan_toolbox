@@ -15,6 +15,7 @@ struct Node {
   }
 
   inline bool is_internal_node() const { return !children.empty(); }
+  inline bool is_leaf() const { return !is_internal_node(); }
 
   std::vector<Node *> children;
   int id;
