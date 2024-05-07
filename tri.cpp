@@ -73,7 +73,85 @@ Node *poly_to_tree(const Poly poly) {
   return nodes[tables[0][Dir::Up]];
 }
 
-Poly flip_an_edge(Poly poly, int idx) {}
+void flip_and_plot(Poly poly) {
+  // pre-process - O(n)
+  enum Dir { Up, Down };
+  enum R { L, R, S }; // left, right, sibling
+  int num_of_sides{int(poly.size()) + 2};
+  int id{int(poly.size())};
+  int sz{int(poly.size())};
+  int relationship[sz + num_of_sides][3];
+  int tables[num_of_sides][2];
+  std::memset(tables, 0, sizeof(tables));
+  std::memset(tables, 0, sizeof(relationship));
+  std::vector<std::vector<int>> buckets(num_of_sides);
+  std::function<Edge(int)> get_edge = [&](int id) {
+    return id < sz ? poly[id] : std::array<int, 2>{{id - sz, id - sz + 1}};
+  };
+  for (int i{}; i < num_of_sides - 1; ++i) {
+    tables[i][Dir::Up] = id;
+    tables[i + 1][Dir::Down] = id;
+    ++id;
+  }
+  for (int i{}; i < int(poly.size()); ++i) {
+    auto [l, r] = poly[i];
+    assert(r > l);
+    buckets[r - l].push_back(i);
+  }
+  for (int len{}; len < num_of_sides; ++len) {
+    for (int idx : buckets[len]) {
+      auto [l, r] = poly[idx];
+      int lc{tables[l][Dir::Up]};
+      int rc{tables[r][Dir::Down]};
+      relationship[idx][R::L] = lc;
+      relationship[idx][R::R] = rc;
+      relationship[lc][R::S] = rc;
+      relationship[rc][R::S] = lc;
+      tables[l][Dir::Up] = idx;
+      tables[r][Dir::Down] = idx;
+    }
+  }
+
+  // plot it to user
+  int suf{};
+  std::string file{".flip"};
+  plot_poly(poly, file + std::to_string(suf));
+
+  // flip an edge - O(1)
+  while (1) {
+    int idx{};
+    std::cout << "Select an edge to flip: ";
+    std::cin >> idx;
+
+    auto [s_l, s_r] = get_edge(relationship[idx][R::S]);
+    auto [l, r] = get_edge(idx);
+    int u = get_edge(relationship[idx][R::L])[1];
+    int v = s_l != l && s_l != r ? s_l : s_r;
+    if (u > v) {
+      std::swap(u, v);
+    }
+
+    auto [a, b] = get_edge(relationship[idx][R::L]);
+    if (v > b && a > u) { // left child remains a child
+      int tmp{relationship[idx][R::R]};
+      relationship[idx][R::R] = relationship[idx][R::L];
+      relationship[idx][R::L] = relationship[idx][R::S];
+      relationship[idx][R::S] = tmp;
+      relationship[tmp][R::S] = idx;
+    } else { // right child remains a child
+      int tmp{relationship[idx][R::L]};
+      relationship[idx][R::L] = relationship[idx][R::R];
+      relationship[idx][R::R] = relationship[idx][R::S];
+      relationship[idx][R::S] = tmp;
+      relationship[tmp][R::S] = idx;
+    }
+    relationship[relationship[idx][R::R]][R::S] = relationship[idx][R::L];
+    relationship[relationship[idx][R::L]][R::S] = relationship[idx][R::R];
+
+    poly[idx] = {{u, v}};
+    plot_poly(poly, file + std::to_string(++suf));
+  }
+}
 
 Poly get_random_poly(int num_of_sides) {
   auto tree{get_random_tree(2, num_of_sides - 2)};
