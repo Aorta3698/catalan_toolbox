@@ -25,4 +25,4 @@ void plot_random_poly(int num_of_sides, int count);
 
 void test_conversion_poly();
 
-void flip_an_edge(Poly poly);
+void flip_and_plot(Poly poly);

@@ -34,6 +34,10 @@ int main(int argc, const char *argv[]) {
         plot_random_poly(num_of_sides, count);
       } else if (cmd == "|") {
         test_conversion_poly();
+      } else if (cmd == "*") {
+        int num_of_sides{get_num(tokens.at(1))};
+        Poly poly{get_random_poly(num_of_sides)};
+        flip_and_plot(poly);
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
