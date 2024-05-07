@@ -21,7 +21,18 @@ with open(sys.argv[1]) as infile:
         G.append(e)
         T.append(e)
 
-P = Graph(G, node_layout=node_positions)
+edge_labels = {}
+id = 1
+for e in T[num_of_points:]:
+    edge_labels[e] = id
+    id = id + 1
+
+P = Graph(
+    G,
+    node_layout=node_positions,
+    edge_labels=edge_labels,
+    edge_label_fontdict=dict(size=14),
+)
 
 ## style root
 root = T[num_of_points - 1]
