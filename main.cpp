@@ -30,7 +30,7 @@ int main(int argc, const char *argv[]) {
         plot_all_poly(num_of_sides);
       } else if (cmd == "-") {
         int num_of_sides{get_num(tokens.at(1))};
-        int count{get_num(tokens.at(2))};
+        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
         plot_random_poly(num_of_sides, count);
       } else if (cmd == "|") {
         test_conversion_poly();
