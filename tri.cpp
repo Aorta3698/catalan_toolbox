@@ -136,3 +136,29 @@ void plot_all_poly(int num_of_sides) {
     free_tree(tree);
   }
 }
+
+void test_conversion_poly() {
+  std::cout << "Starting testing conversion between poly and tree with num_of_sides "
+               "from 3 to "
+            << TEST_MAX_SIDES_POLY << "\n\n";
+
+  for (int num_of_sides{3}; num_of_sides <= TEST_MAX_SIDES_POLY; ++num_of_sides) {
+    for (int i{}; i < NUM_OF_TESTS_POLY; ++i) {
+      auto tree1{get_random_tree(2, num_of_sides - 2)};
+      auto tree2{poly_to_tree(tree_to_poly(tree1))};
+      std::string id1{serialize_tree(tree1)};
+      std::string id2{serialize_tree(tree2)};
+      if (id1 != id2) {
+        std::cerr << "Test Failed:\n"
+                  << "num_of_sides = " << num_of_sides << "\n"
+                  << "id1 = " << id1 << "\n"
+                  << "id2 = " << id2 << "\n";
+        assert(false);
+      }
+      free_tree(tree1);
+      free_tree(tree2);
+    }
+    std::cout << "num_of_sides = " << num_of_sides << " done for "
+              << NUM_OF_TESTS_POLY << " random tests!\n";
+  }
+}

@@ -1,5 +1,6 @@
 #include "dyck.hpp"
 #include "main.hpp"
+#include "tree.hpp"
 #include "tri.hpp"
 #include "util.hpp"
 
@@ -7,6 +8,7 @@
 #include <iostream>
 #include <ranges>
 #include <string>
+#include <thread>
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -30,6 +32,8 @@ int main(int argc, const char *argv[]) {
         int num_of_sides{get_num(tokens.at(1))};
         int count{get_num(tokens.at(2))};
         plot_random_poly(num_of_sides, count);
+      } else if (cmd == "|") {
+        test_conversion_poly();
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
