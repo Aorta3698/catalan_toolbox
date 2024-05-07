@@ -29,11 +29,15 @@ for e in T[num_of_points:]:
     edge_labels[e] = id
     id = id + 1
 
+width = 5 + 0.25 * num_of_points
+height = 3.4 + 0.25 * num_of_points
+plt.figure(figsize=(width, height))
 P = Graph(
     G,
     node_layout=node_positions,
     edge_labels=edge_labels,
     edge_label_fontdict=dict(size=14),
+    # scale=(width, height),
 )
 
 ## style root
