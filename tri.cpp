@@ -74,7 +74,7 @@ Node *poly_to_tree(const Poly poly) {
 }
 
 void flip_and_plot(Poly poly) {
-  // pre-process - O(n)
+  // pre-processing - O(n)
   enum Dir { Up, Down };
   enum R { L, R, P }; // left, right, parent
   int num_of_sides{int(poly.size()) + 2};
