@@ -120,8 +120,10 @@ void flip_and_plot(Poly poly) {
   // flip an edge - O(1)
   while (1) {
     int idx{};
-    std::cout << "Select an edge to flip: ";
-    std::cin >> idx;
+    while (idx < 1 || idx >= sz) {
+      std::cout << "Select an edge to flip: ";
+      std::cin >> idx;
+    }
 
     int parent{relationship[idx][R::P]};
     auto [l, r] = poly[idx];
