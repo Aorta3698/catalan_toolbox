@@ -4,6 +4,7 @@
 #include "util.hpp"
 
 #include <cassert>
+#include <cstring>
 #include <fstream>
 #include <functional>
 #include <iomanip>
@@ -33,6 +34,44 @@ Poly tree_to_poly(const Node *root) {
   return lines;
 }
 
+Node *poly_to_tree(const Poly poly) {
+  enum Dir { Up, Down };
+  int num_of_sides = int(poly.size() + 2);
+  int tables[num_of_sides][2];
+  std::memset(tables, 0, sizeof(tables));
+  std::vector<Node *> nodes(num_of_sides);
+  std::vector<std::vector<int>> buckets(num_of_sides);
+
+  // pre-processing
+  for (int i{}; i < num_of_sides - 1; ++i) {
+    nodes[i] = new Node(i);
+    tables[i][Dir::Up] = i;
+    tables[i + 1][Dir::Down] = i;
+  }
+  for (int i{}; i < int(poly.size()); ++i) {
+    auto [l, r] = poly[i];
+    assert(r > l);
+    buckets[r - l].push_back(i);
+  }
+
+  // build tree
+  int id{num_of_sides - 2};
+  for (int len{}; len < num_of_sides; ++len) {
+    for (int idx : buckets[len]) {
+      auto [l, r] = poly[idx];
+      auto parent = new Node(++id, 2);
+      parent->children[0] = nodes[tables[l][Dir::Up]];
+      parent->children[1] = nodes[tables[r][Dir::Down]];
+      int pos{tables[l][Dir::Up]};
+      nodes[pos] = parent;
+      tables[r][Dir::Down] = pos;
+      tables[l][Dir::Up] = pos;
+    }
+  }
+
+  return nodes[tables[0][Dir::Up]];
+}
+
 Poly get_random_poly(int num_of_sides) {
   auto tree{get_random_tree(2, num_of_sides - 2)};
   Poly res{tree_to_poly(tree)};
@@ -58,8 +97,7 @@ void plot_poly(Poly poly, std::string file) {
 
   // points and coordinates
   out << num_of_sides << "\n";
-  double x{};
-  double y{1.0};
+  auto [x, y] = rotate(0.0, 1.0, 180.0 / num_of_sides);
   for (int i{}; i < num_of_sides; ++i) {
     out << std::fixed << std::setprecision(3) << x << "," << y << "\n";
     auto [nx, ny] = rotate(x, y, 360.0 / num_of_sides);
