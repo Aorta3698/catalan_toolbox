@@ -3,18 +3,18 @@
 #include "tri.hpp"
 #include "util.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <cstring>
 #include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
-#include <ranges>
 #include <stdexcept>
 #include <unordered_set>
 
 Poly tree_to_poly(const Node *root) {
-  Poly lines;
+  Poly poly;
 
   int count{};
   enum Dir { Left, Right, None };
@@ -26,12 +26,13 @@ Poly tree_to_poly(const Node *root) {
     assert(int(cur_node->children.size()) == 2);
     int l{build(cur_node->children[0], Dir::Left)};
     int r{build(cur_node->children[1], Dir::Right)};
-    lines.push_back({l, r});
+    poly.push_back({l, r});
     return dir == Dir::Left ? l : r;
   };
 
   build(root, Dir::None);
-  return lines;
+  std::ranges::reverse(poly);
+  return poly;
 }
 
 Node *poly_to_tree(const Poly poly) {
@@ -72,6 +73,8 @@ Node *poly_to_tree(const Poly poly) {
   return nodes[tables[0][Dir::Up]];
 }
 
+Poly flip_an_edge(Poly poly, int idx) {}
+
 Poly get_random_poly(int num_of_sides) {
   auto tree{get_random_tree(2, num_of_sides - 2)};
   Poly res{tree_to_poly(tree)};
@@ -109,7 +112,7 @@ void plot_poly(Poly poly, std::string file) {
   for (int i{}; i < num_of_sides - 1; ++i) {
     out << i << "," << i + 1 << "\n";
   }
-  for (auto [a, b] : poly | std::views::reverse) {
+  for (auto [a, b] : poly) {
     out << a << "," << b << "\n";
   }
 

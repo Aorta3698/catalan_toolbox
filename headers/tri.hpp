@@ -24,3 +24,5 @@ Poly get_random_poly(int num_of_sides);
 void plot_random_poly(int num_of_sides, int count);
 
 void test_conversion_poly();
+
+Poly flip_an_edge(Poly poly, int idx);
