@@ -125,6 +125,7 @@ void flip_and_plot(Poly poly) {
       std::cin >> idx;
     }
 
+    // locate the other 2 vertices
     int parent{relationship[idx][R::P]};
     auto [l, r] = poly[idx];
     auto [p_l, p_r] = get_edge(parent);
@@ -134,28 +135,21 @@ void flip_and_plot(Poly poly) {
       std::swap(u, v);
     }
 
+    // bookkeeping stuff
     int is_left_child = relationship[parent][R::L] == idx;
     int sibling{is_left_child ? relationship[parent][R::R]
                               : relationship[parent][R::L]};
     auto [a, b] = get_edge(relationship[idx][R::L]);
-    if (v >= b && a >= u) { // left child remains a child
-      int tmp{relationship[idx][R::R]};
-      relationship[idx][R::R] = relationship[idx][R::L];
-      relationship[idx][R::L] = sibling;
-      relationship[sibling][R::P] = idx;
-      relationship[tmp][R::P] = parent;
-      relationship[parent][R::L] = is_left_child ? tmp : idx;
-      relationship[parent][R::R] = is_left_child ? idx : tmp;
-    } else { // right child remains a child
-      int tmp{relationship[idx][R::L]};
-      relationship[idx][R::L] = relationship[idx][R::R];
-      relationship[idx][R::R] = sibling;
-      relationship[sibling][R::P] = idx;
-      relationship[tmp][R::P] = parent;
-      relationship[parent][R::L] = is_left_child ? tmp : idx;
-      relationship[parent][R::R] = is_left_child ? idx : tmp;
-    }
+    int opposite{v >= b && a >= u}; // left child remains a child or not
+    int tmp{relationship[idx][R::L ^ opposite]};
+    relationship[idx][R::L ^ opposite] = relationship[idx][R::R ^ opposite];
+    relationship[idx][R::R ^ opposite] = sibling;
+    relationship[sibling][R::P] = idx;
+    relationship[tmp][R::P] = parent;
+    relationship[parent][R::L] = is_left_child ? tmp : idx;
+    relationship[parent][R::R] = is_left_child ? idx : tmp;
 
+    // update graph
     poly[idx] = {{u, v}};
     plot_poly(poly, file + std::to_string(++suf));
   }
