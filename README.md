@@ -3,7 +3,10 @@ Implement a tool to convert between tree to other well-known (generalized) Catal
 
 ---
 # Galleries
-Here shows the visualization for `catalan(4)` in each Catalan structure. For `catalan(5)`, please click [here](galleries).
+Here shows the visualization for `catalan(4)` in each Catalan structure. There are 14 of them for each. 
+
+For `catalan(5)`, please click [here](galleries) and look for `.svg` files with `5_` prefix because there are 42 of them for each.
+
 ![](galleries/tree.svg)
 ![](galleries/poly.svg)
 ![](galleries/chords.svg)
