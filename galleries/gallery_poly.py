@@ -32,15 +32,13 @@ for i in range(2):
                 T.append(e)
             k = k + 1
         P = Graph(
-            G,
-            ax=axs[i, j],
-            node_layout=node_positions,
+            G, ax=axs[i, j], node_layout=node_positions, node_size=6, edge_width=2.2
         )
         T = T[num_of_points::]
         for e in T:
             P.edge_artists[e].set_color("pink")
             P.edge_artists[e].set_alpha(1.0)
-            P.edge_artists[e].update_width(0.02)
+            P.edge_artists[e].update_width(0.03)
 
 plt.savefig("poly.svg", bbox_inches="tight")
 plt.show()
