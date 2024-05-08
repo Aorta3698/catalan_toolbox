@@ -152,10 +152,10 @@ void plot_all_trees(int num_of_internal_nodes) {
     auto tree{get_random_tree(2, num_of_internal_nodes)};
     std::string id{serialize_tree(tree)};
     if (!seen.contains(id)) {
-      seen.insert(id);
-      std::string file{".t" + std::to_string(seen.size())};
+      std::string file{".tree" + std::to_string(seen.size())};
       store_tree_into_file(tree, file);
       plot_tree(file);
+      seen.insert(id);
     }
     free_tree(tree);
   }

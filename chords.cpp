@@ -106,10 +106,10 @@ void plot_all_chords(int num_of_points) {
     auto tree{get_random_tree(2, cat)};
     std::string id{serialize_tree(tree)};
     if (!seen.contains(id)) {
-      seen.insert(id);
       std::string file{".chords" + std::to_string(seen.size())};
       Chords chords{tree_to_chords(tree)};
       plot_chords(chords, file);
+      seen.insert(id);
     }
     free_tree(tree);
   }

@@ -210,10 +210,10 @@ void plot_all_poly(int num_of_sides) {
     auto tree{get_random_tree(2, num_of_sides - 2)};
     std::string id{serialize_tree(tree)};
     if (!seen.contains(id)) {
-      seen.insert(id);
-      std::string file{".p" + std::to_string(seen.size())};
+      std::string file{".poly" + std::to_string(seen.size())};
       Poly poly{tree_to_poly(tree)};
       plot_poly(poly, file);
+      seen.insert(id);
     }
     free_tree(tree);
   }
