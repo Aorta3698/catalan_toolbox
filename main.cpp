@@ -1,8 +1,8 @@
 #include "chords.hpp"
 #include "dyck.hpp"
 #include "main.hpp"
+#include "poly.hpp"
 #include "tree.hpp"
-#include "tri.hpp"
 #include "util.hpp"
 
 #include <exception>

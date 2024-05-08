@@ -32,7 +32,11 @@ for i in range(2):
                 T.append(e)
             k = k + 1
         P = Graph(
-            G, ax=axs[i, j], node_layout=node_positions, node_size=6, edge_width=2.2
+            G,
+            ax=axs[i, j],
+            node_layout=node_positions,
+            node_size=6,
+            edge_width=2.2,
         )
         T = T[num_of_points::]
         for e in T:
