@@ -9,7 +9,7 @@ Attempting to find a bijection between trees and all other well-known (generaliz
 - [x] Visualizer for full `k`-ary trees
 
 ### Dyck Path
-- [x] Convert between `r`-dyck path bit string and tree in no worse than `O(nlog(n/r))`
+- [x] Convert between `r`-dyck path bit string and tree in `O(nlog(n/r))`
 - [ ] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
 
