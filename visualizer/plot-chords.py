@@ -38,7 +38,7 @@ plt.figure(figsize=(width, height))
 
 ## add circle outline
 ax = plt.subplot()
-circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--")
+circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--", alpha=0.3)
 ax.add_patch(circle)
 
 ## plot chords graph
