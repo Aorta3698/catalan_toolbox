@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
       std::string cmd = tokens.at(0);
       if (cmd == "test" || cmd == "t") {
         test_expected_height();
-        test_functionality();
+        test_conversion_dyck_path();
         //-----------------------
       } else if (cmd == "-a") {
         int num_of_points{get_num(tokens.at(1))};

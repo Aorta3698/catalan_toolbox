@@ -57,7 +57,7 @@ bool is_valid_dyck_path(std::string path);
  * if all 100,000 test cases pass; otherwise, it asserts in error and displays
  * the discrepancy of the 2 dyck paths.
  */
-void test_functionality();
+void test_conversion_dyck_path();
 
 /**
  * From degree 2 to 5 (due to time), sample 10k random trees with

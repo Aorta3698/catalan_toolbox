@@ -139,7 +139,7 @@ bool is_valid_dyck_path(std::string path) {
   return score == 0;
 }
 
-void test_functionality() {
+void test_conversion_dyck_path() {
   std::string dots{};
   int stat_branches[TEST_MAX_BRANCHES + 1];
   std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES + 1);

@@ -31,6 +31,9 @@ Poly tree_to_poly(const Node *root) {
 
   build(root, Dir::None);
   std::ranges::reverse(poly);
+  if (!is_valid_poly(poly)) {
+    std::cerr << "Error: Generated poly is not valid\n";
+  }
   return poly;
 }
 
@@ -219,6 +222,36 @@ void plot_all_poly(int num_of_sides) {
   }
 }
 
+bool is_valid_poly(const Poly poly) {
+  int num_of_sides{int(poly.size()) + 2};
+  int end[num_of_sides];
+  int start[num_of_sides];
+  std::memset(end, 0, sizeof(end));
+  std::memset(start, 0, sizeof(start));
+  std::vector<std::unordered_set<int>> lines(num_of_sides);
+  std::vector<int> stack{-1};
+
+  for (const auto &edge : poly) {
+    auto [s, e] = edge;
+    lines[s].insert(e);
+    ++end[e];
+    ++start[s];
+  }
+  for (int i{}; i < num_of_sides; ++i) {
+    while (end[i]-- && stack.back() >= 0) {
+      int start{stack.back()};
+      stack.pop_back();
+      if (!lines[start].erase(i)) {
+        return false;
+      }
+    }
+    while (start[i]--) {
+      stack.push_back(i);
+    }
+  }
+  return true;
+}
+
 void test_conversion_poly() {
   std::cout << "Starting testing conversion between poly and tree with num_of_sides "
                "from 3 to "
@@ -243,4 +276,6 @@ void test_conversion_poly() {
     std::cout << "num_of_sides = " << num_of_sides << " done for "
               << NUM_OF_TESTS_POLY << " random tests!\n";
   }
+
+  std::cout << "\n\nAll Tests Completed!\n\n";
 }
