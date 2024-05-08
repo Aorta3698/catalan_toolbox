@@ -1,6 +1,10 @@
 # Current Direction
-Attempting to find a bijection between trees and all other well-known (generalized) Catalan structures and implement a tool to convert between them in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+Implement a tool to convert between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
 
+---
+# Galleries
+
+---
 # Milestones
 ### I want to know
 - [ ] For any Catalan structures, how do we perform a "walk" (from one state to the next) deterministically in `O(1)` while guarantees that no state gets walked on again?
@@ -25,7 +29,7 @@ Attempting to find a bijection between trees and all other well-known (generaliz
 
 ### Non-intersecting Chord Graph
 - [ ] Convert between non-intersecting chord graph and binary tree in `O(n)`
-- [ ] Visualizer for non-intersecting chord graph
+- [x] Visualizer for non-intersecting chord graph
 - [ ] Exchange a chord and visualize the result
 - [ ] Verify a given chord graph is a valid non-intersecting chord graph or not
 
