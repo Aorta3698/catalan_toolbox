@@ -26,6 +26,7 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 
 ### Tree
 - [x] Visualizer for full `k`-ary trees
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Dyck Path
 - [x] Convert between `r`-dyck path bit string and tree in `O(nlog(n/r))`
