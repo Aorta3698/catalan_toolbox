@@ -1,3 +1,5 @@
+#pragma once
+
 #include "xoshiro256.hpp"
 
 #include <random>
@@ -7,6 +9,8 @@
 inline std::random_device rd;
 inline xoshiro256ss g_256ss(rd());
 
+inline const static std::string Arcs_PLOT_SCRIPT = "plot-arcs.py";
+inline const static std::string CHORDS_PLOT_SCRIPT = "plot-chords.py";
 inline const static std::string POLY_PLOT_SCRIPT = "plot-poly.py";
 inline const static std::string TREE_PLOT_SCRIPT = "plot-tree.py";
 

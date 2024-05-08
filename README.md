@@ -2,6 +2,10 @@
 Attempting to find a bijection between trees and all other well-known (generalized) Catalan structures and implement a tool to convert between them in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
 
 # Milestones
+### I want to know
+- [ ] For any Catalan structures, how do we perform a "walk" (from one state to the next) deterministically in `O(1)` while guarantees that no state gets walked on again?
+  - Obviously, dynamic programming is a way to generate all, say, binary trees, but there is no walk involved (it does not go from one state to the next).
+
 ### Generalized Catalan Tree generator
 - [x] A verifiably random generator for full `k`-ary tree
 

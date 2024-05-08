@@ -1,7 +1,7 @@
-SRCS := main.cpp tree.cpp util.cpp dyck.cpp tri.cpp non_crossing.cpp
+SRCS := main.cpp tree.cpp util.cpp dyck.cpp tri.cpp chords.cpp
 H := ./headers
-OBJS := main.o util.o tree.o dyck.o tri.o
-DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/tri.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck.hpp $(H)/non_crossing.hpp
+OBJS := main.o util.o tree.o dyck.o tri.o chords.o
+DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/tri.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck.hpp $(H)/chords.hpp
 CFLAGS := -Wall -c -std=c++23 -O3
 CC := g++ -Iheaders
 
@@ -25,7 +25,7 @@ dyck.o: dyck.cpp $(H)/dyck.hpp $(H)/global.hpp $(H)/tree.hpp
 tri.o: tri.cpp $(H)/tri.hpp $(H)/global.hpp $(H)/tree.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
-non_crossing.o: non_crossing.cpp $(H)/non_crossing.hpp $(H)/global.hpp $(H)/dyck.hpp
+chords.o: chords.cpp $(H)/chords.hpp $(H)/global.hpp $(H)/dyck.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:

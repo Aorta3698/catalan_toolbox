@@ -1,3 +1,4 @@
+#include "chords.hpp"
 #include "dyck.hpp"
 #include "main.hpp"
 #include "tree.hpp"
@@ -8,7 +9,6 @@
 #include <iostream>
 #include <ranges>
 #include <string>
-#include <thread>
 #include <unistd.h>
 #include <utility>
 #include <vector>
@@ -25,19 +25,35 @@ int main(int argc, const char *argv[]) {
       if (cmd == "test" || cmd == "t") {
         test_expected_height();
         test_functionality();
-      } else if (cmd == "+") {
+        //-----------------------
+      } else if (cmd == "-a") {
+        int num_of_points{get_num(tokens.at(1))};
+        plot_all_chords(num_of_points);
+      } else if (cmd == "-r") {
+        int num_of_points{get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
+        plot_random_chords(num_of_points, count);
+      } else if (cmd == "-t") {
+        test_conversion_chords();
+      } else if (cmd == "-e") {
+        int num_of_points{get_num(tokens.at(1))};
+        Chords chords{get_random_chords(num_of_points)};
+        exchage_chords(chords);
+        //----------------------------------
+      } else if (cmd == "+a") {
         int num_of_sides{get_num(tokens.at(1))};
         plot_all_poly(num_of_sides);
-      } else if (cmd == "-") {
+      } else if (cmd == "+r") {
         int num_of_sides{get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
         plot_random_poly(num_of_sides, count);
-      } else if (cmd == "|") {
+      } else if (cmd == "+t") {
         test_conversion_poly();
-      } else if (cmd == "*") {
+      } else if (cmd == "+f") {
         int num_of_sides{get_num(tokens.at(1))};
         Poly poly{get_random_poly(num_of_sides)};
         flip_and_plot(poly);
+        //---------------------------------
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
