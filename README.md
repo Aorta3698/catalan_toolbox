@@ -38,14 +38,14 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 - [x] Visualizer for polygon triangulation
 - [x] Triangulation flip in `O(1)` with `O(n)` pre-processing and visualize the result
 - [ ] Verify a given polygon triangulation is a valid polygon triangulation or not
-- [ ] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Non-intersecting Chord Graph
 - [ ] Convert between non-intersecting chord graph and binary tree in `O(n)`
 - [x] Visualizer for non-intersecting chord graph
 - [ ] Exchange a chord and visualize the result
 - [ ] Verify a given chord graph is a valid non-intersecting chord graph or not
-- [ ] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Non-crossing Arcs
 - [ ] Convert between non-crossing arcs and binary tree in `O(n)`
