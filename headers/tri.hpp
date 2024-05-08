@@ -1,12 +1,8 @@
 #pragma once
 
+#include "global.hpp"
 #include "tree.hpp"
-#include <array>
 #include <string>
-#include <vector>
-
-using Edge = std::array<int, 2>;
-using Poly = std::vector<Edge>;
 
 const static int NUM_OF_TESTS_POLY{50000};
 const static int TEST_MAX_SIDES_POLY{100};

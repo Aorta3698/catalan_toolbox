@@ -1,4 +1,3 @@
-#include "global.hpp"
 #include "tree.hpp"
 #include "tri.hpp"
 #include "util.hpp"

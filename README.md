@@ -1,3 +1,44 @@
+# Current Direction
+Attempting to find a bijection between trees and all other well-known (generalized) Catalan structures and implement a tool to convert between them in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+
+# Milestones
+### Generalized Catalan Tree generator
+- [x] A verifiably random generator for full `k`-ary tree
+
+### Tree
+- [x] Visualizer for full `k`-ary trees
+
+### Dyck Path
+- [x] Convert between `r`-dyck path bit string and tree in no worse than `O(nlog(n/r))`
+- [ ] Visualizer for `r`-dyck path
+- [x] Verify a given path is a valid `r`-dyck path or not
+
+### Triangulation
+- [x] Convert between polygon triangulation and binary tree in `O(n)`
+- [x] Visualizer for polygon triangulation
+- [x] Triangulation flip in `O(1)` with `O(n)` pre-processing and visualize the result
+- [ ] Verify a given polygon triangulation is a valid polygon triangulation or not
+
+### Non-intersecting Chord Graph
+- [ ] Convert between non-intersecting chord graph and binary tree in `O(n)`
+- [ ] Visualizer for non-intersecting chord graph
+- [ ] Exchange a chord and visualize the result
+- [ ] Verify a given chord graph is a valid non-intersecting chord graph or not
+
+### Non-crossing Arcs
+- [ ] Convert between non-crossing arcs and binary tree in `O(n)`
+- [ ] Visualizer for non-crossing arcs 
+- [ ] Exchange an arc and visualize the result
+- [ ] Verify a given arcs is a valid non-crossing arcs or not
+
+### Other
+- [x] Output full `k`-ary tree as a file and read from it to recreate it
+
+### Organization
+- [ ] Code base rewrite to follow OOP
+- [ ] Documentation
+
+---
 # Compile Instruction
 ## Python Packages To Install
 - `Networkx`
@@ -24,11 +65,6 @@ The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version suppo
 ```
 python -m venv /path/to/new/virtual/environment
 ```
-
-# Usage
-- Convert between dyck path bit string and tree in no worse than `O(nlog(n/k))`.
-- Output full `k`-ary tree as a file and read from it to recreate it.
-- Plot the `k`-ary tree.
 
 ----
 ### Possible Related Works (for my own ref)
