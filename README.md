@@ -3,8 +3,8 @@ Implement a tool to convert between tree to other well-known (generalized) Catal
 
 ---
 # Galleries
-![](visualizer/tree,svg)
-![](visualizer/poly,svg)
+![](visualizer/tree.svg)
+![](visualizer/poly.svg)
 
 ---
 # Milestones
