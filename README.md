@@ -11,9 +11,9 @@ Here shows the visualization for `catalan(4)` in each Catalan structure. For `ca
 # I want to know
 For any Catalan structures, how do we perform a "walk" (from one state to the next) deterministically in `O(1)` while guarantees that no state gets walked on again?
 
-Obviously, dynamic programming is a way to generate all, say, binary trees, but there is no walk involved (it does not go from one state to the next).
+Obviously, dynamic programming is a way to generate all, say, binary trees, then we can convert to whatever Catalan structure we want, but there is no walk involved (it does not go from one state to the next).
 
-I guess, in the case of triangulation, does there always exists a `Hamiltonian Path` on the graph formed by triangulation flips? I assume the answer is yes, given that it is a graph where each vertex has `n-3` edges, but I have no concrete proof now nor know if there is a special case for such graph that a Hamiltonian Path can be found quickly.
+I guess, in the case of triangulation, does there always exist a `Hamiltonian Path` on the graph formed by triangulation flips? I assume the answer is yes, given that it is a graph where each vertex has `n-3` edges, but I have no concrete proof now nor know if there is a special case for such graph that a Hamiltonian Path can be found quickly.
 
 ---
 # Milestones
