@@ -3,6 +3,7 @@ Implement a tool to convert between tree to other well-known (generalized) Catal
 
 ---
 # Galleries
+Here shows the visualization for `catalan(4)` in each Catalan structure. For `catalan(5)`, please click [here](galleries).
 ![](galleries/tree.svg)
 ![](galleries/poly.svg)
 
