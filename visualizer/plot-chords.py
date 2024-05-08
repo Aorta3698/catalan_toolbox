@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import sys
+import networkx as nx
 from netgraph import Graph
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
@@ -25,30 +26,31 @@ with open(sys.argv[1]) as infile:
 
 edge_labels = {}
 id = 1
-# for e in T[num_of_points:]:
 for e in T:
     edge_labels[e] = id
     id = id + 1
 
+
+## set image dimension
 width = 4.8 + 0.15 * num_of_points
 height = 3.2 + 0.15 * num_of_points
 plt.figure(figsize=(width, height))
+
+## add circle outline
+ax = plt.subplot()
+circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--")
+ax.add_patch(circle)
+
+## plot chords graph
 P = Graph(
     G,
     node_layout=node_positions,
     edge_labels=edge_labels,
     edge_label_fontdict=dict(size=14),
-    # scale=(width, height),
+    ax=ax,
 )
 
-# ## style root
-# root = T[num_of_points - 1]
-# P.edge_artists[root].set_color("green")
-# P.edge_artists[root].set_alpha(0.5)
-# P.edge_artists[root].update_width(0.02)
-
 ## style inner edges
-# T = T[num_of_points::]
 for e in T:
     P.edge_artists[e].set_color("pink")
     P.edge_artists[e].set_alpha(1.0)
