@@ -1,12 +1,13 @@
 #pragma once
 
+#include "global.hpp"
 #include "tree.hpp"
 
 #include <string>
 
-const static int NUM_OF_TESTS = 1e5;
-const static int TEST_MAX_EDGES = 1e4;
-const static int TEST_MAX_BRANCHES = 1e2;
+const static int NUM_OF_TESTS_DYCK = 1e5;
+const static int TEST_MAX_EDGES_DYCK = 1e4;
+const static int TEST_MAX_BRANCHES_DYCK = 1e2;
 
 /**
  * Transform a dyck path to its tree representation.
@@ -36,6 +37,30 @@ std::string get_random_dyck_path(int deg, int len);
  * @return Its dyck path of string type
  */
 std::string tree_to_dyck_path(const Node *root);
+
+/**
+ * Plot a dyck path
+ *
+ * @param dyck:  A dyck path
+ */
+void plot_dyck_path(const Dyck dyck, std::string file);
+
+/**
+ * Plot all dyck paths of length `length`
+ *
+ * @param length:  Dyck path length, for 2-dyck path only, between 2 and 8,
+ * inclusive.
+ */
+void plot_all_dyck_path(int length);
+
+/**
+ * Plot `count` number of random dyck graph
+ *
+ * @param length:   Dyck path length
+ * @param r:        r-dyck path
+ * @param count:    Number of random dyck graphs
+ */
+void plot_random_dyck_path(int length, int r, int count);
 
 /**
  * Verify if a dyck path is valid or not

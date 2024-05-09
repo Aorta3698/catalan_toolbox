@@ -16,7 +16,7 @@ Arcs tree_to_arcs(const Node *root);
 /**
  * Transform a arcs graph to its tree representation.
  *
- * @param arcs:  A arcs graph
+ * @param arcs:  An arcs graph
  *
  * @return The root of the tree represented by the arcs graph
  */
@@ -25,7 +25,7 @@ Node *arcs_to_tree(const Arcs arcs);
 /**
  * Plot a arcs graph
  *
- * @param arcs:  A arcsgon triangulation
+ * @param arcs:  An arcs graph
  */
 void plot_arcs(const Arcs arcs, std::string file);
 
@@ -58,14 +58,14 @@ void plot_random_arcs(int num_of_points, int count);
  * Exchange 2 arcs until the user quits.
  * It takes O(n) pre-processing time and O(1) per exchage.
  *
- * @param: arcs   A arcs graph
+ * @param: arcs   An arcs graph
  */
 void exchage_arcs(Arcs arcs);
 
 /**
- * Verify if a arcs graph is valid or not
+ * Verify if an arcs graph is valid or not
  *
- * @param arcs:  A arcs graph
+ * @param arcs:  An arcs graph
  *
  * @return True if it is a valid arcs graph, false otherwise
  */

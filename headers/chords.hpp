@@ -25,7 +25,7 @@ Node *chords_to_tree(const Chords chords);
 /**
  * Plot a chords graph
  *
- * @param chords:  A chordsgon triangulation
+ * @param chords:  A chords graph
  */
 void plot_chords(const Chords chords, std::string file);
 

@@ -118,6 +118,20 @@ std::string get_random_dyck_path(int deg, int length) {
   return dyck_path;
 }
 
+void plot_dyck_path(const Dyck dyck, std::string file) {
+  // TODO
+}
+
+void plot_all_dyck_path(int length) {
+  // TODO
+}
+
+void plot_random_dyck_path(int length, int r, int count) {
+  while (count--) {
+    // TODO
+  }
+}
+
 bool is_valid_dyck_path(std::string path) {
   int zeros = std::ranges::count(path, '0');
   int ones = std::ranges::count(path, '1');
@@ -141,17 +155,18 @@ bool is_valid_dyck_path(std::string path) {
 
 void test_conversion_dyck_path() {
   std::string dots{};
-  int stat_branches[TEST_MAX_BRANCHES + 1];
-  std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES + 1);
+  int stat_branches[TEST_MAX_BRANCHES_DYCK + 1];
+  std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES_DYCK + 1);
 
   std::cout << "====== Conversion Test ======\n\n";
-  int four_percent{NUM_OF_TESTS / 25};
+  int four_percent{NUM_OF_TESTS_DYCK / 25};
   std::cout << "100% remaining.";
   std::cout.flush();
-  for (int i{NUM_OF_TESTS}; i; --i) {
-    int branches{std::uniform_int_distribution<>(2, TEST_MAX_BRANCHES)(g_256ss)};
+  for (int i{NUM_OF_TESTS_DYCK}; i; --i) {
+    int branches{
+        std::uniform_int_distribution<>(2, TEST_MAX_BRANCHES_DYCK)(g_256ss)};
     int nodes{
-        std::uniform_int_distribution<>(1, TEST_MAX_EDGES / branches)(g_256ss)};
+        std::uniform_int_distribution<>(1, TEST_MAX_EDGES_DYCK / branches)(g_256ss)};
 
     std::string dyck_path{get_random_dyck_path(branches, branches * nodes)};
     auto tree{dyck_path_to_tree(dyck_path)};
@@ -183,14 +198,14 @@ void test_conversion_dyck_path() {
   }
 
   std::cout << "Degree\t\tInternal Nodes (Median)\t\tNumber of Tests\n";
-  for (int i{2}; i <= TEST_MAX_BRANCHES; ++i) {
+  for (int i{2}; i <= TEST_MAX_BRANCHES_DYCK; ++i) {
     auto &n = stat_internal_nodes[i];
     int sz = n.size();
     int median = (sz & 1) ? n[sz >> 1] : (n[sz >> 1] + n[(sz >> 1) - 1]) >> 1;
     std::cout << i << "\t\t\t" << median << "\t\t\t" << sz << "\n";
   }
 
-  std::cout << "\nAll " << NUM_OF_TESTS << " test cases passed!\n";
+  std::cout << "\nAll " << NUM_OF_TESTS_DYCK << " test cases passed!\n";
 }
 
 void test_expected_height() {
