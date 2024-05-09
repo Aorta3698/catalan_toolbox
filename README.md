@@ -32,17 +32,18 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 - [x] Convert between `r`-dyck path bit string and tree in `O(nlog(n/r))`
 - [ ] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
+- [ ] Flip mountain
 - [ ] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Triangulation
 - [x] Convert between polygon triangulation and binary tree in `O(n)`
 - [x] Visualizer for polygon triangulation
 - [x] Triangulation flip in `O(1)` with `O(n)` pre-processing and visualize the result
-- [ ] Verify a given polygon triangulation is a valid polygon triangulation or not
+- [x] Verify a given polygon triangulation is a valid polygon triangulation or not
 - [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Non-intersecting Chord Graph
-- [ ] Convert between non-intersecting chord graph and binary tree in `O(n)`
+- [x] Convert between non-intersecting chord graph and binary tree in `O(n)`
 - [x] Visualizer for non-intersecting chord graph
 - [ ] Exchange a chord and visualize the result
 - [ ] Verify a given chord graph is a valid non-intersecting chord graph or not

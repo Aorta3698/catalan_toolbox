@@ -31,9 +31,26 @@ Chords tree_to_chords(const Node *root) {
 }
 
 Node *chords_to_tree(const Chords chords) {
-  // TODO
-  assert(false);
-  return get_random_tree(1, 1);
+  int num_of_nodes = int(chords.size()) << 1;
+  int portal[num_of_nodes];
+  int id{};
+  for (const auto &[l, r] : chords) {
+    assert(r > l);
+    portal[l] = r;
+  }
+
+  std::function<Node *(int, int)> build = [&](int lo, int hi) {
+    if (lo >= hi) {
+      return new Node(++id);
+    }
+    auto cur_node{new Node(++id)};
+    ++lo;
+    cur_node->children.push_back(build(lo, portal[lo] - 1));
+    cur_node->children.push_back(build(portal[lo], hi));
+    return cur_node;
+  };
+
+  return build(0, num_of_nodes);
 }
 
 Poly get_random_chords(int num_of_points) {
@@ -120,7 +137,37 @@ void exchage_chords(Chords chords) {
   assert(false);
 }
 
-void test_conversion_chords() {
-  assert(false);
+bool is_valid_chords(const Chords chords) {
   // TODO
+  assert(false);
+}
+
+void test_conversion_chords() {
+  std::cout
+      << "Starting testing conversion between chords and tree with total points "
+         "from 2 to "
+      << TEST_MAX_SIDES_CHORDS << " with 2 increment\n\n";
+
+  for (int num_of_points{2}; num_of_points <= TEST_MAX_SIDES_CHORDS;
+       num_of_points += 2) {
+    for (int i{}; i < NUM_OF_TESTS_CHORDS; ++i) {
+      auto tree1{get_random_tree(2, num_of_points >> 1)};
+      auto tree2{chords_to_tree(tree_to_chords(tree1))};
+      std::string id1{serialize_tree(tree1)};
+      std::string id2{serialize_tree(tree2)};
+      if (id1 != id2) {
+        std::cerr << "Test Failed:\n"
+                  << "Total Points = " << num_of_points << "\n"
+                  << "id1 = " << id1 << "\n"
+                  << "id2 = " << id2 << "\n";
+        assert(false);
+      }
+      free_tree(tree1);
+      free_tree(tree2);
+    }
+    std::cout << "Total points = " << num_of_points << " done for "
+              << NUM_OF_TESTS_CHORDS << " random tests!\n";
+  }
+
+  std::cout << "\n\nAll Tests Completed!\n\n";
 }

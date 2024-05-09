@@ -12,7 +12,7 @@ const static int TEST_MAX_SIDES_POLY{100};
  *
  * @param root:     The root of the tree
  *
- * @return Its polygon triangulation represtation
+ * @return Its polygon triangulation representation
  */
 Poly tree_to_poly(const Node *root);
 
@@ -35,7 +35,7 @@ void plot_poly(Poly poly, std::string file);
 /**
  * Plot all polygon triangulation with `num_of_sides` sides
  *
- * @param poly:  Number of sides for the polygon. Between 3 to 6, inclusive.
+ * @param num_of_sides:  Number of sides for the polygon. Between 3 to 6, inclusive.
  */
 void plot_all_poly(int num_of_sides);
 
@@ -75,7 +75,7 @@ bool is_valid_poly(const Poly poly);
 
 /**
  * Test poly <-> tree conversion with 3 <= num_of_sides <= TEST_MAX_SIDES_POLY
- * (default 100). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
+ * (default 200). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
  * each `num_of_sides`.
  */
 void test_conversion_poly();
