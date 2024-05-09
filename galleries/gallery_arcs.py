@@ -8,6 +8,10 @@ from netgraph import Graph
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
+## setting for c5
+## 6, 7
+## (20, 25)
+
 fig, axs = plt.subplots(
     2, 7, sharex=True, sharey=True, layout="tight", figsize=(16, 13)
 )
@@ -17,32 +21,38 @@ for i in range(2):
     for j in range(7):
         G = []
         T = []
+        x = []
+        y = []
         node_positions = {}
-        with open(f"../.chords{k}") as infile:
+        with open(f"../.arcs{k}") as infile:
             num_of_points = int(infile.readline())
             for ii in range(num_of_points):
                 line = infile.readline()
-                x, y = line.strip().split(",")
-                node_positions[ii + 1] = (float(x), float(y))
+                xx, yy = line.strip().split(",")
+                xx, yy = (float(xx), float(yy))
+                node_positions[ii + 1] = (xx, yy)
+                x.append(xx)
+                y.append(yy)
             for line in infile:
                 u, v = line.strip().split(",")
                 e = (int(u), int(v))
                 G.append(e)
                 T.append(e)
             k = k + 1
-        circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--", alpha=0.3)
-        axs[i, j].add_patch(circle)
+        axs[i, j].plot(
+            x,
+            y,
+            linestyle="--",
+            alpha=0.3,
+        )
         P = Graph(
             G,
             ax=axs[i, j],
             node_layout=node_positions,
             node_size=6,
             edge_width=2.2,
+            edge_layout="arc",
         )
-        # for e in T:
-        #     P.edge_artists[e].set_color("pink")
-        #     P.edge_artists[e].set_alpha(1.0)
-        #     P.edge_artists[e].update_width(0.03)
 
-plt.savefig("chords.svg", bbox_inches="tight")
+plt.savefig("arcs.svg", bbox_inches="tight")
 plt.show()

@@ -5,11 +5,12 @@ Implement a tool to convert between tree to other well-known (generalized) Catal
 # Galleries
 Here shows the visualization for `catalan(4)` in each Catalan structure. There are 14 of them for each. 
 
-For `catalan(5)`, please click [here](galleries) and look for `.svg` files with `5_` prefix because there are 42 of them for each.
+For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for each Catalan structure).
 
-![](galleries/tree.svg)
-![](galleries/poly.svg)
-![](galleries/chords.svg)
+![](galleries/c4/tree.svg)
+![](galleries/c4/poly.svg)
+![](galleries/c4/chords.svg)
+![](galleries/c4/arcs.svg)
 
 ---
 # I want to know
@@ -54,7 +55,7 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 - [x] Visualizer for non-crossing arcs 
 - [ ] Exchange an arc and visualize the result
 - [ ] Verify a given arcs is a valid non-crossing arcs or not
-- [ ] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Other
 - [x] Output full `k`-ary tree as a file and read from it to recreate it

@@ -5,68 +5,15 @@
 
 #include <cassert>
 #include <fstream>
-#include <functional>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <unordered_set>
 
-Arcs tree_to_arcs(const Node *root) {
-  return tree_to_chords(root);
-  // Arcs arcs;
-  // int id{};
+Arcs tree_to_arcs(const Node *root) { return tree_to_chords(root); }
 
-  // std::function<int(const Node *)> build = [&](const Node *cur_node) {
-  //   if (cur_node->is_leaf()) {
-  //     return id++;
-  //   }
-  //   assert(cur_node->child_count() == 2);
-  //   int assigned_id{id++};
-  //   int left_id{build(cur_node->children[0])};
-  //   int right_id{build(cur_node->children[1])};
-  //   arcs.push_back({left_id, right_id});
-  //   return assigned_id;
-  // };
+Node *arcs_to_tree(const Arcs arcs) { return chords_to_tree(arcs); }
 
-  // build(root);
-  // return arcs;
-}
-
-Node *arcs_to_tree(const Arcs arcs) {
-  return chords_to_tree(arcs);
-  // int num_of_nodes = int(arcs.size()) << 1;
-  // int portal[num_of_nodes];
-  // int id{};
-  // for (const auto &[l, r] : arcs) {
-  //   assert(r > l);
-  //   portal[l] = r;
-  // }
-
-  // std::function<Node *(int, int)> build = [&](int lo, int hi) {
-  //   if (lo >= hi) {
-  //     return new Node(++id);
-  //   }
-  //   auto cur_node{new Node(++id)};
-  //   ++lo;
-  //   cur_node->children.push_back(build(lo, portal[lo] - 1));
-  //   cur_node->children.push_back(build(portal[lo], hi));
-  //   return cur_node;
-  // };
-
-  // return build(0, num_of_nodes);
-}
-
-Poly get_random_arcs(int num_of_points) {
-  return get_random_chords(num_of_points);
-  // if (num_of_points & 1) {
-  //   std::cerr << "Error: number of points must be even\n";
-  //   throw std::invalid_argument("");
-  // }
-  // auto tree{get_random_tree(2, num_of_points >> 1)};
-  // Poly res{tree_to_arcs(tree)};
-  // free_tree(tree);
-  // return res;
-}
+Poly get_random_arcs(int num_of_points) { return get_random_chords(num_of_points); }
 
 void plot_random_arcs(int num_of_points, int count) {
   if (num_of_points & 1) {
