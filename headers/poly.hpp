@@ -75,7 +75,7 @@ bool is_valid_poly(const Poly poly);
 
 /**
  * Test poly <-> tree conversion with 3 <= num_of_sides <= TEST_MAX_SIDES_POLY
- * (default 200). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
+ * (default 100). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
  * each `num_of_sides`.
  */
 void test_conversion_poly();
