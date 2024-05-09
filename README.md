@@ -50,8 +50,8 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 - [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Non-crossing Arcs
-- [ ] Convert between non-crossing arcs and binary tree in `O(n)`
-- [ ] Visualizer for non-crossing arcs 
+- [x] Convert between non-crossing arcs and binary tree in `O(n)`
+- [x] Visualizer for non-crossing arcs 
 - [ ] Exchange an arc and visualize the result
 - [ ] Verify a given arcs is a valid non-crossing arcs or not
 - [ ] Gallery for $C_4$ and $C_5$ (for now)

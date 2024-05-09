@@ -1,3 +1,4 @@
+#include "arcs.hpp"
 #include "chords.hpp"
 #include "dyck.hpp"
 #include "main.hpp"
@@ -25,31 +26,45 @@ int main(int argc, const char *argv[]) {
       if (cmd == "test" || cmd == "t") {
         test_expected_height();
         test_conversion_dyck_path();
+      } else if (cmd == "2a") {
+        int num_of_points{get_num(tokens.at(1))};
+        plot_all_arcs(num_of_points);
+      } else if (cmd == "2r") {
+        int num_of_points{get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
+        plot_random_arcs(num_of_points, count);
+      } else if (cmd == "2t") {
+        test_conversion_arcs();
+      } else if (cmd == "2e") {
+        int num_of_points{get_num(tokens.at(1))};
+        Arcs arcs{get_random_arcs(num_of_points)};
+        exchage_arcs(arcs);
+        //----------------------------------
         //-----------------------
-      } else if (cmd == "-a") {
+      } else if (cmd == "1a") {
         int num_of_points{get_num(tokens.at(1))};
         plot_all_chords(num_of_points);
-      } else if (cmd == "-r") {
+      } else if (cmd == "1r") {
         int num_of_points{get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
         plot_random_chords(num_of_points, count);
-      } else if (cmd == "-t") {
+      } else if (cmd == "1t") {
         test_conversion_chords();
-      } else if (cmd == "-e") {
+      } else if (cmd == "1e") {
         int num_of_points{get_num(tokens.at(1))};
         Chords chords{get_random_chords(num_of_points)};
         exchage_chords(chords);
         //----------------------------------
-      } else if (cmd == "+a") {
+      } else if (cmd == "0a") {
         int num_of_sides{get_num(tokens.at(1))};
         plot_all_poly(num_of_sides);
-      } else if (cmd == "+r") {
+      } else if (cmd == "0r") {
         int num_of_sides{get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
         plot_random_poly(num_of_sides, count);
-      } else if (cmd == "+t") {
+      } else if (cmd == "0t") {
         test_conversion_poly();
-      } else if (cmd == "+f") {
+      } else if (cmd == "0f") {
         int num_of_sides{get_num(tokens.at(1))};
         Poly poly{get_random_poly(num_of_sides)};
         flip_and_plot(poly);

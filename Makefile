@@ -1,7 +1,7 @@
-SRCS := main.cpp tree.cpp util.cpp dyck.cpp poly.cpp chords.cpp
+SRCS := main.cpp tree.cpp util.cpp dyck.cpp poly.cpp chords.cpp arcs.cpp
 H := ./headers
-OBJS := main.o util.o tree.o dyck.o poly.o chords.o
-DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/poly.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck.hpp $(H)/chords.hpp
+OBJS := main.o util.o tree.o dyck.o poly.o chords.o arcs.o
+DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/poly.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck.hpp $(H)/chords.hpp $(H)/arcs.hpp
 CFLAGS := -Wall -c -std=c++23 -O3
 CC := g++ -Iheaders
 
@@ -26,6 +26,9 @@ poly.o: poly.cpp $(H)/poly.hpp $(H)/global.hpp $(H)/tree.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 chords.o: chords.cpp $(H)/chords.hpp $(H)/global.hpp $(H)/tree.hpp
+	$(CC) $(CFLAGS) $< -o $@
+
+arcs.o: arcs.cpp $(H)/arcs.hpp $(H)/global.hpp $(H)/tree.hpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
