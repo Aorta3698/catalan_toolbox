@@ -16,16 +16,39 @@
 
 int main(int argc, const char *argv[]) {
   std::string prev_dyck_path{};
+  std::string prev_cmd{};
   do {
     std::string input{};
     std::cout << "> ";
     std::getline(std::cin, input);
+    if (input == "r") {
+      input = prev_cmd;
+    } else {
+      prev_cmd = input;
+    }
     std::vector<std::string> tokens{split_string(input, ' ')};
+
     try {
       std::string cmd = tokens.at(0);
       if (cmd == "test" || cmd == "t") {
         test_expected_height();
         test_conversion_dyck_path();
+      } else if (cmd == "3a") {
+        int length{get_num(tokens.at(1))};
+        plot_all_dyck_path(length);
+      } else if (cmd == "3r") {
+        int length{get_num(tokens.at(1))};
+        int r{get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : get_num(tokens.at(3))};
+        plot_random_dyck_path(length, r, count);
+      } else if (cmd == "3t") {
+        // SKIP
+      } else if (cmd == "3e") {
+        int length{get_num(tokens.at(1))};
+        int r{get_num(tokens.at(2))};
+        Dyck dyck{get_random_dyck_path(r, length)};
+        flip_mountain(dyck);
+        //----------------------------------
       } else if (cmd == "2a") {
         int num_of_points{get_num(tokens.at(1))};
         plot_all_arcs(num_of_points);

@@ -1,13 +1,16 @@
 #include "dyck.hpp"
 #include "global.hpp"
+#include "util.hpp"
 
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <fstream>
 #include <functional>
 #include <iomanip>
 #include <iostream>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 Node *dyck_path_to_tree(std::string path) {
@@ -118,17 +121,79 @@ std::string get_random_dyck_path(int deg, int length) {
   return dyck_path;
 }
 
-void plot_dyck_path(const Dyck dyck, std::string file) {
+void flip_mountain(Dyck dyck) {
   // TODO
 }
 
+void plot_dyck_path(const Dyck dyck, std::string file) {
+  int r{get_r(dyck)};
+  double scale = 0.3;
+  double up{1 * scale};
+  double down{(r - 1) * scale};
+  double right{1 * scale};
+  double x{};
+  double y{};
+
+  std::ofstream out{file};
+  if (!out) {
+    std::cerr << file << " cannot be opened.\n";
+    throw std::invalid_argument("");
+  }
+
+  // scaling
+  out << scale << "\n";
+
+  // number of points
+  out << 1 + int(dyck.size()) << "\n";
+
+  // coordinations
+  out << x << "," << y << "\n";
+  for (const auto d : dyck) {
+    if (d == '1') {
+      y += up;
+    } else {
+      y -= down;
+    }
+    x += right;
+    out << x << "," << y << "\n";
+  }
+
+  // edges
+  for (int i{}; i < int(dyck.size()); ++i) {
+    out << i << "," << i + 1 << "\n";
+  }
+
+  plot(DYCK_PLOT_SCRIPT, file);
+}
+
 void plot_all_dyck_path(int length) {
-  // TODO
+  if (length & 1) {
+    std::cerr << "Error: length must be even\n";
+    throw std::invalid_argument("");
+  }
+
+  int cat{length >> 1};
+  if (cat < 0 || cat > 4) {
+    std::cerr << "can't plot that many!\n";
+    throw std::invalid_argument("");
+  }
+
+  std::unordered_set<std::string> seen;
+  int total{get_catalan(cat)};
+  while (int(seen.size()) < total) {
+    Dyck dyck{get_random_dyck_path(2, length)};
+    if (!seen.contains(dyck)) {
+      std::string file{".dyck" + std::to_string(seen.size())};
+      plot_dyck_path(dyck, file);
+      seen.insert(dyck);
+    }
+  }
 }
 
 void plot_random_dyck_path(int length, int r, int count) {
   while (count--) {
-    // TODO
+    Dyck dyck{get_random_dyck_path(r, length)};
+    plot_dyck_path(dyck, ".dyck" + std::to_string(count));
   }
 }
 
@@ -151,6 +216,10 @@ bool is_valid_dyck_path(std::string path) {
     }
   }
   return score == 0;
+}
+
+int get_r(const Dyck dyck) {
+  return int(dyck.size()) / std::ranges::count(dyck, '0');
 }
 
 void test_conversion_dyck_path() {

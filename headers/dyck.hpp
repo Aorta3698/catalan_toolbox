@@ -63,13 +63,30 @@ void plot_all_dyck_path(int length);
 void plot_random_dyck_path(int length, int r, int count);
 
 /**
+ * Flip a mountain of a dyck path
+ *
+ * @param dyck:  A dyck path
+ */
+void flip_mountain(Dyck dyck);
+
+/**
  * Verify if a dyck path is valid or not
  *
- * @param path:  Dyck path of string type
+ * @param path:  A dyck path
  *
  * @return True if it is a valid dyck path, false otherwise
  */
 bool is_valid_dyck_path(std::string path);
+
+/**
+ * Find the `r` value for a given dyck path. It assumes that the given dyck path is
+ * valid.
+ *
+ * @param path:  A dyck path
+ *
+ * @return r
+ */
+int get_r(const Dyck dyck);
 
 /**
  * 100,000 test cases of creating a random dyck path, converting it to tree
