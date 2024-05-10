@@ -15,6 +15,7 @@ inline const static std::string POLY_PLOT_SCRIPT = "plot-poly.py";
 inline const static std::string TREE_PLOT_SCRIPT = "plot-tree.py";
 inline const static std::string ARCS_PLOT_SCRIPT = "plot-arcs.py";
 inline const static std::string DYCK_PLOT_SCRIPT = "plot_dyck_path.py";
+inline const static std::string COIN_PLOT_SCRIPT = "plot_coin.py";
 
 using Dyck = std::string;
 using Edge = std::array<int, 2>;
