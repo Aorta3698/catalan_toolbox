@@ -1,5 +1,6 @@
 #include "arcs.hpp"
 #include "chords.hpp"
+#include "coin.hpp"
 #include "dyck.hpp"
 #include "main.hpp"
 #include "poly.hpp"
@@ -33,6 +34,18 @@ int main(int argc, const char *argv[]) {
       if (cmd == "test" || cmd == "t") {
         test_expected_height();
         test_conversion_dyck_path();
+      } else if (cmd == "4a") {
+        int length{get_num(tokens.at(1))};
+        plot_all_coin_stacks(length);
+      } else if (cmd == "4r") {
+        int length{get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(3))};
+        plot_random_coin_stack(length, count);
+      } else if (cmd == "4t") {
+        // SKIP
+      } else if (cmd == "4e") {
+        // SKIP
+        //----------------------------------
       } else if (cmd == "3a") {
         int length{get_num(tokens.at(1))};
         plot_all_dyck_path(length);

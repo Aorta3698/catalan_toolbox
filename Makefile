@@ -1,6 +1,6 @@
 SRCS := main.cpp tree.cpp util.cpp dyck.cpp poly.cpp chords.cpp arcs.cpp coin.cpp
 H := ./headers
-OBJS := main.o util.o tree.o dyck.o poly.o chords.o arcs.o coin.cpp
+OBJS := main.o util.o tree.o dyck.o poly.o chords.o arcs.o coin.o
 DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/poly.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck.hpp $(H)/chords.hpp $(H)/arcs.hpp $(H)/coin.hpp
 CFLAGS := -Wall -c -std=c++23 -O3
 CC := g++ -Iheaders
