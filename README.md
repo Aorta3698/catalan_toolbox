@@ -81,6 +81,7 @@ Note: upon some googling - it looks like enumeration of Catalan structures have 
 - `Pydot`
 - `PyQt6`
 - `Netgraph`
+- `Watchdog`
 
 ## Install graphviz
 ### MacOS
