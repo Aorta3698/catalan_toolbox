@@ -11,6 +11,7 @@ For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for ea
 ![](galleries/c4/poly.svg)
 ![](galleries/c4/chords.svg)
 ![](galleries/c4/arcs.svg)
+![](galleries/c4/dyck_path.svg)
 
 ---
 # I want to know
@@ -19,6 +20,8 @@ For any Catalan structures, how do we perform a "walk" (from one state to the ne
 Obviously, dynamic programming is a way to generate all, say, binary trees, then we can convert to whatever Catalan structure we want, but there is no walk involved (it does not go from one state to the next).
 
 I guess, in the case of triangulation, does there always exist a `Hamiltonian Path` on the graph formed by triangulation flips? I assume the answer is yes, given that it is a graph where each vertex has `n-3` edges, but I have no concrete proof now nor know if there is a special case for such graph that a Hamiltonian Path can be found quickly.
+
+Note: upon some googling - it looks like enumeration of Catalan structures have been studied.
 
 ---
 # Milestones
@@ -31,10 +34,10 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 
 ### Dyck Path
 - [x] Convert between `r`-dyck path bit string and tree in `O(nlog(n/r))`
-- [ ] Visualizer for `r`-dyck path
+- [x] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
 - [ ] Flip mountain
-- [ ] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Triangulation
 - [x] Convert between polygon triangulation and binary tree in `O(n)`
@@ -56,6 +59,10 @@ I guess, in the case of triangulation, does there always exist a `Hamiltonian Pa
 - [ ] Exchange an arc and visualize the result
 - [ ] Verify a given arcs is a valid non-crossing arcs or not
 - [x] Gallery for $C_4$ and $C_5$ (for now)
+
+### Coin Stack
+- [ ] Visualizer for coin stack
+- [ ] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Other
 - [x] Output full `k`-ary tree as a file and read from it to recreate it
