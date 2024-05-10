@@ -153,9 +153,11 @@ void flip_and_plot(Poly poly) {
 
     // update graph
     poly[idx] = {{u, v}};
-    // plot_poly(poly, file + std::to_string(++suf));
-
     std::ofstream out{".polylog"};
+    if (!out) {
+      std::cerr << file << " cannot be opened.\n";
+      throw std::invalid_argument("");
+    }
     out << idx << "\n";
     out << u << "," << v << "\n";
   }
