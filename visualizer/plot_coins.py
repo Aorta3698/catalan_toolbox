@@ -42,4 +42,5 @@ Graph(
     node_size=rad * 100,
     node_edge_width=1,
 )
+
 plt.show()

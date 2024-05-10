@@ -12,6 +12,7 @@ For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for ea
 ![](galleries/c4/chords.svg)
 ![](galleries/c4/arcs.svg)
 ![](galleries/c4/dyck_path.svg)
+![](galleries/c4/coins.svg)
 
 ---
 # I want to know
@@ -61,8 +62,8 @@ Note: upon some googling - it looks like enumeration of Catalan structures have 
 - [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Coin Stack
-- [ ] Visualizer for coin stack
-- [ ] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Visualizer for coin stack
+- [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Other
 - [x] Output full `k`-ary tree as a file and read from it to recreate it

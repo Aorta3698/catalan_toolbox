@@ -53,8 +53,13 @@ void plot_coin_stack(const Dyck dyck_path, std::string file) {
 }
 
 void plot_all_coin_stacks(int n) {
-  std::unordered_set<Dyck> seen{};
   int cat{n};
+  if (cat < 1 || cat > 4) {
+    std::cerr << "Error: can't plot that many!\n";
+    throw std::invalid_argument("");
+  }
+
+  std::unordered_set<Dyck> seen{};
   int total{get_catalan(cat)};
   while (int(seen.size()) < total) {
     Dyck dyck_path = get_random_dyck_path(2, n << 1);

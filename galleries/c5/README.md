@@ -3,3 +3,4 @@
 ![](5_chords.svg)
 ![](5_arcs.svg)
 ![](5_dyck_path.svg)
+![](5_coins.svg)
