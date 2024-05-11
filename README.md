@@ -34,7 +34,8 @@ Note: upon some googling - it looks like enumeration of Catalan structures have 
 - [x] Gallery for $C_4$ and $C_5$ (for now)
 
 ### Dyck Path
-- [x] Convert between `r`-dyck path bit string and tree in `O(nlog(n/r))`
+- [x] Convert between `r`-dyck path *post-order* bit string and tree in `O(n)`
+- [x] Convert between `r`-dyck path *pre-order* bit string and tree in `O(nlog(n/r))`
 - [x] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
 - [ ] Flip mountain
@@ -82,12 +83,6 @@ Note: upon some googling - it looks like enumeration of Catalan structures have 
 - `PyQt6`
 - `Netgraph`
 - `Watchdog`
-
-## Install graphviz
-### MacOS
-```
-brew install graphviz
-```
 
 ## C++23
 The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version supports it.

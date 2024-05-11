@@ -13,14 +13,12 @@ Node *dyck_path_to_tree_post_order(const Dyck dyck_path) {
   int r{get_r_post_order(dyck_path)};
 
   std::function<Node *()> build = [&]() {
-    if (dyck_path[idx] == '1') {
+    if (idx == int(dyck_path.size()) || dyck_path[idx] == '1') {
       return new Node(++id);
     }
 
-    ++idx;
     Node *cur_node = new Node(++id, r);
     int pos{r};
-    cur_node->children[--pos] = build();
     while (pos--) {
       ++idx;
       cur_node->children[pos] = build();
@@ -46,10 +44,10 @@ std::string tree_to_dyck_path_post_order(const Node *root) {
   };
 
   encode(root);
-  // if (!is_valid_dyck_path(encoded_result)) {
-  //   std::cerr << "Error: This tree is not a full k-ary tree\n";
-  //   throw std::invalid_argument("");
-  // }
+  if (!is_valid_dyck_path_post_order(encoded_result)) {
+    std::cerr << "Error: This tree is not a full k-ary tree\n";
+    throw std::invalid_argument("");
+  }
   return encoded_result;
 }
 
@@ -69,7 +67,7 @@ std::string get_random_dyck_path_post_order(int deg, int length) {
   return dyck_path;
 }
 
-bool is_valid_dyck_path_post(std::string path) {
+bool is_valid_dyck_path_post_order(std::string path) {
   int zeros = std::ranges::count(path, '0');
   int ones = std::ranges::count(path, '1');
   int sz = path.size();
@@ -83,7 +81,7 @@ bool is_valid_dyck_path_post(std::string path) {
   }
   for (const auto c : path) { // never become < 0
     score += c == '1' ? 1 : down;
-    if (score < 0) {
+    if (score > 0) {
       return false;
     }
   }
