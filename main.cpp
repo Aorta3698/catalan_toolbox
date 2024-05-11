@@ -1,7 +1,8 @@
 #include "arcs.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck.hpp"
+#include "dyck_post.hpp"
+#include "dyck_pre.hpp"
 #include "main.hpp"
 #include "poly.hpp"
 #include "tree.hpp"
@@ -32,8 +33,21 @@ int main(int argc, const char *argv[]) {
     try {
       std::string cmd = tokens.at(0);
       if (cmd == "test" || cmd == "t") {
-        test_expected_height();
-        test_conversion_dyck_path();
+        test_expected_height_pre_order();
+        test_conversion_dyck_path_pre_order();
+      } else if (cmd == "5a") {
+        // int length{get_num(tokens.at(1))};
+        // plot_all_coin_stacks(length);
+      } else if (cmd == "5r") {
+        // int length{get_num(tokens.at(1))};
+        // int count{tokens.size() == 2 ? 1 : get_num(tokens.at(3))};
+        // plot_random_coin_stack(length, count);
+      } else if (cmd == "5t") {
+        test_conversion_dyck_path_post_order();
+        test_expected_height_post_order();
+      } else if (cmd == "5e") {
+        // SKIP
+        //----------------------------------
       } else if (cmd == "4a") {
         int length{get_num(tokens.at(1))};
         plot_all_coin_stacks(length);
@@ -50,8 +64,8 @@ int main(int argc, const char *argv[]) {
         int length{get_num(tokens.at(1))};
         plot_all_dyck_path(length);
       } else if (cmd == "3r") {
-        int length{get_num(tokens.at(1))};
-        int r{get_num(tokens.at(2))};
+        int r{get_num(tokens.at(1))};
+        int length{get_num(tokens.at(2))};
         int count{tokens.size() == 3 ? 1 : get_num(tokens.at(3))};
         plot_random_dyck_path(length, r, count);
       } else if (cmd == "3t") {
@@ -59,7 +73,7 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "3e") {
         int length{get_num(tokens.at(1))};
         int r{get_num(tokens.at(2))};
-        Dyck dyck{get_random_dyck_path(r, length)};
+        Dyck dyck{get_random_dyck_path_pre_order(r, length)};
         flip_mountain(dyck);
         //----------------------------------
       } else if (cmd == "2a") {
@@ -110,12 +124,12 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "gen" || cmd == "g") {
         int deg{get_num(tokens.at(1))};
         int len{get_num(tokens.at(2))};
-        std::string dyck_path{get_random_dyck_path(deg, len)};
+        std::string dyck_path{get_random_dyck_path_pre_order(deg, len)};
         std::cout << dyck_path << "\n";
         prev_dyck_path = dyck_path;
       } else if (cmd == "plot" || cmd == "p") {
         std::string dyck_path{tokens.size() == 2 ? tokens.at(1) : prev_dyck_path};
-        auto tree{dyck_path_to_tree(dyck_path)};
+        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
         store_tree_into_file(tree, TREE_OUTPUT_FILENAME);
         free_tree(tree);
         plot_tree(TREE_OUTPUT_FILENAME);
@@ -124,21 +138,21 @@ int main(int argc, const char *argv[]) {
         plot_all_trees(num_of_internal_nodes);
       } else if (cmd == "decode" || cmd == "d") {
         std::string dyck_path{tokens.at(1)};
-        auto tree{dyck_path_to_tree(dyck_path)};
+        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
         store_tree_into_file(tree, TREE_OUTPUT_FILENAME);
         free_tree(tree);
         plot_tree(TREE_OUTPUT_FILENAME);
       } else if (cmd == "encode" || cmd == "e") {
         std::string file{tokens.at(1)};
         auto tree{get_tree_from_file(file)};
-        std::string dyck_path{tree_to_dyck_path(tree)};
+        std::string dyck_path{tree_to_dyck_path_pre_order(tree)};
         std::cout << dyck_path << "\n";
         free_tree(tree);
         prev_dyck_path = dyck_path;
       } else if (cmd == "save" || cmd == "s") {
         std::string dyck_path{tokens.at(1)};
         std::string file{tokens.at(2)};
-        auto tree{dyck_path_to_tree(dyck_path)};
+        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
         store_tree_into_file(tree, file);
       } else {
         print_usage();

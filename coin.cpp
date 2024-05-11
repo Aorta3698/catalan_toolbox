@@ -1,5 +1,5 @@
 #include "coin.hpp"
-#include "dyck.hpp"
+#include "dyck_pre.hpp"
 #include "global.hpp"
 #include "util.hpp"
 
@@ -11,7 +11,7 @@
 #include <unordered_set>
 
 void plot_coin_stack(const Dyck dyck_path, std::string file) {
-  if (2 != get_r(dyck_path)) {
+  if (2 != get_r_pre_order(dyck_path)) {
     std::cerr << "Error: dyck path given must have r = 2\n";
     throw std::invalid_argument("");
   }
@@ -62,7 +62,7 @@ void plot_all_coin_stacks(int n) {
   std::unordered_set<Dyck> seen{};
   int total{get_catalan(cat)};
   while (int(seen.size()) < total) {
-    Dyck dyck_path = get_random_dyck_path(2, n << 1);
+    Dyck dyck_path = get_random_dyck_path_pre_order(2, n << 1);
     if (!seen.contains(dyck_path)) {
       plot_coin_stack(dyck_path, ".coins" + std::to_string(int(seen.size())));
       seen.insert(dyck_path);
@@ -72,7 +72,7 @@ void plot_all_coin_stacks(int n) {
 
 void plot_random_coin_stack(int n, int count) {
   while (count--) {
-    Dyck dyck_path{get_random_dyck_path(2, n << 1)};
+    Dyck dyck_path{get_random_dyck_path_pre_order(2, n << 1)};
     plot_coin_stack(dyck_path, ".coins" + std::to_string(count));
   }
 }
