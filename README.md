@@ -102,6 +102,15 @@ The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version suppo
 python -m venv /path/to/new/virtual/environment
 ```
 
+## RuntimeWarning: invalid value encountered in divide
+Netgraph lib currently has this warning as discussed by the library creator [here](https://github.com/paulbrodersen/netgraph/issues/81); to suppress this harming warning, put
+```
+np.seterr(divide='ignore', invalid='ignore')
+```
+where the warning occurrs.
+
+credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarning-invalid-value-encountered-in-divide).
+
 ----
 ### Possible Related Works (for my own ref)
 #### Height of Tree
