@@ -14,6 +14,13 @@ For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for ea
 ![](galleries/c4/dyck_path.svg)
 ![](galleries/c4/coins.svg)
 
+# For MacOS users
+You will likely encounter this error below:
+```
+nextEventMatchingMask should only be called from the Main Thread!
+```
+I don't have much time to look into this now, but I believe it is because that my visualizer is not started on the main thread and apparently Apple does not allow that - read more about it [here](https://forums.developer.apple.com/forums/thread/659010).
+
 ---
 # I want to know
 For any Catalan structures, how do we perform a "walk" (from one state to the next) deterministically in `O(1)` while guarantees that no state gets walked on again?
