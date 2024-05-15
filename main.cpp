@@ -17,6 +17,13 @@
 #include <vector>
 
 int main(int argc, const char *argv[]) {
+  std::cout << "0 - triangulation\n"
+            << "1 - chords\n"
+            << "2 - arcs\n"
+            << "3 - dyck path pre order\n"
+            << "4 - coins\n"
+            << "5 - dyck path post order\n\n";
+
   std::string prev_dyck_path{};
   std::string prev_cmd{};
   do {
