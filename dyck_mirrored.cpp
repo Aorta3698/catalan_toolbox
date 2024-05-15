@@ -1,4 +1,4 @@
-#include "dyck_post.hpp"
+#include "dyck_mirrored.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -7,10 +7,10 @@
 #include <iostream>
 #include <ranges>
 
-Node *dyck_path_to_tree_post_order(const Dyck dyck_path) {
+Node *dyck_path_to_tree_mirrored(const Dyck dyck_path) {
   int id{};
   int idx{};
-  int r{get_r_post_order(dyck_path)};
+  int r{get_r_mirrored(dyck_path)};
 
   std::function<Node *()> build = [&]() {
     if (idx == int(dyck_path.size()) || dyck_path[idx] == '1') {
@@ -30,7 +30,7 @@ Node *dyck_path_to_tree_post_order(const Dyck dyck_path) {
   return build();
 }
 
-std::string tree_to_dyck_path_post_order(const Node *root) {
+std::string tree_to_dyck_path_mirrored(const Node *root) {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
     int zero{int(encoded_result.size())};
@@ -44,14 +44,14 @@ std::string tree_to_dyck_path_post_order(const Node *root) {
   };
 
   encode(root);
-  if (!is_valid_dyck_path_post_order(encoded_result)) {
+  if (!is_valid_dyck_path_mirrored(encoded_result)) {
     std::cerr << "Error: This tree is not a full k-ary tree\n";
     throw std::invalid_argument("");
   }
   return encoded_result;
 }
 
-std::string get_random_dyck_path_post_order(int deg, int length) {
+std::string get_random_dyck_path_mirrored(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";
     throw std::invalid_argument("");
@@ -61,13 +61,13 @@ std::string get_random_dyck_path_post_order(int deg, int length) {
     std::cerr << "Warning: Dyck Path length is invalid and truncated.\n";
   }
   auto random_tree{get_random_tree(deg, num_of_internal_nodes)};
-  std::string dyck_path{tree_to_dyck_path_post_order(random_tree)};
+  std::string dyck_path{tree_to_dyck_path_mirrored(random_tree)};
   free_tree(random_tree);
 
   return dyck_path;
 }
 
-bool is_valid_dyck_path_post_order(std::string path) {
+bool is_valid_dyck_path_mirrored(std::string path) {
   int zeros = std::ranges::count(path, '0');
   int ones = std::ranges::count(path, '1');
   int sz = path.size();
@@ -88,29 +88,29 @@ bool is_valid_dyck_path_post_order(std::string path) {
   return score == 0;
 }
 
-int get_r_post_order(const Dyck dyck) {
+int get_r_mirrored(const Dyck dyck) {
   return int(dyck.size()) / std::ranges::count(dyck, '0');
 }
 
-void test_conversion_dyck_path_post_order() {
+void test_conversion_dyck_path_mirrored() {
   std::string dots{};
-  int stat_branches[TEST_MAX_BRANCHES_DYCK_POST + 1];
-  std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES_DYCK_POST + 1);
+  int stat_branches[TEST_MAX_BRANCHES_DYCK_MIRRORED + 1];
+  std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES_DYCK_MIRRORED +
+                                                    1);
 
   std::cout << "====== Conversion Test ======\n\n";
-  int four_percent{NUM_OF_TESTS_DYCK_POST / 25};
+  int four_percent{NUM_OF_TESTS_DYCK_MIRRORED / 25};
   std::cout << "100% remaining.";
   std::cout.flush();
-  for (int i{NUM_OF_TESTS_DYCK_POST}; i; --i) {
-    int branches{
-        std::uniform_int_distribution<>(2, TEST_MAX_BRANCHES_DYCK_POST)(g_256ss)};
-    int nodes{std::uniform_int_distribution<>(1, TEST_MAX_EDGES_DYCK_POST /
+  for (int i{NUM_OF_TESTS_DYCK_MIRRORED}; i; --i) {
+    int branches{std::uniform_int_distribution<>(2, TEST_MAX_BRANCHES_DYCK_MIRRORED)(
+        g_256ss)};
+    int nodes{std::uniform_int_distribution<>(1, TEST_MAX_EDGES_DYCK_MIRRORED /
                                                      branches)(g_256ss)};
 
-    std::string dyck_path{
-        get_random_dyck_path_post_order(branches, branches * nodes)};
-    auto tree{dyck_path_to_tree_post_order(dyck_path)};
-    std::string copied_path{tree_to_dyck_path_post_order(tree)};
+    std::string dyck_path{get_random_dyck_path_mirrored(branches, branches * nodes)};
+    auto tree{dyck_path_to_tree_mirrored(dyck_path)};
+    std::string copied_path{tree_to_dyck_path_mirrored(tree)};
 
     free_tree(tree);
 
@@ -138,17 +138,17 @@ void test_conversion_dyck_path_post_order() {
   }
 
   std::cout << "Degree\t\tInternal Nodes (Median)\t\tNumber of Tests\n";
-  for (int i{2}; i <= TEST_MAX_BRANCHES_DYCK_POST; ++i) {
+  for (int i{2}; i <= TEST_MAX_BRANCHES_DYCK_MIRRORED; ++i) {
     auto &n = stat_internal_nodes[i];
     int sz = n.size();
     int median = (sz & 1) ? n[sz >> 1] : (n[sz >> 1] + n[(sz >> 1) - 1]) >> 1;
     std::cout << i << "\t\t\t" << median << "\t\t\t" << sz << "\n";
   }
 
-  std::cout << "\nAll " << NUM_OF_TESTS_DYCK_POST << " test cases passed!\n";
+  std::cout << "\nAll " << NUM_OF_TESTS_DYCK_MIRRORED << " test cases passed!\n";
 }
 
-void test_expected_height_post_order() {
+void test_expected_height_mirrored() {
   int num_of_samples{10'000};
   int num_of_internal_nodes{100'000};
   int ten{num_of_samples / 10};

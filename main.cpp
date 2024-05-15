@@ -1,7 +1,7 @@
 #include "arcs.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck_post.hpp"
+#include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "main.hpp"
 #include "poly.hpp"
@@ -20,9 +20,9 @@ int main(int argc, const char *argv[]) {
   std::cout << "0 - triangulation\n"
             << "1 - chords\n"
             << "2 - arcs\n"
-            << "3 - dyck path pre order\n"
+            << "3 - dyck path pre-order\n"
             << "4 - coins\n"
-            << "5 - dyck path post order\n\n";
+            << "5 - dyck path pre-order mirrored\n\n";
 
   std::string prev_dyck_path{};
   std::string prev_cmd{};
@@ -50,8 +50,8 @@ int main(int argc, const char *argv[]) {
         // int count{tokens.size() == 2 ? 1 : get_num(tokens.at(3))};
         // plot_random_coin_stack(length, count);
       } else if (cmd == "5t") {
-        test_conversion_dyck_path_post_order();
-        test_expected_height_post_order();
+        test_conversion_dyck_path_mirrored();
+        test_expected_height_mirrored();
       } else if (cmd == "5e") {
         // SKIP
         //----------------------------------
