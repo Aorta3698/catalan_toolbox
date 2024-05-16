@@ -1,3 +1,4 @@
+![](tree_non_full.svg)
 ![](tree.svg)
 ![](poly.svg)
 ![](chords.svg)

@@ -7,6 +7,7 @@ Here shows the visualization for `catalan(4)` in each Catalan structure. There a
 
 For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for each Catalan structure).
 
+![](galleries/c4/tree_non_full.svg)
 ![](galleries/c4/tree.svg)
 ![](galleries/c4/poly.svg)
 ![](galleries/c4/chords.svg)
@@ -20,16 +21,6 @@ You will likely encounter this error below:
 nextEventMatchingMask should only be called from the Main Thread!
 ```
 I don't have much time to look into this now, but I believe it is because that my visualizer is not started on the main thread and apparently Apple does not allow that - read more about it [here](https://forums.developer.apple.com/forums/thread/659010).
-
----
-# I want to know
-For any Catalan structures, how do we perform a "walk" (from one state to the next) deterministically in `O(1)` while guarantees that no state gets walked on again?
-
-Obviously, dynamic programming is a way to generate all, say, binary trees, then we can convert to whatever Catalan structure we want, but there is no walk involved (it does not go from one state to the next).
-
-I guess, in the case of triangulation, does there always exist a `Hamiltonian Path` on the graph formed by triangulation flips? I assume the answer is yes, given that it is a graph where each vertex has `n-3` edges, but I have no concrete proof now nor know if there is a special case for such graph that a Hamiltonian Path can be found quickly.
-
-Note: upon some googling - it looks like enumeration of Catalan structures have been studied.
 
 ---
 # Milestones

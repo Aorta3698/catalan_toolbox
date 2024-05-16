@@ -66,17 +66,14 @@ void store_tree_into_file(const Node *root, std::string file) {
     throw std::invalid_argument("");
   }
 
-  int e{};
   std::function<void(const Node *)> print_edges = [&](const Node *cur_node) {
     for (const auto child : cur_node->children) {
       out << cur_node->id << ',' << child->id << "\n";
       print_edges(child);
-      ++e;
     }
   };
 
   print_edges(root);
-  // std::cerr << "edges: " << e << "\n";
   // deconstructor for _out_ is auto called
 }
 
