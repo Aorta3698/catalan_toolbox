@@ -1,9 +1,13 @@
 # Goals
-- Implement a tool to convert between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+There are 4 goals that I'd like to achieve:
 
-- Accompanied with a visualizer tool that produces publication level of svg.
+- Conversion between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
 
-- Enumeration of well-known Catalan structures (including k-ary tree and r-dyck path).
+- A visualizer tool that produces publication level of svg.
+
+- Enumeration of well-known Catalan structures (including k-ary trees and r-dyck paths).
+
+- Enumeration of `pattarn avoiding` binary trees.
 
 ---
 # Galleries
