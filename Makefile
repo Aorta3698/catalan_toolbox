@@ -2,13 +2,13 @@ SRCS := main.cpp tree.cpp util.cpp dyck_pre.cpp poly.cpp chords.cpp arcs.cpp coi
 H := ./headers
 OBJS := main.o util.o tree.o dyck_pre.o poly.o chords.o arcs.o coin.o dyck_mirrored.o
 DEPS := $(H)/xoshiro256.hpp $(H)/main.hpp $(H)/tree.hpp $(H)/poly.hpp $(H)/global.hpp $(H)/util.hpp $(H)/dyck_pre.hpp $(H)/dyck_mirrored.hpp $(H)/chords.hpp $(H)/arcs.hpp $(H)/coin.hpp
-CFLAGS := -Wall -c -std=c++23 -O3
+CFLAGS := -Wall -c -std=c++23 -O3 -lgmp
 CC := g++ -Iheaders
 
 ## https://makefiletutorial.com/
 
 all: $(OBJS)
-	$(CC) -std=c++23 -O3 -Wall $(OBJS) -o tree
+	$(CC) -std=c++23 -O3 -Wall -lgmp $(OBJS) -o tree
 
 main.o: main.cpp $(DEPS)
 	$(CC) $(CFLAGS) $< -o $@

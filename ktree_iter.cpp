@@ -1,7 +1,6 @@
 #include <array>
 #include <cassert>
 #include <functional>
-#include <gmp.h>
 #include <gmpxx.h>
 #include <iostream>
 #include <stdexcept>
@@ -105,6 +104,10 @@ std::string unrank(mint pos, int k, int num_of_nodes) {
   return bit_string;
 }
 
+mint end(int k, int num_of_nodes) {
+  return combinations(k * num_of_nodes + 1, num_of_nodes) / (k * num_of_nodes + 1);
+}
+
 int main() {
   setup();
   for (int k{2}; k < 6; ++k)
@@ -119,6 +122,9 @@ int main() {
         if (auto got = unrank(mint(ok), k, n); got != bit_string) {
           std::cout << std::format("got = {}, need = {}\n", got, bit_string);
         }
+      }
+      if (ok != end(k, n)) {
+        assert(false);
       }
     }
 };

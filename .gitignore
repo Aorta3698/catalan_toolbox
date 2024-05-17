@@ -1,6 +1,7 @@
 tree
 *.o
 .*
+a.out
 
 visualizer/*
 !visualizer/*.py
