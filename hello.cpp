@@ -90,16 +90,34 @@ mint rank(std::string bit_string, int k, int num_of_nodes) {
   return index;
 }
 
+std::string unrank(mint pos, int k, int num_of_nodes) {
+  int count{num_of_nodes};
+  std::string bit_string(num_of_nodes * k + 1, '0');
+  for (int i{}; i < k * num_of_nodes && count; ++i) {
+    mint val{combinations(k * num_of_nodes - i - 1, count) -
+             combinations(k * num_of_nodes - i - 1, count - 1) * (k - 1)};
+    if (pos > val) {
+      ++bit_string[i];
+      --count;
+      pos -= val;
+    }
+  }
+  return bit_string;
+}
+
 int main() {
   setup();
-  for (int k{3}; k < 4; ++k)
-    for (int n{2}; n < 13; ++n) {
+  for (int k{2}; k < 6; ++k)
+    for (int n{2}; n < 9; ++n) {
       int ok{};
       for (std::string bit_string : gen_tree_1(n, k)) {
         if (mint got{rank(bit_string, k, n)}; got != ++ok) {
           std::cout << std::format("got = {}, need = {}\n", got.get_si(), ok);
           if (ok == 10)
             assert(false);
+        }
+        if (auto got = unrank(mint(ok), k, n); got != bit_string) {
+          std::cout << std::format("got = {}, need = {}\n", got, bit_string);
         }
       }
     }
