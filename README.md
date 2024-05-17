@@ -3,7 +3,7 @@
 
 - Accompanied with a visualizer tool that produces publication level of svg.
 
-- Enumeration of well-known Catalan structures (including k-ary trees and r-dyck path).
+- Enumeration of well-known Catalan structures (including k-ary tree and r-dyck path).
 
 ---
 # Galleries
