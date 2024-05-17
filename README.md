@@ -1,5 +1,7 @@
-# Current Direction
-Implement a tool to convert between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+# Goals
+- Implement a tool to convert between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+
+- Accompanied with a visualizer tool that produces publication level of svg.
 
 ---
 # Galleries
