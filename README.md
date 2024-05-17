@@ -3,6 +3,8 @@
 
 - Accompanied with a visualizer tool that produces publication level of svg.
 
+- Enumeration of well-known Catalan structures (including k-ary trees and r-dyck path).
+
 ---
 # Galleries
 Here shows the visualization for `catalan(4)` in each Catalan structure. There are 14 of them for each. 
