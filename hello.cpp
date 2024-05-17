@@ -1,32 +1,57 @@
+#include <array>
 #include <cassert>
 #include <functional>
+#include <gmp.h>
+#include <gmpxx.h>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
-std::vector<std::string> gen_tree(int n, int k) {
-  std::vector<std::string> ans{};
-  std::string b(n * k + 1, '0');
+using mint = mpz_class;
 
-  // y here means number of available leaves, if x >= 1, then we must
-  // reserve 1 spot for internal node, hence the k-1.
-  std::function<void(int, int)> gen = [&](int x, int y) {
-    if (x + y == 0) {
-      ans.push_back(b);
-      return;
-    }
-    if (y) {
-      b[k * (n - x) - y] = '0';
-      gen(x, y - 1);
-    }
-    if (x) {
-      b[k * (n - x) - y] = '1';
-      gen(x - 1, y + k - 1);
-    }
-  };
+static std::array<mint, 10'001> fact;
 
-  gen(n, 0);
-  return ans;
+static void setup() {
+  mint n{1};
+  fact[0] = n;
+  for (int i{1}; i <= 10'000; ++i) {
+    n *= i;
+    fact[i] = n;
+  }
 }
+
+mint combinations(int n, int k) {
+  if (n > 10'000) {
+    std::cerr << "only support at most 10,000 nodes now\n\n";
+    throw std::invalid_argument("");
+  }
+  return fact[n] / fact[k] / fact[n - k];
+}
+
+// std::vector<std::string> gen_tree(int n, int k) {
+//   std::vector<std::string> ans{};
+//   std::string b(n * k + 1, '0');
+
+//   // y here means number of available leaves, if x >= 1, then we must
+//   // reserve 1 spot for internal node, hence the k-1.
+//   std::function<void(int, int)> gen = [&](int x, int y) {
+//     if (x + y == 0) {
+//       ans.push_back(b);
+//       return;
+//     }
+//     if (y) {
+//       b[k * (n - x) - y] = '0';
+//       gen(x, y - 1);
+//     }
+//     if (x) {
+//       b[k * (n - x) - y] = '1';
+//       gen(x - 1, y + k - 1);
+//     }
+//   };
+
+//   gen(n, 0);
+//   return ans;
+// }
 
 std::vector<std::string> gen_tree_1(int n, int k) {
   std::vector<std::string> ans{};
@@ -50,13 +75,32 @@ std::vector<std::string> gen_tree_1(int n, int k) {
   return ans;
 }
 
+mint rank(std::string bit_string, int k, int num_of_nodes) {
+  int count{num_of_nodes - 1};
+  mint index{1};
+
+  for (int i{1}; i <= k * (num_of_nodes - 1) && count; ++i) {
+    if (bit_string[i] - '0') {
+      int pos_n{k * num_of_nodes - i - 1};
+      index += combinations(pos_n, count) - combinations(pos_n, count - 1) * (k - 1);
+      --count;
+    }
+  }
+
+  return index;
+}
+
 int main() {
-  for (int k{2}; k < 6; ++k)
-    for (int i{}; i < 10; ++i) {
-      auto count{gen_tree_1(i, 4)};
-      auto n{gen_tree(i, 4)};
-      if (n != count) {
-        assert(false);
+  setup();
+  for (int k{3}; k < 4; ++k)
+    for (int n{2}; n < 13; ++n) {
+      int ok{};
+      for (std::string bit_string : gen_tree_1(n, k)) {
+        if (mint got{rank(bit_string, k, n)}; got != ++ok) {
+          std::cout << std::format("got = {}, need = {}\n", got.get_si(), ok);
+          if (ok == 10)
+            assert(false);
+        }
       }
     }
 };
