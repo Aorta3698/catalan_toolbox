@@ -5,6 +5,15 @@
 #include <string>
 #include <vector>
 
+#include "poly.hpp"
+
+// forward declaration
+// https://stackoverflow.com/a/29209540
+class Poly;
+class Chords;
+class Dyck;
+class Arcs;
+
 /**
  * Node class represents a tree node
  *
@@ -48,7 +57,7 @@ public:
    *
    * @return The root of the generated tree
    */
-  Tree static *get_random(int deg, int num_of_full_nodes);
+  static Tree *get_random(int deg, int num_of_full_nodes);
 
   /**
    * Read the file that consists of one edge on each line
@@ -62,7 +71,15 @@ public:
    *
    * @return The full k-ary tree represented by the file
    */
-  Tree static *get_from_file(std::string file);
+  static Tree *get_from_file(std::string file);
+
+  /**
+   * Convert the current tree into its
+   * polygon triangulation representation
+   *
+   * @return Its polygon triangulation representation
+   */
+  Poly *to_poly();
 
   /**
    * Plot all the trees with n internal nodes.

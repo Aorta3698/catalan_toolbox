@@ -14,6 +14,31 @@
 #include <stdexcept>
 #include <unordered_set>
 
+Poly *Tree::to_poly() {
+  Graph poly;
+
+  int count{};
+  enum Dir { Left, Right, None };
+
+  std::function<int(const Node *, Dir)> build = [&](const Node *cur_node, Dir dir) {
+    if (cur_node->is_leaf()) {
+      return ++count - (Dir::Left == dir);
+    }
+    assert(int(cur_node->children.size()) == 2);
+    int l{build(cur_node->children[0], Dir::Left)};
+    int r{build(cur_node->children[1], Dir::Right)};
+    poly.push_back({l, r});
+    return dir == Dir::Left ? l : r;
+  };
+
+  build(this->root, Dir::None);
+  std::ranges::reverse(poly);
+  if (!Poly::is_valid(poly)) {
+    std::cerr << "Error: Generated poly is not valid\n";
+  }
+  return new Poly(poly);
+}
+
 Tree *Tree::get_random(int branches, int num_of_nodes) {
   if (num_of_nodes < 1) {
     std::cerr << "internal node count cannot be < 1\n";
