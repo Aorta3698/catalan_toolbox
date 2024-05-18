@@ -14,6 +14,30 @@
 #include <stdexcept>
 #include <unordered_set>
 
+Chords *Tree::to_chords() {
+  Graph chords;
+  int id{};
+
+  std::function<int(const Node *)> build = [&](const Node *cur_node) {
+    if (cur_node->is_leaf()) {
+      return id++;
+    }
+    assert(cur_node->child_count() == 2);
+    int assigned_id{id++};
+    int left_id{build(cur_node->children[0])};
+    int right_id{build(cur_node->children[1])};
+    chords.push_back({left_id, right_id});
+    return assigned_id;
+  };
+
+  build(this->root);
+  if (!Chords::is_valid(chords)) {
+    std::cerr << "Error: tree to chords graph failed.\n";
+    throw std::invalid_argument("");
+  }
+  return new Chords(chords);
+}
+
 Poly *Tree::to_poly() {
   Graph poly;
 
@@ -34,7 +58,8 @@ Poly *Tree::to_poly() {
   build(this->root, Dir::None);
   std::ranges::reverse(poly);
   if (!Poly::is_valid(poly)) {
-    std::cerr << "Error: Generated poly is not valid\n";
+    std::cerr << "Error: tree to polygon triangulation failed.\n";
+    throw std::invalid_argument("");
   }
   return new Poly(poly);
 }

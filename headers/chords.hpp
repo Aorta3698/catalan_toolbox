@@ -1,79 +1,75 @@
+#pragma once
+
 #include "global.hpp"
 #include "tree.hpp"
 
-const static int NUM_OF_TESTS_CHORDS{50000};
-const static int TEST_MAX_SIDES_CHORDS{200};
+class Tree;
 
-/**
- * Convert a tree into its chords representation
- *
- * @param root:     The root of the tree
- *
- * @return Its chords graph representation
- */
-Chords tree_to_chords(const Node *root);
+class Chords {
+public:
+  /**
+   * Get a random chords graph
+   *
+   * @param num_of_points:   Number of points
+   *
+   * @return A random chords graph
+   */
+  static Chords *get_random(int num_of_points);
 
-/**
- * Transform a chords to its tree representation.
- *
- * @param chords:  A chords graph
- *
- * @return The root of the tree represented by the chords graph
- */
-Node *chords_to_tree(const Chords chords);
+  /**
+   * Verify if a given graph is a valid chords graph or not
+   *
+   * @param chords:  A chords graph
+   *
+   * @return True if it is a valid chords graph, false otherwise
+   */
+  static bool is_valid(const Graph &graph);
 
-/**
- * Plot a chords graph
- *
- * @param chords:  A chords graph
- */
-void plot_chords(const Chords chords, std::string file);
+  Chords(Graph chords) {
+    this->chords = chords;
+    this->points = int(chords.size()) << 1;
+  }
 
-/**
- * Plot all chords graph with `num_of_points` points
- *
- * @param num_of_points:  Number of points for the chords graph. Between 2 to 8,
- * inclusive.
- */
-void plot_all_chords(int num_of_points);
+  /**
+   * Transform the current chords to its tree representation.
+   *
+   * @param chords:  A chords graph
+   *
+   * @return The root of the tree represented by the chords graph
+   */
+  Tree *to_tree();
 
-/**
- * Create a random chords graph
- *
- * @param num_of_points:   Number of points
- *
- * @return A random chords graph
- */
-Chords get_random_chords(int num_of_points);
+  /**
+   * Get the next chords graph
+   *
+   * @return The root of the tree represented by the chords graph
+   */
+  Chords *next();
 
-/**
- * Plot `count` number of random chords graph
- *
- * @param num_of_sides:   Number of sides
- * @param count:          Number of random chords graph plots
- */
-void plot_random_chords(int num_of_points, int count);
+  /**
+   * Plot the current chords graph
+   */
+  void plot(std::string file = "");
 
-/**
- * Exchange 2 chords until the user quits.
- * It takes O(n) pre-processing time and O(1) per exchage.
- *
- * @param: chords   A chords graph
- */
-void exchage_chords(Chords chords);
+  /**
+   * Exchange 2 chords until the user quits.
+   * It takes O(n) pre-processing time and O(1) per exchage.
+   */
+  void exchage_chords();
 
-/**
- * Verify if a chords graph is valid or not
- *
- * @param chords:  A chords graph
- *
- * @return True if it is a valid chords graph, false otherwise
- */
-bool is_valid_chords(const Chords chords);
+  /**
+   * Test chords <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_chords
+   * (default 100). There are NUM_OF_TESTS_chords (default 50k) random test cases for
+   * each total number of points.
+   */
+  void test_conversion();
 
-/**
- * Test chords <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_chords
- * (default 100). There are NUM_OF_TESTS_chords (default 50k) random test cases for
- * each total number of points.
- */
-void test_conversion_chords();
+private:
+  static constexpr std::string _PLOT_SCRIPT{"plot-chords.py"};
+  static constexpr std::string _DEFAULT_PREFIX_FILE{".chords"};
+  const static int _NUM_OF_TESTS{50000};
+  const static int _TEST_MAX_SIDES{200};
+
+  Graph chords;
+  int points;
+};

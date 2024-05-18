@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "chords.hpp"
 #include "poly.hpp"
 
 // forward declaration
@@ -80,6 +81,13 @@ public:
    * @return Its polygon triangulation representation
    */
   Poly *to_poly();
+
+  /**
+   * Convert the current tree into its chords graph representation
+   *
+   * @return Its chords graph representation
+   */
+  Chords *to_chords();
 
   /**
    * Plot all the trees with n internal nodes.

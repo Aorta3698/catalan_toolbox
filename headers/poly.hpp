@@ -27,7 +27,7 @@ public:
    *
    * @return True if it is a valid polygon triangulation, false otherwise
    */
-  static bool is_valid(Graph &);
+  static bool is_valid(const Graph &graph);
 
   /**
    * Transform to its tree representation.
