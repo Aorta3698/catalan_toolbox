@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+namespace Util {
 /**
  * Split str by the given delimiter
  *
@@ -77,3 +78,4 @@ std::array<double, 2> rotate(double x, double y, double deg);
  * @param file    : The input file to the script
  */
 void plot(std::string script, std::string file);
+} // namespace Util
