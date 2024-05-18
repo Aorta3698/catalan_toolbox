@@ -35,7 +35,7 @@ int main(int argc, const char *argv[]) {
     } else {
       prev_cmd = input;
     }
-    std::vector<std::string> tokens{split_string(input, ' ')};
+    std::vector<std::string> tokens{Util::split_string(input, ' ')};
 
     try {
       std::string cmd = tokens.at(0);
@@ -56,11 +56,11 @@ int main(int argc, const char *argv[]) {
         // SKIP
         //----------------------------------
       } else if (cmd == "4a") {
-        int length{get_num(tokens.at(1))};
+        int length{Util::get_num(tokens.at(1))};
         plot_all_coin_stacks(length);
       } else if (cmd == "4r") {
-        int length{get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(3))};
+        int length{Util::get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(3))};
         plot_random_coin_stack(length, count);
       } else if (cmd == "4t") {
         // SKIP
@@ -68,69 +68,69 @@ int main(int argc, const char *argv[]) {
         // SKIP
         //----------------------------------
       } else if (cmd == "3a") {
-        int length{get_num(tokens.at(1))};
+        int length{Util::get_num(tokens.at(1))};
         plot_all_dyck_path(length);
       } else if (cmd == "3r") {
-        int r{get_num(tokens.at(1))};
-        int length{get_num(tokens.at(2))};
-        int count{tokens.size() == 3 ? 1 : get_num(tokens.at(3))};
+        int r{Util::get_num(tokens.at(1))};
+        int length{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         plot_random_dyck_path(length, r, count);
       } else if (cmd == "3t") {
         // SKIP
       } else if (cmd == "3e") {
-        int length{get_num(tokens.at(1))};
-        int r{get_num(tokens.at(2))};
+        int length{Util::get_num(tokens.at(1))};
+        int r{Util::get_num(tokens.at(2))};
         Dyck dyck{get_random_dyck_path_pre_order(r, length)};
         flip_mountain(dyck);
         //----------------------------------
       } else if (cmd == "2a") {
-        int num_of_points{get_num(tokens.at(1))};
+        int num_of_points{Util::get_num(tokens.at(1))};
         plot_all_arcs(num_of_points);
       } else if (cmd == "2r") {
-        int num_of_points{get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
+        int num_of_points{Util::get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
         plot_random_arcs(num_of_points, count);
       } else if (cmd == "2t") {
         test_conversion_arcs();
       } else if (cmd == "2e") {
-        int num_of_points{get_num(tokens.at(1))};
+        int num_of_points{Util::get_num(tokens.at(1))};
         Arcs arcs{get_random_arcs(num_of_points)};
         exchage_arcs(arcs);
         //----------------------------------
         //-----------------------
       } else if (cmd == "1a") {
-        int num_of_points{get_num(tokens.at(1))};
+        int num_of_points{Util::get_num(tokens.at(1))};
         plot_all_chords(num_of_points);
       } else if (cmd == "1r") {
-        int num_of_points{get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
+        int num_of_points{Util::get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
         plot_random_chords(num_of_points, count);
       } else if (cmd == "1t") {
         test_conversion_chords();
       } else if (cmd == "1e") {
-        int num_of_points{get_num(tokens.at(1))};
+        int num_of_points{Util::get_num(tokens.at(1))};
         Chords chords{get_random_chords(num_of_points)};
         exchage_chords(chords);
         //----------------------------------
       } else if (cmd == "0a") {
-        int num_of_sides{get_num(tokens.at(1))};
+        int num_of_sides{Util::get_num(tokens.at(1))};
         plot_all_poly(num_of_sides);
       } else if (cmd == "0r") {
-        int num_of_sides{get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : get_num(tokens.at(2))};
+        int num_of_sides{Util::get_num(tokens.at(1))};
+        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
         plot_random_poly(num_of_sides, count);
       } else if (cmd == "0t") {
         test_conversion_poly();
       } else if (cmd == "0f") {
-        int num_of_sides{get_num(tokens.at(1))};
+        int num_of_sides{Util::get_num(tokens.at(1))};
         Poly poly{get_random_poly(num_of_sides)};
         flip_and_plot(poly);
         //---------------------------------
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
-        int deg{get_num(tokens.at(1))};
-        int len{get_num(tokens.at(2))};
+        int deg{Util::get_num(tokens.at(1))};
+        int len{Util::get_num(tokens.at(2))};
         std::string dyck_path{get_random_dyck_path_pre_order(deg, len)};
         std::cout << dyck_path << "\n";
         prev_dyck_path = dyck_path;

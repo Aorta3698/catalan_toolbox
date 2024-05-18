@@ -2,7 +2,9 @@ tree
 *.o
 .*
 a.out
+test*
 
+test*/
 visualizer/*
 !visualizer/*.py
 !.gitignore
