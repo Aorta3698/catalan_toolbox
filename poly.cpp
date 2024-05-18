@@ -143,13 +143,6 @@ Poly *Poly::get_random(int num_of_sides) {
   return res;
 }
 
-// void plot_random_poly(int num_of_sides, int count) {
-//   while (count--) {
-//     auto poly{get_random_poly(num_of_sides)};
-//     plot_poly(poly, ".poly" + std::to_string(count));
-//   }
-// }
-
 void Poly::plot(std::string file) {
   std::ofstream out{file};
   if (!out) {
@@ -178,29 +171,7 @@ void Poly::plot(std::string file) {
   Util::plot(Poly::_PLOT_SCRIPT, file);
 }
 
-// void plot_all_poly(int num_of_sides) {
-//   if (num_of_sides < 3 || num_of_sides > 6) {
-//     std::cerr << "can't plot that many!\n";
-//     throw std::invalid_argument("");
-//   }
-
-//   std::unordered_set<std::string> seen;
-//   int total{get_catalan(num_of_sides - 2)};
-//   while (int(seen.size()) < total) {
-//     auto tree{get_random_tree(2, num_of_sides - 2)};
-//     std::string id{serialize_tree(tree)};
-//     if (!seen.contains(id)) {
-//       std::string file{".poly" + std::to_string(seen.size())};
-//       Poly poly{tree_to_poly(tree)};
-//       plot_poly(poly, file);
-//       seen.insert(id);
-//     }
-//     free_tree(tree);
-//   }
-// }
-
 Poly *Poly::next() {
-
   // TODO: implement this
 }
 
@@ -238,10 +209,10 @@ bool Poly::is_valid(Graph &poly) {
 void Poly::test_conversion() {
   std::cout << "Starting testing conversion between poly and tree with num_of_sides "
                "from 3 to "
-            << TEST_MAX_SIDES_POLY << "\n\n";
+            << TEST_MAX_SIDES << "\n\n";
 
-  for (int num_of_sides{3}; num_of_sides <= TEST_MAX_SIDES_POLY; ++num_of_sides) {
-    for (int i{}; i < NUM_OF_TESTS_POLY; ++i) {
+  for (int num_of_sides{3}; num_of_sides <= TEST_MAX_SIDES; ++num_of_sides) {
+    for (int i{}; i < NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_sides - 2)};
       auto tree2{tree1->to_poly()->to_tree()};
       std::string id1{tree1->serialize()};
@@ -258,8 +229,8 @@ void Poly::test_conversion() {
       delete tree1;
       delete tree2;
     }
-    std::cout << "num_of_sides = " << num_of_sides << " done for "
-              << NUM_OF_TESTS_POLY << " random tests!\n";
+    std::cout << "num_of_sides = " << num_of_sides << " done for " << NUM_OF_TESTS
+              << " random tests!\n";
   }
 
   std::cout << "\n\nAll Tests Completed!\n\n";
