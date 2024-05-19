@@ -2,6 +2,7 @@ tree
 *.o
 .*
 a.out
+catalan_toolbox
 test*
 
 test*/
