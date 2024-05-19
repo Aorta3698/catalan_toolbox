@@ -9,6 +9,21 @@ class Arcs;
 
 class Chords {
 public:
+  Chords(Graph chords) {
+    this->chords = chords;
+    this->points = int(chords.size()) << 1;
+  }
+
+  // loved c++20
+  auto operator<=>(const Chords &rhs) const = default;
+
+  /**
+   * Test chords <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_chords
+   * (default 100). There are NUM_OF_TESTS_chords (default 50k) random test cases for
+   * each total number of points.
+   */
+  static void test_conversion();
+
   /**
    * Get a random chords graph
    *
@@ -26,14 +41,6 @@ public:
    * @return True if it is a valid chords graph, false otherwise
    */
   static bool is_valid(const Graph &graph);
-
-  Chords(Graph chords) {
-    this->chords = chords;
-    this->points = int(chords.size()) << 1;
-  }
-
-  // loved c++20
-  auto operator<=>(const Chords &rhs) const = default;
 
   /**
    * Transform the current chords to its tree representation.
@@ -84,13 +91,6 @@ public:
    * It takes O(n) pre-processing time and O(1) per exchage.
    */
   void exchage_chords();
-
-  /**
-   * Test chords <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_chords
-   * (default 100). There are NUM_OF_TESTS_chords (default 50k) random test cases for
-   * each total number of points.
-   */
-  void test_conversion();
 
 private:
   static constexpr std::string _PLOT_SCRIPT{"plot-chords.py"};

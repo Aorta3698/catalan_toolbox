@@ -57,6 +57,14 @@ public:
   auto operator<=>(const Tree &rhs) const = default;
 
   /**
+   * From degree 2 to 5 (due to time), sample 10k random trees with
+   * 100k internal nodes, and then compare it to the expected height.
+   *
+   * Assert in error if they differ by more than 1%.
+   */
+  static void test_expected_height();
+
+  /**
    * Create a random full k-ary tree, which corresponds
    * to a valid dyck path.
    *

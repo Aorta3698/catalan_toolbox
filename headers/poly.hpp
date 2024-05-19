@@ -8,6 +8,14 @@ class Tree;
 
 class Poly {
 public:
+  Poly(Graph poly) {
+    this->poly = poly; // poly includes the root top side
+    this->sides = int(poly.size()) + 2;
+  }
+
+  // loved c++20
+  auto operator<=>(const Poly &rhs) const = default;
+
   /**
    * Create a random polygon triangulation
    *
@@ -24,13 +32,12 @@ public:
    */
   static bool is_valid(const Graph &graph);
 
-  Poly(Graph poly) {
-    this->poly = poly; // poly includes the root top side
-    this->sides = int(poly.size()) + 2;
-  }
-
-  // loved c++20
-  auto operator<=>(const Poly &rhs) const = default;
+  /**
+   * Test poly <-> tree conversion with 3 <= num_of_sides <= TEST_MAX_SIDES_POLY
+   * (default 100). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
+   * each `num_of_sides`.
+   */
+  static void test_conversion();
 
   /**
    * Transform to its tree representation.
@@ -64,13 +71,6 @@ public:
    * It takes O(n) pre-processing time and O(1) per edge flip.
    */
   void flip_and_plot();
-
-  /**
-   * Test poly <-> tree conversion with 3 <= num_of_sides <= TEST_MAX_SIDES_POLY
-   * (default 100). There are NUM_OF_TESTS_POLY (default 50k) random test cases for
-   * each `num_of_sides`.
-   */
-  void test_conversion();
 
 private:
   static constexpr std::string _PLOT_SCRIPT = "plot-poly.py";

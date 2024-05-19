@@ -9,6 +9,14 @@ class Chords;
 
 class Arcs {
 public:
+  Arcs(Graph arcs) {
+    this->arcs = arcs;
+    this->points = int(arcs.size()) << 1;
+  }
+
+  // loved c++20
+  auto operator<=>(const Arcs &rhs) const = default;
+
   /**
    * Verify if the given graph is a valid Arcs graph or not
    *
@@ -27,13 +35,12 @@ public:
    */
   static Arcs *get_random(int num_of_points);
 
-  Arcs(Graph arcs) {
-    this->arcs = arcs;
-    this->points = int(arcs.size()) << 1;
-  }
-
-  // loved c++20
-  auto operator<=>(const Arcs &rhs) const = default;
+  /**
+   * Test arcs <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_arcs
+   * (default 100). There are NUM_OF_TESTS_arcs (default 50k) random test cases for
+   * each total number of points.
+   */
+  static void test_conversion();
 
   /**
    * Get the next Arcs graph
@@ -90,13 +97,6 @@ public:
    * It takes O(n) pre-processing time and O(1) per exchage.
    */
   void exchage_arcs();
-
-  /**
-   * Test arcs <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_arcs
-   * (default 100). There are NUM_OF_TESTS_arcs (default 50k) random test cases for
-   * each total number of points.
-   */
-  void test_conversion();
 
 private:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".arcs"};

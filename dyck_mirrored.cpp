@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cassert>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 
 Tree *DyckPreMirrored::to_tree() {
@@ -125,41 +124,4 @@ void DyckPreMirrored::test_conversion() {
   }
 
   std::cout << "\nAll " << DyckPreMirrored::_NUM_OF_TESTS << " test cases passed!\n";
-}
-
-void DyckPreMirrored::test_expected_height() {
-  int num_of_samples{10'000};
-  int num_of_internal_nodes{100'000};
-  int ten{num_of_samples / 10};
-  double tolerance{0.02};
-  std::cout << "====== Sampling Distribution Test ======\n\n";
-  std::cout << "Testing from degree 2 to 5 with 10k random samples and 100k "
-               "internal nodes\n\n";
-  for (int deg = 2; deg <= 5; ++deg) {
-    double sum{};
-    for (int c{}; c < num_of_samples; ++c) {
-      if (c / ten * ten == c) {
-        std::cout << "\r";
-        std::cout << "Deg " << deg << " is " << c / ten * 10 << "% completed...";
-        std::cout.flush();
-      }
-      auto tree{Tree::get_random(deg, num_of_internal_nodes)};
-      sum += tree->height();
-      tree->self_destruct();
-    }
-    double res{sum / num_of_samples};
-    double expected{Tree::asymptote(deg, num_of_internal_nodes)};
-    double error{std::abs(res - expected) / expected};
-    std::cout << "\r";
-    std::cout << std::fixed;
-    std::cout << std::setprecision(2);
-    std::cout << "Result: " << res << "  |  Expected: " << expected;
-    std::cout << " (Allowed Tolerance: 2.00%, got: " << error * 100 << "%)\n";
-    if (error > tolerance) {
-      std::cerr << "Error: Exceeded the acceptable tolerance.\n";
-      assert(false);
-    }
-  }
-
-  std::cout << "\n\n";
 }
