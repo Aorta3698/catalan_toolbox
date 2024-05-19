@@ -3,13 +3,15 @@ These are the goals that I'd like to achieve:
 
 - [x] Conversion between tree to other well-known (generalized) Catalan structures in linear time. 
 
-- Support for common operations such as triangulation flip for each type of Catalan structures.
+- [ ] Support for common operations such as triangulation flip for each type of Catalan structures.
 
 - [x] A visualizer tool that produces publication level of svg.
 
-- Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
+- [ ] Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
 
-- Enumeration of `pattarn avoiding` binary trees.
+- [ ] Enumeration of `pattarn avoiding` binary trees.
+
+See [Milestones](#Milestones) for sub items break down.
 
 ---
 # Conversion Flow

@@ -124,9 +124,9 @@ public:
 private:
   static constexpr std::string_view _PLOT_SCRIPT{"plot-dyck-path.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".dyck"};
-  const static int _NUM_OF_TESTS = 1e5;
-  const static int _TEST_MAX_EDGES = 1e4;
-  const static int _TEST_MAX_BRANCHES = 1e2;
+  static constexpr int _NUM_OF_TESTS = 1e5;
+  static constexpr int _TEST_MAX_EDGES = 1e4;
+  static constexpr int _TEST_MAX_BRANCHES = 1e2;
 
   std::string path;
   int length;

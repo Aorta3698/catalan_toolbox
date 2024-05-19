@@ -5,6 +5,7 @@ a.out
 catalan_toolbox
 test*
 
+obj/
 test*/
 visualizer/*
 !visualizer/*.py

@@ -76,8 +76,8 @@ private:
   static constexpr std::string _PLOT_SCRIPT = "plot-poly.py";
   static constexpr std::string _DEFAULT_PREFIX_FILE = ".poly";
   static constexpr std::string _WATCHDOG_FILE = ".polylog";
-  const static int _NUM_OF_TESTS{50000};
-  const static int _TEST_MAX_SIDES{100};
+  static constexpr int _NUM_OF_TESTS{50000};
+  static constexpr int _TEST_MAX_SIDES{100};
 
   Graph poly;
   int sides;

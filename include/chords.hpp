@@ -95,8 +95,8 @@ public:
 private:
   static constexpr std::string _PLOT_SCRIPT{"plot-chords.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".chords"};
-  const static int _NUM_OF_TESTS{50000};
-  const static int _TEST_MAX_SIDES{200};
+  static constexpr int _NUM_OF_TESTS{50000};
+  static constexpr int _TEST_MAX_SIDES{200};
 
   Graph chords;
   int points;
