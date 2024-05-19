@@ -50,12 +50,12 @@ public:
   /**
    * Get a random dyck path in mirrored pre-order.
    *
-   * @param deg:   Degree of the path
+   * @param r:   Degree of the path
    * @param len:   Length of the path
    *
    * @return A DyckPreMirrored object
    */
-  static DyckPreMirrored *get_random(int deg, int len);
+  static DyckPreMirrored *get_random(int r, int len);
 
   /**
    * Transform the current dyck path to its tree representation.

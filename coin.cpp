@@ -8,6 +8,10 @@
 #include <unordered_map>
 
 void CoinStack::plot(std::string file) {
+  if (file == "") {
+    file = CoinStack::_DEFAULT_PREFIX_FILE;
+  }
+
   std::ofstream out{file};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";

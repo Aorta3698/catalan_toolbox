@@ -148,6 +148,10 @@ Poly *Poly::get_random(int num_of_sides) {
 }
 
 void Poly::plot(std::string file) {
+  if (file == "") {
+    file = Poly::_DEFAULT_PREFIX_FILE;
+  }
+
   std::ofstream out{file};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";

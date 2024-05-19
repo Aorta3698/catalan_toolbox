@@ -57,6 +57,10 @@ Chords *Chords::get_random(int num_of_points) {
 }
 
 void Chords::plot(std::string file) {
+  if (file == "") {
+    file = Chords::_DEFAULT_PREFIX_FILE;
+  }
+
   std::ofstream out{file};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";

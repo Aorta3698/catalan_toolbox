@@ -277,6 +277,7 @@ void Tree::plot(std::string file) {
   if (file == "") {
     file = Tree::_DEFAULT_FILE_PREFIX;
   }
+  this->store_into_file(file);
   Util::plot(Tree::_PLOT_SCRIPT, file);
 }
 

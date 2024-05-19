@@ -41,6 +41,11 @@ int main(int argc, const char *argv[]) {
       std::string cmd = tokens.at(0);
       if (cmd == "test" || cmd == "t") {
         Tree::test_expected_height();
+        DyckPre::test_conversion();
+        DyckPreMirrored::test_conversion();
+        Poly::test_conversion();
+        Chords::test_conversion();
+        Arcs::test_conversion();
       } else if (cmd == "5r") {
         // SKIP
       } else if (cmd == "5t") {
@@ -49,109 +54,108 @@ int main(int argc, const char *argv[]) {
         // SKIP
         //----------------------------------
       } else if (cmd == "4r") {
-        int length{Util::get_num(tokens.at(1))};
+        int base{Util::get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(3))};
-        auto coins{CoinStack::get_random(length, count)};
-        coins->plot();
+        while (count--) {
+          auto coins{CoinStack::get_random(base)};
+          coins->plot();
+          delete coins;
+        }
       } else if (cmd == "4t") {
         // SKIP
       } else if (cmd == "4e") {
         // SKIP
         //----------------------------------
-      } else if (cmd == "3a") {
-        int length{Util::get_num(tokens.at(1))};
-        plot_all_dyck_path(length);
       } else if (cmd == "3r") {
         int r{Util::get_num(tokens.at(1))};
         int length{Util::get_num(tokens.at(2))};
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
-        plot_random_dyck_path(length, r, count);
+        while (count--) {
+          auto dyck_pre{DyckPre::get_random(r, length)};
+          dyck_pre->plot();
+          delete dyck_pre;
+        }
       } else if (cmd == "3t") {
-        // SKIP
+        DyckPre::test_conversion();
       } else if (cmd == "3e") {
-        int length{Util::get_num(tokens.at(1))};
-        int r{Util::get_num(tokens.at(2))};
-        Dyck dyck{get_random_dyck_path_pre_order(r, length)};
-        flip_mountain(dyck);
+        int r{Util::get_num(tokens.at(1))};
+        int length{Util::get_num(tokens.at(2))};
+        auto dyck_pre{DyckPre::get_random(r, length)};
+        dyck_pre->flip_mountain();
         //----------------------------------
-      } else if (cmd == "2a") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        plot_all_arcs(num_of_points);
       } else if (cmd == "2r") {
         int num_of_points{Util::get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
-        plot_random_arcs(num_of_points, count);
+        while (count--) {
+          auto arcs{Arcs::get_random(num_of_points)};
+          arcs->plot();
+          delete arcs;
+        }
       } else if (cmd == "2t") {
-        test_conversion_arcs();
+        Arcs::test_conversion();
       } else if (cmd == "2e") {
         int num_of_points{Util::get_num(tokens.at(1))};
-        Arcs arcs{get_random_arcs(num_of_points)};
-        exchage_arcs(arcs);
+        auto arcs{Arcs::get_random(num_of_points)};
+        arcs->exchage_arcs();
         //----------------------------------
-        //-----------------------
-      } else if (cmd == "1a") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        plot_all_chords(num_of_points);
       } else if (cmd == "1r") {
         int num_of_points{Util::get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
-        plot_random_chords(num_of_points, count);
+        while (count--) {
+          auto chords{Chords::get_random(num_of_points)};
+          chords->plot();
+          delete chords;
+        }
       } else if (cmd == "1t") {
-        test_conversion_chords();
+        Chords::test_conversion();
       } else if (cmd == "1e") {
         int num_of_points{Util::get_num(tokens.at(1))};
-        Chords chords{get_random_chords(num_of_points)};
-        exchage_chords(chords);
+        auto chords{Chords::get_random(num_of_points)};
+        chords->exchage_chords();
         //----------------------------------
-      } else if (cmd == "0a") {
-        int num_of_sides{Util::get_num(tokens.at(1))};
-        plot_all_poly(num_of_sides);
       } else if (cmd == "0r") {
         int num_of_sides{Util::get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
-        plot_random_poly(num_of_sides, count);
+        while (count--) {
+          auto poly{Poly::get_random(num_of_sides)};
+          poly->plot();
+          delete poly;
+        }
       } else if (cmd == "0t") {
-        test_conversion_poly();
+        Poly::test_conversion();
       } else if (cmd == "0f") {
         int num_of_sides{Util::get_num(tokens.at(1))};
-        Poly poly{get_random_poly(num_of_sides)};
-        flip_and_plot(poly);
+        auto poly{Poly::get_random(num_of_sides)};
+        poly->flip_and_plot();
+        delete poly;
         //---------------------------------
       } else if (cmd == "quit" || cmd == "q") {
         break;
       } else if (cmd == "gen" || cmd == "g") {
-        int deg{Util::get_num(tokens.at(1))};
+        int r{Util::get_num(tokens.at(1))};
         int len{Util::get_num(tokens.at(2))};
-        std::string dyck_path{get_random_dyck_path_pre_order(deg, len)};
-        std::cout << dyck_path << "\n";
-        prev_dyck_path = dyck_path;
+        auto dyck_pre{DyckPre::get_random(r, len)};
+        dyck_pre->print();
+        prev_dyck_path = dyck_pre->get_path();
+        delete dyck_pre;
       } else if (cmd == "plot" || cmd == "p") {
         std::string dyck_path{tokens.size() == 2 ? tokens.at(1) : prev_dyck_path};
-        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
-        store_tree_into_file(tree, TREE_OUTPUT_FILENAME);
-        free_tree(tree);
-        plot_tree(TREE_OUTPUT_FILENAME);
-      } else if (cmd == "all" || cmd == "a") {
-        int num_of_internal_nodes = get_num(tokens.at(1));
-        plot_all_trees(num_of_internal_nodes);
-      } else if (cmd == "decode" || cmd == "d") {
-        std::string dyck_path{tokens.at(1)};
-        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
-        store_tree_into_file(tree, TREE_OUTPUT_FILENAME);
-        free_tree(tree);
-        plot_tree(TREE_OUTPUT_FILENAME);
-      } else if (cmd == "encode" || cmd == "e") {
+        auto tree{(new DyckPre(dyck_path))->into_tree()};
+        tree->plot();
+        tree->self_destruct();
+      } else if (cmd == "file" || cmd == "f") {
         std::string file{tokens.at(1)};
-        auto tree{get_tree_from_file(file)};
-        std::string dyck_path{tree_to_dyck_path_pre_order(tree)};
-        std::cout << dyck_path << "\n";
-        free_tree(tree);
-        prev_dyck_path = dyck_path;
+        auto tree{Tree::get_from_file(file)};
+        auto dyck_pre{tree->into_dyck_pre()};
+        dyck_pre->print();
+        prev_dyck_path = dyck_pre->get_path();
+        delete dyck_pre;
       } else if (cmd == "save" || cmd == "s") {
         std::string dyck_path{tokens.at(1)};
         std::string file{tokens.at(2)};
-        auto tree{dyck_path_to_tree_pre_order(dyck_path)};
-        store_tree_into_file(tree, file);
+        auto tree{(new DyckPre(dyck_path))->into_tree()};
+        tree->store_into_file(file);
+        tree->self_destruct();
       } else {
         print_usage();
       }
@@ -170,11 +174,10 @@ void print_usage() {
   std::vector<std::pair<std::string, std::string>> cmds{
       {"gen <deg> <len>", "(g) Generate a random dyck path"},
       {"plot [dyck path]", "(p) Plot a full k-ary tree from (given/prev) dyck path"},
-      {"encode <file>", "(e) Encode a tree (1 edge on each line) into dyck path"},
-      {"decode <dyck path>", "(d) Decode a dyck path into tree and then plot it"},
+      {"file <file>", "(e) Read a tree file (1 edge on each line) into dyck path"},
       {"all <num>", "(a) Plot all binary trees with internal nodes <= 4"},
       {"save <dyck path> <file>", "(s) Save the dyck path as a tree in file"},
-      {"test", "(t) Run randomized test cases"},
+      {"test", "(t) Run all test cases"},
       {"help", "(h) Print this message"},
       {"quit", "(q) Quit the program"}};
 

@@ -35,6 +35,10 @@ Arcs *Arcs::get_random(int num_of_points) {
 }
 
 void Arcs::plot(std::string file) {
+  if (file == "") {
+    file = Arcs::_DEFAULT_PREFIX_FILE;
+  }
+
   std::ofstream out{file};
   if (!out) {
     std::cerr << std::format("{} cannot be opened.\n", file);

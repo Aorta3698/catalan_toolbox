@@ -43,12 +43,12 @@ public:
   /**
    * Get a random Dyck Path in pre-order
    *
-   * @param deg:   Degree of the path
+   * @param r:   Degree of the path
    * @param len:   Length of the path
    *
    * @return A DyckPre (dyck path in pre-order)
    */
-  static DyckPre *get_random(int deg, int len);
+  static DyckPre *get_random(int r, int len);
 
   /**
    * Verify if the given string is a valid dyck path or not
@@ -118,6 +118,7 @@ public:
   inline std::string get_path() const { return this->path; }
   inline int get_r() const { return this->r; }
   inline int size() const { return this->length; }
+  inline void print() const { std::cout << this->path << "\n"; }
 
 private:
   static constexpr std::string_view _PLOT_SCRIPT{"plot-dyck-path.py"};
