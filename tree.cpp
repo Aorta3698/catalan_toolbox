@@ -12,7 +12,32 @@
 #include <numbers>
 #include <numeric>
 #include <stdexcept>
-#include <unordered_set>
+
+DyckPre *Tree::to_dyck_pre() {
+  std::string encoded_result{};
+  std::function<void(const Node *)> encode = [&](const Node *cur_node) {
+    int zero{};
+    for (const auto next_node : cur_node->children) {
+      zero = encoded_result.size();
+      encoded_result += "1";
+      encode(next_node);
+    }
+    encoded_result[zero] -= cur_node->is_internal_node();
+  };
+
+  encode(root);
+  if (!DyckPre::is_valid(encoded_result)) {
+    std::cerr << "Error: This tree is not a full k-ary tree\n";
+    throw std::invalid_argument("");
+  }
+  return new DyckPre(encoded_result);
+}
+
+DyckPre *Tree::into_dyck_pre() {
+  auto dyck_pre{this->to_dyck_pre()};
+  this->self_destruct();
+  return dyck_pre;
+}
 
 Arcs *Tree::to_arcs() {
   auto chords{this->to_chords()};
@@ -22,8 +47,7 @@ Arcs *Tree::to_arcs() {
 
 Arcs *Tree::into_arcs() {
   auto arcs{this->to_arcs()};
-  this->free_memory();
-  delete this;
+  this->self_destruct();
   return arcs;
 }
 
@@ -53,8 +77,7 @@ Chords *Tree::to_chords() {
 
 Chords *Tree::into_chords() {
   auto chords{this->to_chords()};
-  this->free_memory();
-  delete this;
+  this->self_destruct();
   return chords;
 }
 
@@ -86,8 +109,7 @@ Poly *Tree::to_poly() {
 
 Poly *Tree::into_poly() {
   auto poly{this->to_poly()};
-  this->free_memory();
-  delete this;
+  this->self_destruct();
   return poly;
 }
 
@@ -219,27 +241,6 @@ void Tree::plot(std::string file) {
   Util::plot(Tree::_PLOT_SCRIPT, file);
 }
 
-// void plot_all_trees(int num_of_internal_nodes) {
-//   if (num_of_internal_nodes < 1 || num_of_internal_nodes > 4) {
-//     std::cerr << "can't plot that many!\n";
-//     throw std::invalid_argument("");
-//   }
-
-//   std::unordered_set<std::string> seen{};
-//   int sz{get_catalan(num_of_internal_nodes)};
-//   while (int(seen.size()) < sz) {
-//     auto tree{Tree::get_random(2, num_of_internal_nodes)};
-//     std::string id{serialize_tree(tree)};
-//     if (!seen.contains(id)) {
-//       std::string file{".tree" + std::to_string(seen.size())};
-//       store_tree_into_file(tree, file);
-//       plot_tree(file);
-//       seen.insert(id);
-//     }
-//     free_tree(tree);
-//   }
-// }
-
 std::string Tree::serialize() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
@@ -256,7 +257,7 @@ std::string Tree::serialize() {
   return encoded_result;
 }
 
-void Tree::free_memory() {
+void Tree::self_destruct() {
   std::function<void(Node *)> free_nodes = [&](Node *cur_node) {
     for (auto child : cur_node->children) {
       free_nodes(child);
@@ -264,6 +265,7 @@ void Tree::free_memory() {
     delete cur_node;
   };
   free_nodes(this->root);
+  delete this;
 }
 
 int Tree::height() {
@@ -279,6 +281,6 @@ int Tree::height() {
   return solve(this->root);
 }
 
-double asymptote(int k, int num_of_internal_nodes) {
+double Tree::asymptote(int k, int num_of_internal_nodes) {
   return std::pow(std::numbers::pi * 2.0 * num_of_internal_nodes * k / (k - 1), 0.5);
 }

@@ -11,28 +11,18 @@
 #include <iomanip>
 #include <iostream>
 #include <unordered_map>
-#include <unordered_set>
 #include <vector>
 
-Node *dyck_path_to_tree_pre_order(std::string path) {
-  if (!is_valid_dyck_path_pre_order(path)) {
-    std::cerr << "Error: This is not a dyck path\n";
-    throw std::invalid_argument("");
-  }
-
-  // compute number of branches
-  int branches = path.size() / std::ranges::count(path, '0');
-  // assert(path.size() / branches * branches == path.size());
-
+Tree *DyckPre::to_tree() {
   // pre-compute some info
   int score{};
   std::unordered_map<int, std::vector<int>> zeros;
   std::vector<int> one(1);
-  int cur_one[path.size()];
+  int cur_one[this->length];
   std::memset(cur_one, -1, sizeof(cur_one));
-  for (int i{}; i < int(path.size()); ++i) {
+  for (int i{}; i < this->length; ++i) {
     if (path[i] == '0') {
-      score -= branches - 1;
+      score -= this->r - 1;
       zeros[score].push_back(i);
     } else { // path[i] == '1'
       if (++score == int(one.size())) {
@@ -68,8 +58,8 @@ Node *dyck_path_to_tree_pre_order(std::string path) {
     }
 
     // assign right-most child
-    auto root{new Node(++id, branches)};
-    int cur_child{branches};
+    auto root{new Node(++id, this->r)};
+    int cur_child{this->r};
     root->children[--cur_child] = build(cur_zero[low] + 1, end, cur_score);
 
     // assign rest of children from the right
@@ -83,30 +73,16 @@ Node *dyck_path_to_tree_pre_order(std::string path) {
     return root;
   };
 
-  return build(0, int(path.size()) - 1, 0);
+  return new Tree(build(0, this->length - 1, 0));
 }
 
-std::string tree_to_dyck_path_pre_order(const Node *root) {
-  std::string encoded_result{};
-  std::function<void(const Node *)> encode = [&](const Node *cur_node) {
-    int zero{};
-    for (const auto next_node : cur_node->children) {
-      zero = encoded_result.size();
-      encoded_result += "1";
-      encode(next_node);
-    }
-    encoded_result[zero] -= cur_node->is_internal_node();
-  };
-
-  encode(root);
-  if (!is_valid_dyck_path_pre_order(encoded_result)) {
-    std::cerr << "Error: This tree is not a full k-ary tree\n";
-    throw std::invalid_argument("");
-  }
-  return encoded_result;
+Tree *DyckPre::into_tree() {
+  auto tree{this->to_tree()};
+  delete this;
+  return tree;
 }
 
-std::string get_random_dyck_path_pre_order(int deg, int length) {
+DyckPre *DyckPre::get_random(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";
     throw std::invalid_argument("");
@@ -115,22 +91,28 @@ std::string get_random_dyck_path_pre_order(int deg, int length) {
   if (length != num_of_internal_nodes * deg) {
     std::cerr << "Warning: Dyck Path length is invalid and truncated.\n";
   }
-  auto random_tree{get_random_tree(deg, num_of_internal_nodes)};
-  std::string dyck_path{tree_to_dyck_path_pre_order(random_tree)};
-  free_tree(random_tree);
-
-  return dyck_path;
+  auto random_tree{Tree::get_random(deg, num_of_internal_nodes)};
+  return random_tree->into_dyck_pre();
 }
 
-void flip_mountain(Dyck dyck) {
+DyckPre *DyckPre::next() {
   // TODO
+  assert(false);
 }
 
-void plot_dyck_path(const Dyck dyck, std::string file) {
-  int r{get_r_pre_order(dyck)};
+void DyckPre::flip_mountain() {
+  // TODO
+  assert(false);
+}
+
+void DyckPre::plot(std::string file) {
+  if (file == "") {
+    file = DyckPre::_DEFAULT_PREFIX_FILE;
+  }
+
   double scale = 0.3;
   double up{1 * scale};
-  double down{(r - 1) * scale};
+  double down{(this->r - 1) * scale};
   double right{1 * scale};
   double x{};
   double y{};
@@ -145,11 +127,11 @@ void plot_dyck_path(const Dyck dyck, std::string file) {
   out << scale << "\n";
 
   // number of points
-  out << 1 + int(dyck.size()) << "\n";
+  out << 1 + this->length << "\n";
 
   // coordinations
   out << x << "," << y << "\n";
-  for (const auto d : dyck) {
+  for (const auto d : this->path) {
     if (d == '1') {
       y += up;
     } else {
@@ -160,45 +142,14 @@ void plot_dyck_path(const Dyck dyck, std::string file) {
   }
 
   // edges
-  for (int i{}; i < int(dyck.size()); ++i) {
+  for (int i{}; i < this->length; ++i) {
     out << i << "," << i + 1 << "\n";
   }
 
-  plot(DYCK_PLOT_SCRIPT, file);
+  Util::plot(std::string{DyckPre::_PLOT_SCRIPT}, file);
 }
 
-void plot_all_dyck_path(int length) {
-  if (length & 1) {
-    std::cerr << "Error: length must be even\n";
-    throw std::invalid_argument("");
-  }
-
-  int cat{length >> 1};
-  if (cat < 0 || cat > 4) {
-    std::cerr << "can't plot that many!\n";
-    throw std::invalid_argument("");
-  }
-
-  std::unordered_set<std::string> seen;
-  int total{get_catalan(cat)};
-  while (int(seen.size()) < total) {
-    Dyck dyck{get_random_dyck_path_pre_order(2, length)};
-    if (!seen.contains(dyck)) {
-      std::string file{".dyck" + std::to_string(seen.size())};
-      plot_dyck_path(dyck, file);
-      seen.insert(dyck);
-    }
-  }
-}
-
-void plot_random_dyck_path(int length, int r, int count) {
-  while (count--) {
-    Dyck dyck{get_random_dyck_path_pre_order(r, length)};
-    plot_dyck_path(dyck, ".dyck" + std::to_string(count));
-  }
-}
-
-bool is_valid_dyck_path_pre_order(std::string path) {
+bool DyckPre::is_valid(const std::string &path) {
   int zeros = std::ranges::count(path, '0');
   int ones = std::ranges::count(path, '1');
   int sz = path.size();
@@ -219,31 +170,24 @@ bool is_valid_dyck_path_pre_order(std::string path) {
   return score == 0;
 }
 
-int get_r_pre_order(const Dyck dyck) {
-  return int(dyck.size()) / std::ranges::count(dyck, '0');
-}
-
-void test_conversion_dyck_path_pre_order() {
+void DyckPre::test_conversion() {
   std::string dots{};
-  int stat_branches[TEST_MAX_BRANCHES_DYCK + 1];
-  std::vector<std::vector<int>> stat_internal_nodes(TEST_MAX_BRANCHES_DYCK + 1);
+  int stat_branches[DyckPre::_TEST_MAX_BRANCHES + 1];
+  std::vector<std::vector<int>> stat_internal_nodes(DyckPre::_TEST_MAX_BRANCHES + 1);
 
   std::cout << "====== Conversion Test ======\n\n";
-  int four_percent{NUM_OF_TESTS_DYCK / 25};
+  int four_percent{DyckPre::_NUM_OF_TESTS / 25};
   std::cout << "100% remaining.";
   std::cout.flush();
-  for (int i{NUM_OF_TESTS_DYCK}; i; --i) {
+  for (int i{DyckPre::_NUM_OF_TESTS}; i; --i) {
     int branches{
-        std::uniform_int_distribution<>(2, TEST_MAX_BRANCHES_DYCK)(g_256ss)};
-    int nodes{
-        std::uniform_int_distribution<>(1, TEST_MAX_EDGES_DYCK / branches)(g_256ss)};
+        std::uniform_int_distribution<>(2, DyckPre::_TEST_MAX_BRANCHES)(g_256ss)};
+    int nodes{std::uniform_int_distribution<>(1, DyckPre::_TEST_MAX_EDGES /
+                                                     branches)(g_256ss)};
 
-    std::string dyck_path{
-        get_random_dyck_path_pre_order(branches, branches * nodes)};
-    auto tree{dyck_path_to_tree_pre_order(dyck_path)};
-    std::string copied_path{tree_to_dyck_path_pre_order(tree)};
-
-    free_tree(tree);
+    auto dyck_path{this->get_random(branches, branches * nodes)};
+    auto tree{dyck_path->to_tree()};
+    auto copied_path{tree->into_dyck_pre()};
 
     ++stat_branches[branches];
     stat_internal_nodes[branches].push_back(nodes);
@@ -269,17 +213,17 @@ void test_conversion_dyck_path_pre_order() {
   }
 
   std::cout << "Degree\t\tInternal Nodes (Median)\t\tNumber of Tests\n";
-  for (int i{2}; i <= TEST_MAX_BRANCHES_DYCK; ++i) {
+  for (int i{2}; i <= DyckPre::_TEST_MAX_BRANCHES; ++i) {
     auto &n = stat_internal_nodes[i];
     int sz = n.size();
     int median = (sz & 1) ? n[sz >> 1] : (n[sz >> 1] + n[(sz >> 1) - 1]) >> 1;
     std::cout << i << "\t\t\t" << median << "\t\t\t" << sz << "\n";
   }
 
-  std::cout << "\nAll " << NUM_OF_TESTS_DYCK << " test cases passed!\n";
+  std::cout << "\nAll " << DyckPre::_NUM_OF_TESTS << " test cases passed!\n";
 }
 
-void test_expected_height_pre_order() {
+void DyckPre::test_expected_height() {
   int num_of_samples{10'000};
   int num_of_internal_nodes{100'000};
   int ten{num_of_samples / 10};
@@ -295,12 +239,12 @@ void test_expected_height_pre_order() {
         std::cout << "Deg " << deg << " is " << c / ten * 10 << "% completed...";
         std::cout.flush();
       }
-      auto tree{get_random_tree(deg, num_of_internal_nodes)};
-      sum += height(tree);
-      free_tree(tree);
+      auto tree{Tree::get_random(deg, num_of_internal_nodes)};
+      sum += tree->height();
+      tree->self_destruct();
     }
     double res{sum / num_of_samples};
-    double expected{asymptote(deg, num_of_internal_nodes)};
+    double expected{Tree::asymptote(deg, num_of_internal_nodes)};
     double error{std::abs(res - expected) / expected};
     std::cout << "\r";
     std::cout << std::fixed;

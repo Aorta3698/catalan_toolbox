@@ -17,8 +17,5 @@ inline const static std::string ARCS_PLOT_SCRIPT = "plot-arcs.py";
 inline const static std::string DYCK_PLOT_SCRIPT = "plot_dyck_path.py";
 inline const static std::string COIN_PLOT_SCRIPT = "plot_coins.py";
 
-// using Dyck = std::string;
 using Edge = std::array<int, 2>;
 using Graph = std::vector<Edge>;
-// using Chords = std::vector<Edge>;
-// using Arcs = std::vector<Edge>;

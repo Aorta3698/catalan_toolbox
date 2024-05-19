@@ -7,7 +7,6 @@
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include <unordered_set>
 
 Chords *Arcs::to_chords() {
   auto chords{new Chords(this->arcs)};
@@ -90,10 +89,8 @@ void Arcs::test_conversion() {
                   << "id2 = " << id2 << "\n";
         assert(false);
       }
-      tree1->free_memory();
-      tree2->free_memory();
-      delete tree1;
-      delete tree2;
+      tree1->self_destruct();
+      tree2->self_destruct();
     }
     std::cout << "Total points = " << num_of_points << " done for "
               << Arcs::_NUM_OF_TESTS << " random tests!\n";

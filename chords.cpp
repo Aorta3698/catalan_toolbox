@@ -8,7 +8,6 @@
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
-#include <unordered_set>
 
 Tree *Chords::to_tree() {
   int portal[this->points];
@@ -53,8 +52,7 @@ Chords *Chords::get_random(int num_of_points) {
   }
   auto tree{Tree::get_random(2, num_of_points >> 1)};
   auto res{tree->to_chords()};
-  tree->free_memory();
-  delete tree;
+  tree->self_destruct();
   return res;
 }
 
@@ -112,10 +110,8 @@ void Chords::test_conversion() {
                   << "id2 = " << id2 << "\n";
         assert(false);
       }
-      tree1->free_memory();
-      tree2->free_memory();
-      delete tree1;
-      delete tree2;
+      tree1->self_destruct();
+      tree2->self_destruct();
     }
     std::cout << "Total points = " << num_of_points << " done for "
               << Chords::_NUM_OF_TESTS << " random tests!\n";

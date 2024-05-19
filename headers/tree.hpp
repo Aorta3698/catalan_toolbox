@@ -7,13 +7,15 @@
 
 #include "arcs.hpp"
 #include "chords.hpp"
+#include "dyck_pre.hpp"
 #include "poly.hpp"
 
 // forward declaration
 // https://stackoverflow.com/a/29209540
 class Poly;
 class Chords;
-class Dyck;
+class DyckPre;
+class DyckPreMirrored;
 class Arcs;
 
 /**
@@ -76,6 +78,17 @@ public:
   static Tree *get_from_file(std::string file);
 
   /**
+   * The asymptotic, average height of a k-ray tree with
+   * num_of_internal_nodes internal nodes.
+   *
+   * @param k:                     Degree of the tree
+   * @param num_of_internal_nodes: Number of internal nodes
+   *
+   * @return The asymptotic, average height of the tree
+   */
+  static double asymptote(int k, int num_of_internal_nodes);
+
+  /**
    * Convert the current tree into
    * its arcs graph representation
    *
@@ -97,6 +110,13 @@ public:
    * @return Its chords graph representation
    */
   Chords *to_chords();
+
+  /**
+   * Convert a tree into its pre-order dyck path representation
+   *
+   * @return Its DyckPre representation.
+   */
+  DyckPre *to_dyck_pre();
 
   /**
    * Convert the current tree into
@@ -126,6 +146,15 @@ public:
    * @return Its chords graph representation
    */
   Chords *into_chords();
+
+  /**
+   * Convert a tree into its pre-order dyck path representation
+   *
+   * And then delete itself
+   *
+   * @return Its DyckPre representation.
+   */
+  DyckPre *into_dyck_pre();
 
   /**
    * Plot all the trees with n internal nodes.
@@ -169,7 +198,7 @@ public:
   /**
    * Free memory used by the tree.
    */
-  void free_memory();
+  void self_destruct();
 
   /**
    * Compute the height of the tree - root by itself has a height of 1.
@@ -177,17 +206,6 @@ public:
    * @return Height of the tree
    */
   int height();
-
-  /**
-   * The asymptotic, average height of a k-ray tree with
-   * num_of_internal_nodes internal nodes.
-   *
-   * @param k:                     Degree of the tree
-   * @param num_of_internal_nodes: Number of internal nodes
-   *
-   * @return The asymptotic, average height of the tree
-   */
-  double asymptote(int k, int num_of_internal_nodes);
 
 private:
   static constexpr std::string _DEFAULT_FILE_PREFIX{".tree"};

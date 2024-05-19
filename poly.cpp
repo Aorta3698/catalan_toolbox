@@ -177,6 +177,7 @@ void Poly::plot(std::string file) {
 
 Poly *Poly::next() {
   // TODO: implement this
+  assert(false);
 }
 
 bool Poly::is_valid(const Graph &poly) {
@@ -228,10 +229,8 @@ void Poly::test_conversion() {
                   << "id2 = " << id2 << "\n";
         assert(false);
       }
-      tree1->free_memory();
-      tree2->free_memory();
-      delete tree1;
-      delete tree2;
+      tree1->self_destruct();
+      tree2->self_destruct();
     }
     std::cout << "num_of_sides = " << num_of_sides << " done for " << NUM_OF_TESTS
               << " random tests!\n";
