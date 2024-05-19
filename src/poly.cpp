@@ -7,7 +7,6 @@
 #include <cstring>
 #include <fstream>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <unordered_set>
@@ -165,7 +164,7 @@ void Poly::plot(std::string file) {
   out << this->sides << "\n";
   auto [x, y] = Util::rotate(0.0, 1.0, 180.0 / this->sides);
   for (int i{}; i < this->sides; ++i) {
-    out << std::fixed << std::setprecision(3) << x << "," << y << "\n";
+    out << std::format("{:.3f},{:.3f}\n", x, y);
     auto [nx, ny] = Util::rotate(x, y, 360.0 / this->sides);
     x = nx;
     y = ny;

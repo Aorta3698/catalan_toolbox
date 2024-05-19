@@ -89,7 +89,7 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Documentation
 - [x] Refactor Project structure to follow `include/`, `obj/`, `src/`, `lib/` format.
 - [x] Refactor Makefile to follow modern standard.
-- [x] Compile related work
+- [x] Compile [related work](#Related-Work)
 
 ---
 # Compile Instruction

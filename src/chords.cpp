@@ -5,7 +5,6 @@
 #include <cassert>
 #include <fstream>
 #include <functional>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 
@@ -71,7 +70,7 @@ void Chords::plot(std::string file) {
   out << this->points << "\n";
   auto [x, y] = Util::rotate(0.0, 1.0, 180.0 / this->points);
   for (int i{}; i < this->points; ++i) {
-    out << std::fixed << std::setprecision(3) << x << "," << y << "\n";
+    out << std::format("{:.3f},{:.3f}\n", x, y);
     auto [nx, ny] = Util::rotate(x, y, 360.0 / this->points);
     x = nx;
     y = ny;
