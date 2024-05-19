@@ -1,6 +1,5 @@
 #pragma once
 
-#include <stdexcept>
 #include <string>
 
 #include "dyck_pre.hpp"
@@ -10,23 +9,9 @@ class DyckPre;
 class CoinStack {
 public:
   CoinStack(const std::string path) {
-    if (!DyckPre::is_valid(path)) {
-      std::cerr << "Error: Coins constructor - given path isn't a dyck path\n";
-      throw std::invalid_argument("");
-    }
+    // TODO: check the path
     this->path = path;
     this->base = int(path.size()) >> 1;
-  }
-
-  CoinStack(const DyckPre *const dyck_path) {
-    if (2 != dyck_path->get_r()) {
-      std::cerr << "Error: Coins constructor - dyck path given must have r = "
-                   "2\n";
-      throw std::invalid_argument("");
-    }
-
-    this->path = dyck_path->get_path();
-    this->base = dyck_path->size() >> 1;
   }
 
   // loved c++20

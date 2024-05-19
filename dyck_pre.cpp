@@ -81,7 +81,7 @@ Tree *DyckPre::into_tree() {
   return tree;
 }
 
-CoinStack *DyckPre::to_coin_stack() { return new CoinStack(this); }
+CoinStack *DyckPre::to_coin_stack() { return new CoinStack(this->path); }
 
 CoinStack *DyckPre::into_coin_stack() {
   auto coins{this->to_coin_stack()};

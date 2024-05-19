@@ -84,12 +84,12 @@ void Chords::plot(std::string file) {
   Util::plot(Chords::_PLOT_SCRIPT, file);
 }
 
-void exchage_chords(Chords chords) {
+void Chords::exchage_chords() {
   // TODO
   assert(false);
 }
 
-bool is_valid_chords(const Chords chords) {
+bool Chords::is_valid(const Graph &graph) {
   // TODO
   assert(false);
 }

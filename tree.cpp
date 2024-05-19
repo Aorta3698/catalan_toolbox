@@ -197,6 +197,10 @@ Tree *Tree::get_random(int branches, int num_of_nodes) {
 }
 
 void Tree::store_into_file(std::string file) {
+  if (file == "") {
+    file = Tree::_DEFAULT_DB_FILE;
+  }
+
   assert(this->root);
   std::ofstream out{file};
   if (!out) {
@@ -275,7 +279,7 @@ Tree *Tree::get_from_file(std::string file) {
 
 void Tree::plot(std::string file) {
   if (file == "") {
-    file = Tree::_DEFAULT_FILE_PREFIX;
+    file = Tree::_DEFAULT_PREFIX_FILE;
   }
   this->store_into_file(file);
   Util::plot(Tree::_PLOT_SCRIPT, file);

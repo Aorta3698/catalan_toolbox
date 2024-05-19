@@ -10,20 +10,20 @@
 #include <thread>
 #include <unistd.h>
 
-template <typename T> void print_vector(const T &t) {
+template <typename T> void Util::print_vector(const T &t) {
   std::copy(t.cbegin(), t.cend(),
             std::ostream_iterator<typename T::value_type>(std::cerr, ", "));
   std::cerr << "\n";
 }
 
-template <typename T> void print_c_array(const T array[], int size) {
+template <typename T> void Util::print_c_array(const T array[], int size) {
   for (int i{}; i < size; ++i) {
     std::cerr << array[i] << " ";
   }
   std::cerr << "\n";
 }
 
-std::vector<std::string> split_string(std::string s, char delimiter) {
+std::vector<std::string> Util::split_string(std::string s, char delimiter) {
   std::transform(s.begin(), s.end(), s.begin(),
                  [](unsigned char c) { return std::tolower(c); });
 
@@ -36,7 +36,7 @@ std::vector<std::string> split_string(std::string s, char delimiter) {
   return ans;
 }
 
-int get_num(std::string s) {
+int Util::get_num(std::string s) {
   size_t processed_count{};
   int num{std::stoi(s, &processed_count)};
   if (processed_count != s.size() || num < 1) {
@@ -45,13 +45,13 @@ int get_num(std::string s) {
   return num;
 }
 
-std::string &strip(std::string &str) {
+std::string &Util::strip(std::string &str) {
   str.erase(str.find_last_not_of(' ') + 1);
   str.erase(0, str.find_first_not_of(' '));
   return str;
 }
 
-int get_catalan(int num) {
+int Util::get_catalan(int num) {
   auto cata = std::to_array({1,       1,        2,         5,         14,
                              42,      132,      429,       1430,      4862,
                              16796,   58786,    208012,    742900,    2674440,
@@ -59,7 +59,7 @@ int get_catalan(int num) {
   return cata.at(num);
 }
 
-std::array<double, 2> rotate(double x, double y, double deg) {
+std::array<double, 2> Util::rotate(double x, double y, double deg) {
   double radian{deg * (std::numbers::pi / 180)};
 
   double nx{x * std::cos(radian) - y * std::sin(radian)};
@@ -68,7 +68,7 @@ std::array<double, 2> rotate(double x, double y, double deg) {
   return {nx, ny};
 }
 
-void plot(std::string script, std::string file) {
+void Util::plot(std::string script, std::string file) {
   if (fork() == 0) { // TODO: calling fork inside thread is not good
     std::string python{"./visualizer/bin/python3 "};
     std::string plotter{"./visualizer/" + script + " "};

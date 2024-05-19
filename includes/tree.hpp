@@ -219,7 +219,7 @@ public:
    *
    * @param file:  Output filename
    */
-  void store_into_file(std::string file);
+  void store_into_file(std::string file = "");
 
   /**
    * Plot the current tree.
@@ -254,7 +254,8 @@ public:
   int height();
 
 private:
-  static constexpr std::string _DEFAULT_FILE_PREFIX{".tree"};
+  static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
+  static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
 
   std::string avoid_pattern;
