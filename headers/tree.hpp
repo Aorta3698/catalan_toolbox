@@ -7,6 +7,7 @@
 
 #include "arcs.hpp"
 #include "chords.hpp"
+#include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "poly.hpp"
 
@@ -87,6 +88,22 @@ public:
    * @return The asymptotic, average height of the tree
    */
   static double asymptote(int k, int num_of_internal_nodes);
+
+  /**
+   * Convert a tree into its mirrored pre-order dyck path representation
+   *
+   * @return Its DyckPreMirrored object.
+   */
+  DyckPreMirrored *to_dyck_pre_mirrored();
+
+  /**
+   * Convert a tree into its mirrored pre-order dyck path representation
+   *
+   * And then delete itself
+   *
+   * @return Its DyckPreMirrored object.
+   */
+  DyckPreMirrored *into_dyck_pre_mirrored();
 
   /**
    * Convert the current tree into

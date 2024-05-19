@@ -13,6 +13,33 @@
 #include <numeric>
 #include <stdexcept>
 
+DyckPreMirrored *Tree::to_dyck_pre_mirrored() {
+  std::string encoded_result{};
+  std::function<void(const Node *)> encode = [&](const Node *cur_node) {
+    int zero{int(encoded_result.size())};
+    for (const auto next_node : cur_node->children | std::ranges::views::reverse) {
+      encoded_result += "1";
+      encode(next_node);
+    }
+    if (cur_node->is_internal_node()) {
+      encoded_result[zero] = '0';
+    }
+  };
+
+  encode(root);
+  if (!DyckPreMirrored::is_valid(encoded_result)) {
+    std::cerr << "Error: This tree is not a full k-ary tree\n";
+    throw std::invalid_argument("");
+  }
+  return new DyckPreMirrored(encoded_result);
+}
+
+DyckPreMirrored *Tree::into_dyck_pre_mirrored() {
+  auto dyck_path{this->to_dyck_pre_mirrored()};
+  this->self_destruct();
+  return dyck_path;
+}
+
 DyckPre *Tree::to_dyck_pre() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
