@@ -32,6 +32,9 @@ public:
     this->points = int(arcs.size()) << 1;
   }
 
+  // loved c++20
+  auto operator<=>(const Arcs &rhs) const = default;
+
   /**
    * Get the next Arcs graph
    *

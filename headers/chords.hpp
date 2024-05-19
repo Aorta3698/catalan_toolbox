@@ -32,6 +32,9 @@ public:
     this->points = int(chords.size()) << 1;
   }
 
+  // loved c++20
+  auto operator<=>(const Chords &rhs) const = default;
+
   /**
    * Transform the current chords to its tree representation.
    *

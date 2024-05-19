@@ -41,6 +41,9 @@ public:
     }
   }
 
+  // loved c++20
+  auto operator<=>(const DyckPre &rhs) const = default;
+
   /**
    * Transform a dyck path to its pre-order tree representation.
    * If the dyck path is not valid, throw an exception.

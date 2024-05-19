@@ -16,6 +16,9 @@ public:
     this->base = dyck_path->size() >> 1;
   }
 
+  // loved c++20
+  auto operator<=>(const CoinStack &rhs) const = default;
+
   /**
    * Plot the current coin stack.
    *

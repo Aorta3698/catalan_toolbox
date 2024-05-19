@@ -8,11 +8,6 @@ class Tree;
 
 class Poly {
 public:
-  Poly(Graph poly) {
-    this->poly = poly; // poly includes the root top side
-    this->sides = int(poly.size()) + 2;
-  }
-
   /**
    * Create a random polygon triangulation
    *
@@ -28,6 +23,14 @@ public:
    * @return True if it is a valid polygon triangulation, false otherwise
    */
   static bool is_valid(const Graph &graph);
+
+  Poly(Graph poly) {
+    this->poly = poly; // poly includes the root top side
+    this->sides = int(poly.size()) + 2;
+  }
+
+  // loved c++20
+  auto operator<=>(const Poly &rhs) const = default;
 
   /**
    * Transform to its tree representation.

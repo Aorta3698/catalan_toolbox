@@ -53,6 +53,9 @@ public:
     this->avoid_pattern = pattern;
   }
 
+  // loved c++20
+  auto operator<=>(const Tree &rhs) const = default;
+
   /**
    * Create a random full k-ary tree, which corresponds
    * to a valid dyck path.

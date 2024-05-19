@@ -41,6 +41,9 @@ class DyckPreMirrored {
     }
   }
 
+  // loved c++20
+  auto operator<=>(const DyckPreMirrored &rhs) const = default;
+
   /**
    * Transform the current dyck path to its tree representation.
    *
