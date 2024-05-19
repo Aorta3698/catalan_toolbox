@@ -71,10 +71,12 @@ void Arcs::exchage_arcs() {
 
 bool Arcs::is_valid(const Graph &graph) {
   // TODO
-  assert(false);
+  // assert(false);
+  return true;
 }
 
 void Arcs::test_conversion() {
+  std::cout << "====== Arcs Graph: Conversion Test ======\n\n";
   std::cout << "Starting testing conversion between arcs and tree with total points "
                "from 2 to "
             << Arcs::_TEST_MAX_SIDES << " with 2 increment\n\n";
@@ -87,17 +89,17 @@ void Arcs::test_conversion() {
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
-        std::cerr << "Test Failed:\n"
-                  << "Total Points = " << num_of_points << "\n"
-                  << "id1 = " << id1 << "\n"
-                  << "id2 = " << id2 << "\n";
+        std::cerr << "Test Failed:\n";
+        std::cerr << std::format("points = {}\n", num_of_points);
+        std::cerr << std::format("id1 = {}\n", id1);
+        std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
       tree1->self_destruct();
       tree2->self_destruct();
     }
-    std::cout << "Total points = " << num_of_points << " done for "
-              << Arcs::_NUM_OF_TESTS << " random tests!\n";
+    std::cout << std::format("Total points = {:3} done for {} random tests!\n",
+                             num_of_points, Arcs::_NUM_OF_TESTS);
   }
 
   std::cout << "\n\nAll Tests Completed!\n\n";

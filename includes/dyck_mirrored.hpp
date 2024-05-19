@@ -80,6 +80,11 @@ public:
    */
   DyckPreMirrored *next();
 
+  inline std::string get_path() const { return this->path; }
+  inline int get_r() const { return this->r; }
+  inline int size() const { return this->length; }
+  inline void print() const { std::cout << this->path << "\n"; }
+
 private:
   const static int _NUM_OF_TESTS = 1e5;
   const static int _TEST_MAX_EDGES = 1e4;

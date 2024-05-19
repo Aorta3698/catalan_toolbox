@@ -182,10 +182,13 @@ void DyckPre::test_conversion() {
   int stat_branches[DyckPre::_TEST_MAX_BRANCHES + 1];
   std::vector<std::vector<int>> stat_internal_nodes(DyckPre::_TEST_MAX_BRANCHES + 1);
 
-  std::cout << "====== Conversion Test ======\n\n";
+  // print title
+  std::cout << "====== DyckPre: Conversion Test ======\n\n";
   int four_percent{DyckPre::_NUM_OF_TESTS / 25};
   std::cout << "100% remaining.";
   std::cout.flush();
+
+  // start testing
   for (int i{DyckPre::_NUM_OF_TESTS}; i; --i) {
     int branches{
         std::uniform_int_distribution<>(2, DyckPre::_TEST_MAX_BRANCHES)(g_256ss)};
@@ -199,17 +202,22 @@ void DyckPre::test_conversion() {
     ++stat_branches[branches];
     stat_internal_nodes[branches].push_back(nodes);
 
-    if (copied_path != dyck_path) {
+    if (*copied_path != *dyck_path) {
       std::cout << "\r";
-      std::cout << "dyck path:   " << dyck_path << "\n";
-      std::cout << "copied path: " << copied_path << "\n";
+      std::cout << "original: ";
+      dyck_path->print();
+      std::cout << "copied:   ";
+      copied_path->print();
       assert(false);
     }
+
+    delete dyck_path;
+    delete copied_path;
 
     if (int c = (i - 1) / four_percent; c * four_percent == i - 1) {
       std::cout << "\r";
       dots += ".";
-      std::cout << dots + std::to_string(c * 4) + "% remaining.";
+      std::cout << std::format("{}{}% remaining.", dots, c * 4);
       std::cout.flush();
     }
   }
@@ -224,8 +232,8 @@ void DyckPre::test_conversion() {
     auto &n = stat_internal_nodes[i];
     int sz = n.size();
     int median = (sz & 1) ? n[sz >> 1] : (n[sz >> 1] + n[(sz >> 1) - 1]) >> 1;
-    std::cout << i << "\t\t\t" << median << "\t\t\t" << sz << "\n";
+    std::cout << std::format("{}\t\t\t{}\t\t\t{}\n", i, median, sz);
   }
 
-  std::cout << "\nAll " << DyckPre::_NUM_OF_TESTS << " test cases passed!\n";
+  std::cout << std::format("\nAll {} test cases passed!\n", DyckPre::_NUM_OF_TESTS);
 }

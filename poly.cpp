@@ -214,30 +214,30 @@ bool Poly::is_valid(const Graph &poly) {
   return true;
 }
 
-// TODO: swap out std::cerr with std::format
 void Poly::test_conversion() {
+  std::cout << "====== Polygon Triangulation: Conversion Test ======\n\n";
   std::cout << "Starting testing conversion between poly and tree with num_of_sides "
                "from 3 to "
-            << TEST_MAX_SIDES << "\n\n";
+            << Poly::_TEST_MAX_SIDES << "\n\n";
 
-  for (int num_of_sides{3}; num_of_sides <= TEST_MAX_SIDES; ++num_of_sides) {
-    for (int i{}; i < NUM_OF_TESTS; ++i) {
+  for (int num_of_sides{3}; num_of_sides <= Poly::_TEST_MAX_SIDES; ++num_of_sides) {
+    for (int i{}; i < Poly::_NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_sides - 2)};
       auto tree2{tree1->to_poly()->into_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
-        std::cerr << "Test Failed:\n"
-                  << "num_of_sides = " << num_of_sides << "\n"
-                  << "id1 = " << id1 << "\n"
-                  << "id2 = " << id2 << "\n";
+        std::cerr << "Test Failed:\n";
+        std::cerr << std::format("sides = {}\n", num_of_sides);
+        std::cerr << std::format("id1 = {}\n", id1);
+        std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
       tree1->self_destruct();
       tree2->self_destruct();
     }
-    std::cout << "num_of_sides = " << num_of_sides << " done for " << NUM_OF_TESTS
-              << " random tests!\n";
+    std::cout << std::format("Total sides = {:3} done for {} random tests!\n",
+                             num_of_sides, Poly::_NUM_OF_TESTS);
   }
 
   std::cout << "\n\nAll Tests Completed!\n\n";

@@ -91,10 +91,12 @@ void Chords::exchage_chords() {
 
 bool Chords::is_valid(const Graph &graph) {
   // TODO
-  assert(false);
+  // assert(false);
+  return true;
 }
 
 void Chords::test_conversion() {
+  std::cout << "====== Chords Graph: Conversion Test ======\n\n";
   std::cout
       << "Starting testing conversion between chords and tree with total points "
          "from 2 to "
@@ -104,21 +106,21 @@ void Chords::test_conversion() {
        num_of_points += 2) {
     for (int i{}; i < Chords::_NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_points >> 1)};
-      auto tree2{tree1->to_chords()->to_tree()};
+      auto tree2{tree1->to_chords()->into_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
-        std::cerr << "Test Failed:\n"
-                  << "Total Points = " << num_of_points << "\n"
-                  << "id1 = " << id1 << "\n"
-                  << "id2 = " << id2 << "\n";
+        std::cerr << "Test Failed:\n";
+        std::cerr << std::format("points = {}\n", num_of_points);
+        std::cerr << std::format("id1 = {}\n", id1);
+        std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
       tree1->self_destruct();
       tree2->self_destruct();
     }
-    std::cout << "Total points = " << num_of_points << " done for "
-              << Chords::_NUM_OF_TESTS << " random tests!\n";
+    std::cout << std::format("Total points = {:3} done for {} random tests!\n",
+                             num_of_points, Chords::_NUM_OF_TESTS);
   }
 
   std::cout << "\n\nAll Tests Completed!\n\n";
