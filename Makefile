@@ -8,7 +8,7 @@ CC := g++ -Iincludes
 ## https://makefiletutorial.com/
 
 all: $(OBJS)
-	$(CC) -std=c++23 -O3 -Wall -lgmp $(OBJS) -o tree
+	$(CC) -std=c++23 -O3 -Wall -lgmp $(OBJS) -o catalan_toolbox
 
 main.o: main.cpp $(DEPS)
 	$(CC) $(CFLAGS) $< -o $@
