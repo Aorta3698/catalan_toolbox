@@ -1,5 +1,6 @@
 #pragma once
 
+#include "coin.hpp"
 #include "tree.hpp"
 
 #include <algorithm>
@@ -7,6 +8,7 @@
 #include <string>
 
 class Tree;
+class CoinStack;
 
 class DyckPre {
 public:
@@ -39,7 +41,7 @@ public:
   static void test_conversion();
 
   /**
-   * Create a random Dyck Path
+   * Get a random Dyck Path in pre-order
    *
    * @param deg:   Degree of the path
    * @param len:   Length of the path
@@ -74,6 +76,24 @@ public:
    * @return The root of the tree represented by the dyck path
    */
   Tree *into_tree();
+
+  /**
+   * Transform a dyck path to its coin stack representation.
+   * If the dyck path is not valid, throw an exception.
+   *
+   * @return The coin stack represented by the dyck path
+   */
+  CoinStack *to_coin_stack();
+
+  /**
+   * Transform a dyck path to its coin stack representation.
+   * If the dyck path is not valid, throw an exception.
+   *
+   * And then delete itself
+   *
+   * @return The coin stack represented by the dyck path
+   */
+  CoinStack *into_coin_stack();
 
   /**
    * Get the next dyck path in pre-order

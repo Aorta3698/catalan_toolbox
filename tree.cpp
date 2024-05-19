@@ -1,3 +1,4 @@
+#include "coin.hpp"
 #include "global.hpp"
 #include "tree.hpp"
 #include "util.hpp"
@@ -14,6 +15,15 @@
 #include <numeric>
 #include <ranges>
 #include <stdexcept>
+
+// TODO: this doesn't seem ideal (converting 2 times)
+CoinStack *Tree::to_coin_stack() { return this->to_dyck_pre()->into_coin_stack(); }
+
+CoinStack *Tree::into_coin_stack() {
+  auto coins{this->to_dyck_pre()->into_coin_stack()};
+  this->self_destruct();
+  return coins;
+}
 
 DyckPreMirrored *Tree::to_dyck_pre_mirrored() {
   std::string encoded_result{};

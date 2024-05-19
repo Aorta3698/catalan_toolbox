@@ -40,28 +40,19 @@ int main(int argc, const char *argv[]) {
     try {
       std::string cmd = tokens.at(0);
       if (cmd == "test" || cmd == "t") {
-        test_expected_height_pre_order();
-        test_conversion_dyck_path_pre_order();
-      } else if (cmd == "5a") {
-        // int length{get_num(tokens.at(1))};
-        // plot_all_coin_stacks(length);
+        Tree::test_expected_height();
       } else if (cmd == "5r") {
-        // int length{get_num(tokens.at(1))};
-        // int count{tokens.size() == 2 ? 1 : get_num(tokens.at(3))};
-        // plot_random_coin_stack(length, count);
+        // SKIP
       } else if (cmd == "5t") {
-        test_conversion_dyck_path_mirrored();
-        test_expected_height_mirrored();
+        DyckPreMirrored::test_conversion();
       } else if (cmd == "5e") {
         // SKIP
         //----------------------------------
-      } else if (cmd == "4a") {
-        int length{Util::get_num(tokens.at(1))};
-        plot_all_coin_stacks(length);
       } else if (cmd == "4r") {
         int length{Util::get_num(tokens.at(1))};
         int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(3))};
-        plot_random_coin_stack(length, count);
+        auto coins{CoinStack::get_random(length, count)};
+        coins->plot();
       } else if (cmd == "4t") {
         // SKIP
       } else if (cmd == "4e") {

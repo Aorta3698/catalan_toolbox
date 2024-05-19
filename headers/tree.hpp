@@ -7,6 +7,7 @@
 
 #include "arcs.hpp"
 #include "chords.hpp"
+#include "coin.hpp"
 #include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "poly.hpp"
@@ -18,6 +19,7 @@ class Chords;
 class DyckPre;
 class DyckPreMirrored;
 class Arcs;
+class CoinStack;
 
 /**
  * Node class represents a tree node
@@ -101,6 +103,22 @@ public:
   static double asymptote(int k, int num_of_internal_nodes);
 
   /**
+   * Convert a tree into its coin stack representation
+   *
+   * @return Its coin stack object.
+   */
+  CoinStack *to_coin_stack();
+
+  /**
+   * Convert a tree into its coin stack representation
+   *
+   * And then delete itself
+   *
+   * @return Its coin stack object.
+   */
+  CoinStack *into_coin_stack();
+
+  /**
    * Convert a tree into its mirrored pre-order dyck path representation
    *
    * @return Its DyckPreMirrored object.
@@ -125,28 +143,6 @@ public:
   Arcs *to_arcs();
 
   /**
-   * Convert the current tree into its
-   * polygon triangulation representation
-   *
-   * @return Its polygon triangulation representation
-   */
-  Poly *to_poly();
-
-  /**
-   * Convert the current tree into its chords graph representation
-   *
-   * @return Its chords graph representation
-   */
-  Chords *to_chords();
-
-  /**
-   * Convert a tree into its pre-order dyck path representation
-   *
-   * @return Its DyckPre representation.
-   */
-  DyckPre *to_dyck_pre();
-
-  /**
    * Convert the current tree into
    * its arcs graph representation
    *
@@ -155,6 +151,14 @@ public:
    * @return Its arcs graph representation
    */
   Arcs *into_arcs();
+
+  /**
+   * Convert the current tree into its
+   * polygon triangulation representation
+   *
+   * @return Its polygon triangulation representation
+   */
+  Poly *to_poly();
 
   /**
    * Convert the current tree into its
@@ -169,11 +173,25 @@ public:
   /**
    * Convert the current tree into its chords graph representation
    *
+   * @return Its chords graph representation
+   */
+  Chords *to_chords();
+
+  /**
+   * Convert the current tree into its chords graph representation
+   *
    * And then delete itself
    *
    * @return Its chords graph representation
    */
   Chords *into_chords();
+
+  /**
+   * Convert a tree into its pre-order dyck path representation
+   *
+   * @return Its DyckPre representation.
+   */
+  DyckPre *to_dyck_pre();
 
   /**
    * Convert a tree into its pre-order dyck path representation

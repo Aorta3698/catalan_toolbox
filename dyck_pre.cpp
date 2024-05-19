@@ -81,6 +81,14 @@ Tree *DyckPre::into_tree() {
   return tree;
 }
 
+CoinStack *DyckPre::to_coin_stack() { return new CoinStack(this); }
+
+CoinStack *DyckPre::into_coin_stack() {
+  auto coins{this->to_coin_stack()};
+  delete this;
+  return coins;
+}
+
 DyckPre *DyckPre::get_random(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";

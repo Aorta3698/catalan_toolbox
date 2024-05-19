@@ -44,3 +44,7 @@ void CoinStack::plot(std::string file) {
 
   Util::plot(CoinStack::_PLOT_SCRIPT, file);
 }
+
+CoinStack *CoinStack::get_random(int base) {
+  return DyckPre::get_random(2, base << 1)->into_coin_stack();
+}
