@@ -1,5 +1,5 @@
 # Goals
-There are 4 goals that I'd like to achieve:
+These are the goals that I'd like to achieve:
 
 - Conversion between tree to other well-known (generalized) Catalan structures in ideally linear time. 
 
