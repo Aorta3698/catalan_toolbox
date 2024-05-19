@@ -5,8 +5,8 @@ EXE := catalan_toolbox
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-CPPFLAGS := -Iinclude -MMD -MP -std=c++23
-CXXFLAGS := -Wall
+CPPFLAGS := -Iinclude -MMD -MP
+CXXFLAGS := -Wall -std=c++23
 LDFLAGS  := -Llib
 LDLIBS   := -lgmp
 

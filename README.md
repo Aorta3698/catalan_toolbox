@@ -87,6 +87,8 @@ It is because that the visualizer is not started on the main thread and apparent
 ### Organization
 - [x] Code base rewrite to follow OOP
 - [x] Documentation
+- [x] Refactor Project structure to follow `include/`, `obj/`, `src/`, `lib/` format.
+- [x] Refactor Makefile to follow modern standard.
 - [x] Compile related work
 
 ---
