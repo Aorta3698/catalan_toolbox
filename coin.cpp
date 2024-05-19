@@ -1,6 +1,4 @@
 #include "coin.hpp"
-#include "dyck_pre.hpp"
-#include "global.hpp"
 #include "util.hpp"
 
 #include <cmath>
@@ -8,13 +6,8 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
-#include <unordered_set>
 
-void plot_coin_stack(const Dyck dyck_path, std::string file) {
-  if (2 != get_r_pre_order(dyck_path)) {
-    std::cerr << "Error: dyck path given must have r = 2\n";
-    throw std::invalid_argument("");
-  }
+void CoinStack::plot(std::string file) {
   std::ofstream out{file};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";
@@ -30,13 +23,13 @@ void plot_coin_stack(const Dyck dyck_path, std::string file) {
   int y_steps{};
 
   // meta info
-  out << (int(dyck_path.size()) >> 1) << "\n";
+  out << this->base << "\n";
   out << rad << "\n";
 
   // y, x
   std::unordered_map<int, int> prev_map{};
   prev_map[0] = 0;
-  for (const auto dir : dyck_path) {
+  for (const auto dir : this->path) {
     if (dir == '1') {
       ++y_steps;
     } else {
@@ -49,30 +42,5 @@ void plot_coin_stack(const Dyck dyck_path, std::string file) {
     prev_map[y_steps] = x_steps;
   }
 
-  plot(COIN_PLOT_SCRIPT, file);
-}
-
-void plot_all_coin_stacks(int n) {
-  int cat{n};
-  if (cat < 1 || cat > 4) {
-    std::cerr << "Error: can't plot that many!\n";
-    throw std::invalid_argument("");
-  }
-
-  std::unordered_set<Dyck> seen{};
-  int total{get_catalan(cat)};
-  while (int(seen.size()) < total) {
-    Dyck dyck_path = get_random_dyck_path_pre_order(2, n << 1);
-    if (!seen.contains(dyck_path)) {
-      plot_coin_stack(dyck_path, ".coins" + std::to_string(int(seen.size())));
-      seen.insert(dyck_path);
-    }
-  }
-}
-
-void plot_random_coin_stack(int n, int count) {
-  while (count--) {
-    Dyck dyck_path{get_random_dyck_path_pre_order(2, n << 1)};
-    plot_coin_stack(dyck_path, ".coins" + std::to_string(count));
-  }
+  Util::plot(CoinStack::_PLOT_SCRIPT, file);
 }

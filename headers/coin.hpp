@@ -1,28 +1,41 @@
 #pragma once
 
-#include "global.hpp"
-
+#include "tree.hpp"
 #include <string>
 
-/**
- * Plot a coin_stack
- *
- * @param dyck_path: a dyck path
- * @param file:      file to store info needed for graphing it
- */
-void plot_coin_stack(const Dyck dyck_path, std::string file);
+class CoinStack {
+public:
+  CoinStack(const DyckPre *const dyck_path) {
+    if (2 != dyck_path->get_r()) {
+      std::cerr << "Error: Coins constructor - dyck path given must have r = "
+                   "2\n";
+      throw std::invalid_argument("");
+    }
 
-/**
- * Plot all coin_stack graph with bottom layer having n coins
- *
- * @param n:  Number of coins on the bottom. Between 1 to 4, inclusive.
- */
-void plot_all_coin_stacks(int n);
+    this->path = dyck_path->get_path();
+    this->base = dyck_path->size() >> 1;
+  }
 
-/**
- * Plot `count` number of random coin stacks with n coins on the bottom
- *
- * @param num_of_sides:   Number of coins on the bottom
- * @param count:          Number of random coin stack plots
- */
-void plot_random_coin_stack(int n, int count);
+  /**
+   * Plot the current coin stack.
+   *
+   * @param file: file to store info needed for graphing it - _DEFAULT_PREFIX_FILE as
+   * the default.
+   */
+  void plot(std::string file = "");
+
+  /**
+   * get the next coin stack graph object
+   *
+   * @return The next coin stack graph object
+   *
+   */
+  CoinStack *next();
+
+private:
+  static constexpr std::string _PLOT_SCRIPT{"plot-coins.py"};
+  static constexpr std::string _DEFAULT_PREFIX_FILE{".coins"};
+
+  std::string path;
+  int base;
+};

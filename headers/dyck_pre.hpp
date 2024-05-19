@@ -100,6 +100,10 @@ public:
    */
   void test_expected_height();
 
+  inline std::string get_path() const { return this->path; }
+  inline int get_r() const { return this->r; }
+  inline int size() const { return this->length; }
+
 private:
   static constexpr std::string_view _PLOT_SCRIPT{"plot-dyck-path.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".dyck"};
