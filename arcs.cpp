@@ -9,35 +9,42 @@
 #include <stdexcept>
 #include <unordered_set>
 
-Arcs tree_to_arcs(const Node *root) { return tree_to_chords(root); }
-
-Node *arcs_to_tree(const Arcs arcs) { return chords_to_tree(arcs); }
-
-Poly get_random_arcs(int num_of_points) { return get_random_chords(num_of_points); }
-
-void plot_random_arcs(int num_of_points, int count) {
-  if (num_of_points & 1) {
-    std::cerr << "Error: number of points must be even\n";
-    throw std::invalid_argument("");
-  }
-  while (count--) {
-    auto arcs{get_random_arcs(num_of_points)};
-    plot_arcs(arcs, ".arcs" + std::to_string(count));
-  }
+Chords *Arcs::to_chords() {
+  auto chords{new Chords(this->arcs)};
+  return chords;
 }
 
-void plot_arcs(Arcs arcs, std::string file) {
+Chords *Arcs::into_chords() {
+  auto chords{new Chords(this->arcs)};
+  delete this;
+  return chords;
+}
+
+Tree *Arcs::to_tree() {
+  auto chords(this->to_chords());
+  return chords->into_tree();
+}
+
+Tree *Arcs::into_tree() {
+  auto chords{Arcs::to_chords()};
+  delete this;
+  return chords->into_tree();
+}
+
+Arcs *Arcs::get_random(int num_of_points) {
+  return Chords::get_random(num_of_points)->into_arcs();
+}
+
+void Arcs::plot(std::string file) {
   std::ofstream out{file};
   if (!out) {
-    std::cerr << file << " cannot be opened.\n";
+    std::cerr << std::format("{} cannot be opened.\n", file);
     throw std::invalid_argument("");
   }
 
-  int num_of_points{int(arcs.size()) << 1};
-
   // points and coordinates
-  out << num_of_points << "\n";
-  for (int i{}; i < num_of_points; ++i) {
+  out << this->points << "\n";
+  for (int i{}; i < this->points; ++i) {
     out << 0.3 * i << "," << 0 << "\n";
   }
 
@@ -46,58 +53,36 @@ void plot_arcs(Arcs arcs, std::string file) {
     out << a << "," << b << "\n";
   }
 
-  plot(ARCS_PLOT_SCRIPT, file);
+  Util::plot(Arcs::_PLOT_SCRIPT, file);
 }
 
-void plot_all_arcs(int num_of_points) {
-  if (num_of_points & 1) {
-    std::cerr << "Error: number of points must be even\n";
-    throw std::invalid_argument("");
-  }
-
-  int cat{num_of_points >> 1};
-  if (cat < 0 || cat > 4) {
-    std::cerr << "can't plot that many!\n";
-    throw std::invalid_argument("");
-  }
-
-  std::unordered_set<std::string> seen;
-  int total{get_catalan(cat)};
-  while (int(seen.size()) < total) {
-    auto tree{get_random_tree(2, cat)};
-    std::string id{serialize_tree(tree)};
-    if (!seen.contains(id)) {
-      std::string file{".arcs" + std::to_string(seen.size())};
-      Arcs arcs{tree_to_arcs(tree)};
-      plot_arcs(arcs, file);
-      seen.insert(id);
-    }
-    free_tree(tree);
-  }
-}
-
-void exchage_arcs(Arcs arcs) {
+Arcs *Arcs::next() {
   // TODO
   assert(false);
 }
 
-bool is_valid_arcs(const Arcs arcs) {
+void Arcs::exchage_arcs() {
   // TODO
   assert(false);
 }
 
-void test_conversion_arcs() {
+bool Arcs::is_valid(const Graph &graph) {
+  // TODO
+  assert(false);
+}
+
+void Arcs::test_conversion() {
   std::cout << "Starting testing conversion between arcs and tree with total points "
                "from 2 to "
-            << TEST_MAX_SIDES_ARCS << " with 2 increment\n\n";
+            << Arcs::_TEST_MAX_SIDES << " with 2 increment\n\n";
 
-  for (int num_of_points{2}; num_of_points <= TEST_MAX_SIDES_ARCS;
+  for (int num_of_points{2}; num_of_points <= Arcs::_TEST_MAX_SIDES;
        num_of_points += 2) {
-    for (int i{}; i < NUM_OF_TESTS_ARCS; ++i) {
-      auto tree1{get_random_tree(2, num_of_points >> 1)};
-      auto tree2{arcs_to_tree(tree_to_arcs(tree1))};
-      std::string id1{serialize_tree(tree1)};
-      std::string id2{serialize_tree(tree2)};
+    for (int i{}; i < Arcs::_NUM_OF_TESTS; ++i) {
+      auto tree1{Tree::get_random(2, num_of_points >> 1)};
+      auto tree2{tree1->to_arcs()->into_tree()};
+      std::string id1{tree1->serialize()};
+      std::string id2{tree2->serialize()};
       if (id1 != id2) {
         std::cerr << "Test Failed:\n"
                   << "Total Points = " << num_of_points << "\n"
@@ -105,11 +90,13 @@ void test_conversion_arcs() {
                   << "id2 = " << id2 << "\n";
         assert(false);
       }
-      free_tree(tree1);
-      free_tree(tree2);
+      tree1->free_memory();
+      tree2->free_memory();
+      delete tree1;
+      delete tree2;
     }
     std::cout << "Total points = " << num_of_points << " done for "
-              << NUM_OF_TESTS_ARCS << " random tests!\n";
+              << Arcs::_NUM_OF_TESTS << " random tests!\n";
   }
 
   std::cout << "\n\nAll Tests Completed!\n\n";

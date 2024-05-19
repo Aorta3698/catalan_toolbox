@@ -14,6 +14,19 @@
 #include <stdexcept>
 #include <unordered_set>
 
+Arcs *Tree::to_arcs() {
+  auto chords{this->to_chords()};
+  auto arcs{chords->into_arcs()};
+  return arcs;
+}
+
+Arcs *Tree::into_arcs() {
+  auto arcs{this->to_arcs()};
+  this->free_memory();
+  delete this;
+  return arcs;
+}
+
 Chords *Tree::to_chords() {
   Graph chords;
   int id{};
@@ -36,6 +49,13 @@ Chords *Tree::to_chords() {
     throw std::invalid_argument("");
   }
   return new Chords(chords);
+}
+
+Chords *Tree::into_chords() {
+  auto chords{this->to_chords()};
+  this->free_memory();
+  delete this;
+  return chords;
 }
 
 Poly *Tree::to_poly() {
@@ -62,6 +82,13 @@ Poly *Tree::to_poly() {
     throw std::invalid_argument("");
   }
   return new Poly(poly);
+}
+
+Poly *Tree::into_poly() {
+  auto poly{this->to_poly()};
+  this->free_memory();
+  delete this;
+  return poly;
 }
 
 Tree *Tree::get_random(int branches, int num_of_nodes) {

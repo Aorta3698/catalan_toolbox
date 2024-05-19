@@ -1,9 +1,11 @@
 #pragma once
 
+#include "arcs.hpp"
 #include "global.hpp"
 #include "tree.hpp"
 
 class Tree;
+class Arcs;
 
 class Chords {
 public:
@@ -33,11 +35,34 @@ public:
   /**
    * Transform the current chords to its tree representation.
    *
-   * @param chords:  A chords graph
-   *
-   * @return The root of the tree represented by the chords graph
+   * @return The tree represented by the chords graph
    */
   Tree *to_tree();
+
+  /**
+   * Transform the current chords to its arcs graph representation.
+   *
+   * @return The arcs graph represented by the chords graph
+   */
+  Arcs *to_arcs();
+
+  /**
+   * Transform the current chords to its tree representation.
+   *
+   * And then delete itself
+   *
+   * @return The tree represented by the chords graph
+   */
+  Tree *into_tree();
+
+  /**
+   * Transform the current chords to its arcs graph representation.
+   *
+   * And then delete itself
+   *
+   * @return The arcs graph represented by the chords graph
+   */
+  Arcs *into_arcs();
 
   /**
    * Get the next chords graph

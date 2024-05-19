@@ -32,6 +32,20 @@ Tree *Chords::to_tree() {
   return new Tree(build(0, this->points));
 }
 
+Tree *Chords::into_tree() {
+  auto tree{this->to_tree()};
+  delete this;
+  return tree;
+}
+
+Arcs *Chords::to_arcs() { return new Arcs(this->chords); }
+
+Arcs *Chords::into_arcs() {
+  auto arcs{this->to_arcs()};
+  delete this;
+  return arcs;
+}
+
 Chords *Chords::get_random(int num_of_points) {
   if (num_of_points & 1) {
     std::cerr << "Error: number of points must be even\n";

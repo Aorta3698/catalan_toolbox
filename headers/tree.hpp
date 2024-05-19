@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "arcs.hpp"
 #include "chords.hpp"
 #include "poly.hpp"
 
@@ -75,6 +76,14 @@ public:
   static Tree *get_from_file(std::string file);
 
   /**
+   * Convert the current tree into
+   * its arcs graph representation
+   *
+   * @return Its arcs graph representation
+   */
+  Arcs *to_arcs();
+
+  /**
    * Convert the current tree into its
    * polygon triangulation representation
    *
@@ -88,6 +97,35 @@ public:
    * @return Its chords graph representation
    */
   Chords *to_chords();
+
+  /**
+   * Convert the current tree into
+   * its arcs graph representation
+   *
+   * And then delete itself
+   *
+   * @return Its arcs graph representation
+   */
+  Arcs *into_arcs();
+
+  /**
+   * Convert the current tree into its
+   * polygon triangulation representation
+   *
+   * And then delete itself
+   *
+   * @return Its polygon triangulation representation
+   */
+  Poly *into_poly();
+
+  /**
+   * Convert the current tree into its chords graph representation
+   *
+   * And then delete itself
+   *
+   * @return Its chords graph representation
+   */
+  Chords *into_chords();
 
   /**
    * Plot all the trees with n internal nodes.

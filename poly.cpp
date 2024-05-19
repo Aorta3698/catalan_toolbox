@@ -49,6 +49,12 @@ Tree *Poly::to_tree() {
   return new Tree(nodes[tables[0][Dir::Up]]);
 }
 
+Tree *Poly::into_tree() {
+  auto tree{this->to_tree()};
+  delete this;
+  return tree;
+}
+
 void Poly::flip_and_plot() {
   // pre-processing - O(n)
   enum Dir { Up, Down };
@@ -137,9 +143,7 @@ void Poly::flip_and_plot() {
 
 Poly *Poly::get_random(int num_of_sides) {
   auto tree{Tree::get_random(2, num_of_sides - 2)};
-  auto res{tree->to_poly()};
-  tree->free_memory();
-  delete tree;
+  auto res{tree->into_poly()};
   return res;
 }
 
@@ -175,7 +179,7 @@ Poly *Poly::next() {
   // TODO: implement this
 }
 
-bool Poly::is_valid(Graph &poly) {
+bool Poly::is_valid(const Graph &poly) {
   int num_of_sides{int(poly.size()) + 2};
   int end[num_of_sides];
   int start[num_of_sides];
@@ -214,7 +218,7 @@ void Poly::test_conversion() {
   for (int num_of_sides{3}; num_of_sides <= TEST_MAX_SIDES; ++num_of_sides) {
     for (int i{}; i < NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_sides - 2)};
-      auto tree2{tree1->to_poly()->to_tree()};
+      auto tree2{tree1->to_poly()->into_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {

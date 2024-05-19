@@ -1,81 +1,106 @@
 #pragma once
 
+#include "chords.hpp"
 #include "global.hpp"
 #include "tree.hpp"
 
-const static int NUM_OF_TESTS_ARCS{50000};
-const static int TEST_MAX_SIDES_ARCS{200};
+class Tree;
+class Chords;
 
-/**
- * Convert a tree into its arcs graph epresentation
- *
- * @param root:     The root of the tree
- *
- * @return Its arcs graph representation
- */
-Arcs tree_to_arcs(const Node *root);
+class Arcs {
+public:
+  /**
+   * Verify if the given graph is a valid Arcs graph or not
+   *
+   * @param graph:  A graph
+   *
+   * @return True if it is a valid arcs graph, false otherwise
+   */
+  static bool is_valid(const Graph &graph);
 
-/**
- * Transform a arcs graph to its tree representation.
- *
- * @param arcs:  An arcs graph
- *
- * @return The root of the tree represented by the arcs graph
- */
-Node *arcs_to_tree(const Arcs arcs);
+  /**
+   * Create a random arcs graph
+   *
+   * @param num_of_points:   Number of points
+   *
+   * @return A random arcs graph
+   */
+  static Arcs *get_random(int num_of_points);
 
-/**
- * Plot a arcs graph
- *
- * @param arcs:  An arcs graph
- */
-void plot_arcs(const Arcs arcs, std::string file);
+  Arcs(Graph arcs) {
+    this->arcs = arcs;
+    this->points = int(arcs.size()) << 1;
+  }
 
-/**
- * Plot all arcs graph with `num_of_points` points
- *
- * @param num_of_points:  Number of points for the arcs graph. Between 2 to 8,
- * inclusive.
- */
-void plot_all_arcs(int num_of_points);
+  /**
+   * Get the next Arcs graph
+   *
+   * @return The next Arcs graph
+   */
+  Arcs *next();
 
-/**
- * Create a random arcs graph
- *
- * @param num_of_points:   Number of points
- *
- * @return A random arcs graph
- */
-Arcs get_random_arcs(int num_of_points);
+  /**
+   * Transform the current arcs graph
+   * to its tree representation.
+   *
+   * @return The tree represented by the arcs graph
+   */
+  Tree *to_tree();
 
-/**
- * Plot `count` number of random arcs graph
- *
- * @param num_of_sides:   Number of sides
- * @param count:          Number of random arcs graph plots
- */
-void plot_random_arcs(int num_of_points, int count);
+  /**
+   * Transform the current arcs graph
+   * to its chords graph representation
+   *
+   * @return The chords graph represented by the arcs graph
+   */
+  Chords *to_chords();
 
-/**
- * Exchange 2 arcs until the user quits.
- * It takes O(n) pre-processing time and O(1) per exchage.
- *
- * @param: arcs   An arcs graph
- */
-void exchage_arcs(Arcs arcs);
+  /**
+   * Transform the current arcs graph
+   * to its tree representation.
+   *
+   * And then delete itself
+   *
+   * @return The tree represented by the arcs graph
+   */
+  Tree *into_tree();
 
-/**
- * Verify if an arcs graph is valid or not
- *
- * @param arcs:  An arcs graph
- *
- * @return True if it is a valid arcs graph, false otherwise
- */
-bool is_valid_arcs(const Arcs arcs);
+  /**
+   * Transform the current arcs graph
+   * to its chords graph representation
+   *
+   * And then delete itself
+   *
+   * @return The chords graph represented by the arcs graph
+   */
+  Chords *into_chords();
 
-/**
- * Test arcs <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_arcs
- * (default 100). There are NUM_OF_TESTS_arcs (default 50k) random test cases for
- * each total number of points.
- */
-void test_conversion_arcs();
+  /**
+   * Plot the current arcs graph
+   *
+   * @param file:  The file to store the arcs graph. Default to _DEFAULT_PREFIX_FILE
+   */
+  void plot(std::string file = "");
+
+  /**
+   * Exchange 2 arcs until the user quits.
+   * It takes O(n) pre-processing time and O(1) per exchage.
+   */
+  void exchage_arcs();
+
+  /**
+   * Test arcs <-> tree conversion with 3 <= num_of_points <= TEST_MAX_SIDES_arcs
+   * (default 100). There are NUM_OF_TESTS_arcs (default 50k) random test cases for
+   * each total number of points.
+   */
+  void test_conversion();
+
+private:
+  static constexpr std::string _DEFAULT_PREFIX_FILE{".arcs"};
+  static constexpr std::string _PLOT_SCRIPT{"plot-arcs.py"};
+  const static int _NUM_OF_TESTS{50000};
+  const static int _TEST_MAX_SIDES{200};
+
+  Graph arcs;
+  int points;
+};

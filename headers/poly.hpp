@@ -37,6 +37,15 @@ public:
   Tree *to_tree();
 
   /**
+   * Transform to its tree representation.
+   *
+   * And then delete itself
+   *
+   * @return The root of the tree represented by the polygon
+   */
+  Tree *into_tree();
+
+  /**
    * Plot the current polygon triangulation
    */
   void plot(std::string file = "");
