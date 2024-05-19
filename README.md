@@ -1,11 +1,13 @@
 # Goals
 There are 4 goals that I'd like to achieve:
 
-- Conversion between tree to other well-known (generalized) Catalan structures in ideally linear time. Common operations such as triangulation flip are to be supported for each type of structures.
+- Conversion between tree to other well-known (generalized) Catalan structures in ideally linear time. 
+
+- Support for common operations such as triangulation flip for each type of Catalan structures.
 
 - A visualizer tool that produces publication level of svg.
 
-- Enumeration of well-known Catalan structures (including k-ary trees and r-dyck paths).
+- Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
 
 - Enumeration of `pattarn avoiding` binary trees.
 
@@ -37,7 +39,7 @@ It is because that the visualizer is not started on the main thread and apparent
 
 ### Tree
 - [x] Visualizer for full `k`-ary trees
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Dyck Path
 - [x] Convert between `r`-dyck path *mirrored* pre-order bit string and tree in `O(n)`
@@ -45,40 +47,41 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
 - [ ] Flip mountain
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Triangulation
 - [x] Convert between polygon triangulation and binary tree in `O(n)`
 - [x] Visualizer for polygon triangulation
 - [x] Triangulation flip in `O(1)` with `O(n)` pre-processing and visualize the result
 - [x] Verify a given polygon triangulation is a valid polygon triangulation or not
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Non-intersecting Chord Graph
 - [x] Convert between non-intersecting chord graph and binary tree in `O(n)`
 - [x] Visualizer for non-intersecting chord graph
 - [ ] Exchange a chord and visualize the result
 - [ ] Verify a given chord graph is a valid non-intersecting chord graph or not
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Non-crossing Arcs
 - [x] Convert between non-crossing arcs and binary tree in `O(n)`
 - [x] Visualizer for non-crossing arcs 
 - [ ] Exchange an arc and visualize the result
 - [ ] Verify a given arcs is a valid non-crossing arcs or not
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Coin Stack
 - [x] Visualizer for coin stack
-- [x] Gallery for $C_4$ and $C_5$ (for now)
+- [x] Gallery for $C_4$ and $C_5$
 
 ### Other
 - [x] Output full `k`-ary tree as a file and read from it to recreate it
 - [ ] A website that hosts all visualization for well-known Catalan structures for `n >= 3 to n < ?`.
 
 ### Organization
-- [ ] Code base rewrite to follow OOP
-- [ ] Documentation
+- [x] Code base rewrite to follow OOP
+- [x] Documentation
+- [x] Compile related work
 
 ---
 # Compile Instruction
@@ -92,6 +95,8 @@ It is because that the visualizer is not started on the main thread and apparent
 
 ## C++23
 The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version supports it.
+
+Additionally, make sure that [GNU GMP library](https://gmplib.org/) is installed (bignum lib).
 
 ## Steps To Follow
 - First create a Python venv named `visualizer` 
@@ -113,7 +118,7 @@ where the warning occurrs.
 credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarning-invalid-value-encountered-in-divide).
 
 ----
-# Related Works
+# Related Work
 ## Tree
 ### Height of Tree
 - [The Average Height of Binary Trees and Other Simple Trees](https://algo.inria.fr/flajolet/Publications/FlOd82height.pdf)
