@@ -98,10 +98,13 @@ void Poly::flip_and_plot() {
 
   // flip an edge - O(1)
   while (1) {
-    int idx{};
-    while (idx < 1 || idx >= sz) {
-      std::cout << "Select an edge to flip: ";
+    int idx{-1};
+    while (idx < 0 || idx >= sz) {
+      std::cout << "Select an edge to flip (0 to quit): ";
       std::cin >> idx;
+    }
+    if (!idx) {
+      break;
     }
 
     // locate the other 2 vertices
