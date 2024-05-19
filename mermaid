@@ -1,0 +1,29 @@
+graph
+	Tree{{Binary Tree}}
+	Arcs(Arcs Graph)
+	Chords(Chords Graph)
+	Poly(Polygon Triangulation)
+	Coins(Coin Stack)
+	Dyck(Dyck Path)
+	kTree("$$k$$-ary Tree")
+	rDyck("$$r$$-Dyck Path")
+
+	subgraph "Catalan Structures"
+		direction TB
+		subgraph C1
+			direction LR
+			Dyck --- Coins
+		end
+		subgraph C2
+			direction LR
+			Arcs --- Chords
+		end
+        Tree ---- Poly
+	    Tree ---- C1
+	    Tree ---- C2
+	end
+
+	subgraph Generalized
+		direction TB
+		rDyck ---- kTree
+	end

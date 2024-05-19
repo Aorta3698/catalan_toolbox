@@ -1,15 +1,19 @@
 # Goals
 These are the goals that I'd like to achieve:
 
-- Conversion between tree to other well-known (generalized) Catalan structures in ideally linear time. 
+- [x] Conversion between tree to other well-known (generalized) Catalan structures in linear time. 
 
 - Support for common operations such as triangulation flip for each type of Catalan structures.
 
-- A visualizer tool that produces publication level of svg.
+- [x] A visualizer tool that produces publication level of svg.
 
 - Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
 
 - Enumeration of `pattarn avoiding` binary trees.
+
+---
+# Conversion Flow
+![](./flow.svg)
 
 ---
 # Galleries
@@ -144,11 +148,13 @@ credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarnin
 ### Edge Flip Tree Graph has a Hamiltonian path and cycle 
 - [The Rotation Graph of Binary Trees is Hamiltonian](https://www.cs.princeton.edu/techreports/1986/021.pdf)
 
+---
 ## Dyck Paths
 - [Raised k-Dyck Paths](https://cs.uwaterloo.ca/journals/JIS/VOL26/Drube/drube12.pdf)
 - [On a generalisation of k-Dyck paths](https://scholar.sun.ac.za/server/api/core/bitstreams/1e3e820c-7bf3-4362-abe4-0684b1f94d0f/content)
 - [COMBINATORICS OF r-DYCK PATHS, r-PARKING FUNCTIONS, AND THE r-TAMARI LATTICES](https://arxiv.org/pdf/1202.6269)
 
+---
 ## Triangulation
 - [Common edges in rooted trees and polygonal triangulations](https://personal.math.ubc.ca/~andrewr/pubs/triangulations.pdf)
 - [Rotation Distance, Triangulations, and Hyperbolic Geometry](https://www.cs.cmu.edu/~sleator/papers/rotation-distance.pdf)
@@ -156,6 +162,7 @@ credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarnin
 - [Graph of triangulations of a convex polygon and tree of triangulations](https://web.mat.upc.edu/marc.noy/uploads/2013/05/graph-triangulations.pdf)
 - [Properties of Random Triangulations and Trees](https://www.researchgate.net/publication/220453462_Properties_of_Random_Triangulations_and_Trees)
 
+---
 ## Catalan Structures
 - Richard P. Stanley - Catalan Numbers-Cambridge University Press (2015)
 - [Information on Enumerative Combinatorics](https://math.mit.edu/~rstan/ec/)
@@ -164,14 +171,17 @@ credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarnin
 - [CATALAN NUMBERS](https://pi.math.cornell.edu/~karola/dimex/catalan.pdf)
 - [Catalan Numbers, Their Generalization, and Their Uses](https://www.math.uakron.edu/~cossey/636papers/hilton%20and%20pedersen.pdf)
 
+---
 ## Super Catalan
 - [Elements of the sets enumerated by super-Catalan numbers](https://math.haifa.ac.il/toufik/enumerative/supercat.pdf)
 
+---
 ## Mixing Time
 - [On the Mixing Time of the Triangulation Walk and other Catalan Structures](https://tetali.math.gatech.edu/PUBLIS/mt.pdf)
 - [Improved Mixing for the Convex Polygon Triangulation Flip Walk](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ICALP.2023.56)
 - [Polynomial mixing time of edge flips on quadrangulations](https://arxiv.org/abs/1809.05092)
 
+---
 ## Other
 - [A Transformation of the Catalan Numbers and Related Counted Sets](https://shareok.org/bitstream/handle/11244/323386/Davis_okstate_0664M_16189.pdf?sequence=1&isAllowed=y)
 - [AN ENUMERATIVE-PROBABILISTIC STUDY OF CHORD DIAGRAMS](https://etd.ohiolink.edu/acprod/odb_etd/ws/send_file/send?accession=osu1373310487&disposition=inline)
