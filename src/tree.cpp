@@ -199,7 +199,7 @@ std::unique_ptr<Tree> Tree::get_from_Mutze(const Mutze::Tree &mutze_tree) {
     return cur_node;
   };
 
-  return std::make_unique<Tree>(build(1, sz));
+  return std::make_unique<Tree>(build(1, sz), false);
 }
 
 void Tree::enumerate_avoiding() {
@@ -214,9 +214,7 @@ void Tree::enumerate_avoiding() {
   auto ok{1};
   while (ok) {
     auto tree{get_from_Mutze(mutze_tree)};
-    std::cerr << "out\n";
     tree->plot();
-    std::cerr << "outt\n";
     std::cout << "Press Enter to Continue";
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     ok &= mutze_tree.next();
@@ -310,7 +308,9 @@ void Tree::plot(std::string file) {
     file = Tree::_DEFAULT_PREFIX_FILE;
   }
   this->store_into_file(file);
-  Util::plot(Tree::_PLOT_SCRIPT, file);
+  std::string script{this->is_full ? Tree::_PLOT_SCRIPT_FULL
+                                   : Tree::_PLOT_SCRIPT_NOT_FULL};
+  Util::plot(script, file);
 }
 
 std::string Tree::serialize() {

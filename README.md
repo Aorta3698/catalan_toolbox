@@ -9,7 +9,7 @@ These are the goals that I'd like to achieve:
 
 - [ ] Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
 
-- [ ] Enumeration of `pattarn avoiding` binary trees.
+- [x] Enumeration of `pattarn avoiding` binary trees.
 
 See [Milestones](#Milestones) for sub items break down.
 
@@ -79,6 +79,11 @@ It is because that the visualizer is not started on the main thread and apparent
 ### Coin Stack
 - [x] Visualizer for coin stack
 - [x] Gallery for $C_4$ and $C_5$
+
+### Enumeration
+- [x] Mutze lib imported and now able to enumerate pattern avoiding binary trees.
+- [x] Able to visualize pattern avoiding binary trees.
+- [ ] Able to enumerate generalized Catalan structures lexicographically via an interator.
 
 ### Other
 - [x] Output full `k`-ary tree as a file and read from it to recreate it

@@ -44,9 +44,10 @@ struct Node {
 
 class Tree {
 public:
-  Tree(std::unique_ptr<Node> root) {
+  Tree(std::unique_ptr<Node> root, bool is_full = true) {
     this->k = root->child_count();
     this->root = std::move(root);
+    this->is_full = is_full;
   }
 
   // loved c++20
@@ -164,7 +165,7 @@ public:
   void store_into_file(std::string file = "");
 
   /**
-   * Plot the current tree.
+   * Plot the current k-ary tree.
    * @param file:   The output file. By default, it is _DEFAULT_FILE_PREFIX
    */
   void plot(std::string file = "");
@@ -198,9 +199,10 @@ public:
 private:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
-  static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
+  static constexpr std::string _PLOT_SCRIPT_FULL{"plot-tree.py"};
+  static constexpr std::string_view _PLOT_SCRIPT_NOT_FULL{"plot-non-full-tree.py"};
 
   std::unique_ptr<Node> root;
-  int number_of_nodes;
+  bool is_full;
   int k;
 };
