@@ -4,6 +4,7 @@
 #include "tree.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <memory>
 #include <stdexcept>
 #include <string>

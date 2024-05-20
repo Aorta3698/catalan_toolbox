@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include <iterator>
+#include <limits>
 #include <numbers>
 #include <sstream>
 #include <thread>
@@ -14,6 +15,10 @@ template <typename T> void Util::print_vector(const T &t) {
   std::copy(t.cbegin(), t.cend(),
             std::ostream_iterator<typename T::value_type>(std::cerr, ", "));
   std::cerr << "\n";
+}
+
+template <typename T> void print_vvector(const T &t) {
+  std::for_each(t.cbegin(), t.cend(), Util::print_vector<typename T::value_type>);
 }
 
 template <typename T> void Util::print_c_array(const T array[], int size) {
@@ -78,4 +83,41 @@ void Util::plot(std::string script, std::string file) {
     std::system(cmd.c_str());
     std::exit(EXIT_SUCCESS);
   }
+}
+
+std::vector<Mutze::Pattern> Util::get_avoid_patterns() {
+  std::vector<Mutze::Pattern> patterns;
+  std::string input{};
+
+  std::cout << "Each pattern is a pair of preorder\n";
+  std::cout << "permutation and corresponding edge type list, separated by\n";
+  std::cout << "comma; multiple patterns are separated by semicolon\n\n";
+  std::cout << "Edge type: 1 -> contiguous, 0 -> non-contiguous\n\n";
+  std::cout << "For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'\n\n";
+
+  std::cout << "Only friendly patterns will be accepted. A friendly pattern is one "
+               "where:\n";
+  std::cout << "1. The largest vertex is neither the root nor a leaf\n";
+  std::cout << "2. The edges on the right branch starting at the root, except "
+               "possibly the last one, are all non-contiguous\n";
+  std::cout << "3. If the edge from k to its parent is contiguous, then the edge to "
+               "its left child must be non-contiguous.\n\n";
+
+  while (1) {
+    std::cout << "> ";
+    std::cout.flush();
+    std::cin >> input;
+    Mutze::Pattern::read_patterns(input, patterns);
+    if (std::all_of(patterns.begin(), patterns.end(),
+                    [](auto &p) { return p.is_friendly(); })) {
+      break;
+    }
+    std::cout << "At least one pattern given is not friendly. Try again.\n";
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    patterns.clear();
+  }
+
+  return patterns;
 }

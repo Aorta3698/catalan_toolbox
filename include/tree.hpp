@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -11,6 +9,7 @@
 #include "coin.hpp"
 #include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
+#include "mutze_tree.hpp"
 #include "poly.hpp"
 
 // forward declaration
@@ -36,6 +35,9 @@ struct Node {
   inline bool is_leaf() const { return !is_internal_node(); }
   inline int child_count() const { return int(children.size()); }
 
+  // use raw pointer for parent if needed:
+  // https://www.reddit.com/r/cpp_questions/comments/njqjlk/building_a_tree_with_smart_pointers_parental/
+  // https://codereview.stackexchange.com/a/191297
   std::vector<std::unique_ptr<Node>> children;
   int id;
 };
@@ -45,14 +47,6 @@ public:
   Tree(std::unique_ptr<Node> root) {
     this->k = root->child_count();
     this->root = std::move(root);
-  }
-
-  Tree(int k, std::string pattern = "") {
-    if (pattern.size() && k != 2) {
-      std::cerr << "avoid patterns can only be given when it is a binary tree\n";
-      throw std::invalid_argument("");
-    }
-    this->avoid_pattern = pattern;
   }
 
   // loved c++20
@@ -101,6 +95,18 @@ public:
    * @return The asymptotic, average height of the tree
    */
   static double asymptote(int k, int num_of_internal_nodes);
+
+  /**
+   * Enumerate *binary* trees given some or no friendly patterns.
+   */
+  static void enumerate_avoiding();
+
+  /**
+   * Build a binary tree from Mutze avoiding tree.
+   *
+   * @param mutze_tree: A mutze_tree with avoiding patterns loaded.
+   */
+  static std::unique_ptr<Tree> get_from_Mutze(const Mutze::Tree &mutze_tree);
 
   /**
    * Convert a tree into its coin stack representation
@@ -184,12 +190,17 @@ public:
    */
   int height();
 
+  /**
+   * Enumerate *k-ary* trees lexicographically.
+   */
+  void enumerate_lexico();
+
 private:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
 
-  std::string avoid_pattern;
   std::unique_ptr<Node> root;
+  int number_of_nodes;
   int k;
 };

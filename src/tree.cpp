@@ -2,6 +2,7 @@
 #include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "global.hpp"
+#include "mutze_pattern.hpp"
 #include "tree.hpp"
 #include "util.hpp"
 
@@ -12,10 +13,13 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <iterator>
 #include <memory>
 #include <numbers>
 #include <numeric>
+#include <ostream>
 #include <ranges>
+#include <sstream>
 #include <stdexcept>
 
 // Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
@@ -165,9 +169,58 @@ std::unique_ptr<Tree> Tree::get_random(int branches, int num_of_nodes) {
   return std::make_unique<Tree>(build());
 }
 
-std::unique_ptr<Tree> Tree::next() {
-  // TODO
-  assert(false);
+std::unique_ptr<Tree> Tree::get_from_Mutze(const Mutze::Tree &mutze_tree) {
+  // steal cout
+  std::stringstream buffer;
+  std::streambuf *old = std::cout.rdbuf(buffer.rdbuf());
+  mutze_tree.print();
+  std::string tree_text = buffer.str();
+  std::cout.rdbuf(old);
+
+  // convert to int vector
+  auto tmp{Util::split_string(tree_text, ' ')};
+  std::vector<int> vertices{};
+  std::transform(tmp.begin(), tmp.end(), std::back_inserter(vertices),
+                 [](const auto &s) { return std::stoi(s); });
+
+  // build
+  int cur{};
+  int sz{int(vertices.size())};
+  int leaves{sz};
+  std::function<std::unique_ptr<Node>(int, int)> build = [&](int lo, int hi) {
+    if (lo > hi) {
+      return std::make_unique<Node>(++leaves);
+    }
+    int root{vertices[cur++]};
+    auto cur_node{std::make_unique<Node>(root)};
+    cur_node->children.resize(2);
+    cur_node->children[0] = build(lo, root - 1);
+    cur_node->children[1] = build(root + 1, hi);
+    return cur_node;
+  };
+
+  return std::make_unique<Tree>(build(1, sz));
+}
+
+void Tree::enumerate_avoiding() {
+  auto patterns{Util::get_avoid_patterns()};
+
+  int n{};
+  std::cout << "\nEnter total number of nodes: ";
+  std::cin >> n;
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+  auto mutze_tree = Mutze::Tree(n, patterns);
+  auto ok{1};
+  while (ok) {
+    auto tree{get_from_Mutze(mutze_tree)};
+    std::cerr << "out\n";
+    tree->plot();
+    std::cerr << "outt\n";
+    std::cout << "Press Enter to Continue";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    ok &= mutze_tree.next();
+  }
 }
 
 void Tree::store_into_file(std::string file) {

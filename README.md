@@ -149,6 +149,7 @@ credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarnin
 ### Pattern Avoiding Trees Enumeration
 - [COMBINATORIAL GENERATION VIA PERMUTATION LANGUAGES. VI. BINARY TREES](https://arxiv.org/pdf/2306.08420)
 - [The Combinatorial Object Server](http://www.combos.org/btree)
+- [Efficient algorithms for generating pattern-avoiding combinatorial objects](https://2023.permutationpatterns.com/p/mutze.pdf)
 
 ### Edge Flip Tree Graph has a Hamiltonian path and cycle 
 - [The Rotation Graph of Binary Trees is Hamiltonian](https://www.cs.princeton.edu/techreports/1986/021.pdf)

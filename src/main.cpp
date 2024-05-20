@@ -22,7 +22,8 @@ int main(int argc, const char *argv[]) {
             << "2 - arcs\n"
             << "3 - dyck path pre-order\n"
             << "4 - coins\n"
-            << "5 - dyck path pre-order mirrored\n\n";
+            << "5 - dyck path pre-order mirrored\n"
+            << "6 - Mutze Tree Enumeration\n\n";
 
   std::string prev_dyck_path{};
   std::string prev_cmd{};
@@ -46,6 +47,13 @@ int main(int argc, const char *argv[]) {
         Poly::test_conversion();
         Chords::test_conversion();
         Arcs::test_conversion();
+      } else if (cmd == "6r") {
+        // SKIP
+      } else if (cmd == "6t") {
+        DyckPreMirrored::test_conversion();
+      } else if (cmd == "6e") {
+        Tree::enumerate_avoiding();
+        //----------------------------------
       } else if (cmd == "5r") {
         // SKIP
       } else if (cmd == "5t") {
