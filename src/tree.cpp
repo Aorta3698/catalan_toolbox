@@ -2,7 +2,6 @@
 #include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "global.hpp"
-#include "mutze_pattern.hpp"
 #include "tree.hpp"
 #include "util.hpp"
 

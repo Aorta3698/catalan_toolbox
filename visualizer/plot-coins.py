@@ -43,4 +43,15 @@ Graph(
     node_edge_width=1,
 )
 
-plt.show()
+path = ""
+if len(sys.argv) == 2:
+    plt.show()
+    sys.exit()
+elif sys.argv[2] == "a":
+    path = "./avoid"
+elif sys.argv[2] == "l":
+    path = "./lexi"
+if not os.path.exists(path):
+    os.makedirs(path)
+
+plt.savefig(f"{path}/{sys.argv[3]}.svg", bbox_inches="tight")

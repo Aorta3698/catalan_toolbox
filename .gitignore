@@ -4,7 +4,10 @@ tree
 a.out
 catalan_toolbox
 test*
+for_me.md
 
+avoid/
+lexi/
 obj/
 test*/
 visualizer/*
