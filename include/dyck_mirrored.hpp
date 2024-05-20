@@ -3,6 +3,7 @@
 #include "tree.hpp"
 
 #include <algorithm>
+#include <memory>
 #include <string>
 
 class Tree;
@@ -55,30 +56,21 @@ public:
    *
    * @return A DyckPreMirrored object
    */
-  static DyckPreMirrored *get_random(int r, int len);
+  static std::unique_ptr<DyckPreMirrored> get_random(int r, int len);
 
   /**
    * Transform the current dyck path to its tree representation.
    *
    * @return The root of the tree represented by the dyck path
    */
-  Tree *to_tree();
-
-  /**
-   * Transform the current dyck path to its tree representation.
-   *
-   * And then delete itself
-   *
-   * @return The root of the tree represented by the dyck path
-   */
-  Tree *into_tree();
+  std::unique_ptr<Tree> to_tree();
 
   /**
    * Get the next DyckPreMirrored object.
    *
    * @return The next DyckPreMirrored object.
    */
-  DyckPreMirrored *next();
+  std::unique_ptr<DyckPreMirrored> next();
 
   inline std::string get_path() const { return this->path; }
   inline int get_r() const { return this->r; }

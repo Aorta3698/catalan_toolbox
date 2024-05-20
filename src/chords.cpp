@@ -6,9 +6,10 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
-Tree *Chords::to_tree() {
+std::unique_ptr<Tree> Chords::to_tree() {
   int portal[this->points];
   int id{};
   for (const auto &[l, r] : chords) {
@@ -16,43 +17,37 @@ Tree *Chords::to_tree() {
     portal[l] = r;
   }
 
-  std::function<Node *(int, int)> build = [&](int lo, int hi) {
+  std::function<std::unique_ptr<Node>(int, int)> build = [&](int lo, int hi) {
+    auto cur_node{std::make_unique<Node>(++id)};
     if (lo >= hi) {
-      return new Node(++id);
+      return cur_node;
     }
-    auto cur_node{new Node(++id)};
     ++lo;
     cur_node->children.push_back(build(lo, portal[lo] - 1));
     cur_node->children.push_back(build(portal[lo], hi));
     return cur_node;
   };
 
-  return new Tree(build(0, this->points));
+  return std::make_unique<Tree>(build(0, this->points));
 }
 
-Tree *Chords::into_tree() {
-  auto tree{this->to_tree()};
-  delete this;
-  return tree;
+std::unique_ptr<Arcs> Chords::to_arcs() {
+  return std::make_unique<Arcs>(this->chords);
 }
 
-Arcs *Chords::to_arcs() { return new Arcs(this->chords); }
-
-Arcs *Chords::into_arcs() {
-  auto arcs{this->to_arcs()};
-  delete this;
-  return arcs;
-}
-
-Chords *Chords::get_random(int num_of_points) {
+std::unique_ptr<Chords> Chords::get_random(int num_of_points) {
   if (num_of_points & 1) {
     std::cerr << "Error: number of points must be even\n";
     throw std::invalid_argument("");
   }
   auto tree{Tree::get_random(2, num_of_points >> 1)};
   auto res{tree->to_chords()};
-  tree->self_destruct();
   return res;
+}
+
+std::unique_ptr<Chords> Chords::next() {
+  // TODO
+  assert(false);
 }
 
 void Chords::plot(std::string file) {
@@ -105,7 +100,7 @@ void Chords::test_conversion() {
        num_of_points += 2) {
     for (int i{}; i < Chords::_NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_points >> 1)};
-      auto tree2{tree1->to_chords()->into_tree()};
+      auto tree2{tree1->to_chords()->to_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
@@ -115,8 +110,6 @@ void Chords::test_conversion() {
         std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
-      tree1->self_destruct();
-      tree2->self_destruct();
     }
     std::cout << std::format("Total points = {:3} done for {} random tests!\n",
                              num_of_points, Chords::_NUM_OF_TESTS);

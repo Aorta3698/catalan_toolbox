@@ -85,8 +85,9 @@ It is because that the visualizer is not started on the main thread and apparent
 - [ ] A website that hosts all visualization for well-known Catalan structures for `n >= 3 to n < ?`.
 
 ### Organization
-- [x] Code base rewrite to follow OOP
 - [x] Documentation
+- [x] Code base rewrite to follow OOP
+- [x] Code base rewrite to follow modern C++
 - [x] Refactor Project structure to follow `include/`, `obj/`, `src/`, `lib/` format.
 - [x] Refactor Makefile to follow modern standard.
 - [x] Compile [related work](#Related-Work)

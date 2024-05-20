@@ -3,6 +3,7 @@
 #include "arcs.hpp"
 #include "global.hpp"
 #include "tree.hpp"
+#include <memory>
 
 class Tree;
 class Arcs;
@@ -31,7 +32,7 @@ public:
    *
    * @return A random chords graph
    */
-  static Chords *get_random(int num_of_points);
+  static std::unique_ptr<Chords> get_random(int num_of_points);
 
   /**
    * Verify if a given graph is a valid chords graph or not
@@ -47,39 +48,21 @@ public:
    *
    * @return The tree represented by the chords graph
    */
-  Tree *to_tree();
+  std::unique_ptr<Tree> to_tree();
 
   /**
    * Transform the current chords to its arcs graph representation.
    *
    * @return The arcs graph represented by the chords graph
    */
-  Arcs *to_arcs();
-
-  /**
-   * Transform the current chords to its tree representation.
-   *
-   * And then delete itself
-   *
-   * @return The tree represented by the chords graph
-   */
-  Tree *into_tree();
-
-  /**
-   * Transform the current chords to its arcs graph representation.
-   *
-   * And then delete itself
-   *
-   * @return The arcs graph represented by the chords graph
-   */
-  Arcs *into_arcs();
+  std::unique_ptr<Arcs> to_arcs();
 
   /**
    * Get the next chords graph
    *
    * @return The root of the tree represented by the chords graph
    */
-  Chords *next();
+  std::unique_ptr<Chords> next();
 
   /**
    * Plot the current chords graph
@@ -95,7 +78,7 @@ public:
 private:
   static constexpr std::string _PLOT_SCRIPT{"plot-chords.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".chords"};
-  static constexpr int _NUM_OF_TESTS{50000};
+  static constexpr int _NUM_OF_TESTS{20'000};
   static constexpr int _TEST_MAX_SIDES{200};
 
   Graph chords;

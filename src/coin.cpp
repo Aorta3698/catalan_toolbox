@@ -4,6 +4,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -49,6 +50,6 @@ void CoinStack::plot(std::string file) {
   Util::plot(CoinStack::_PLOT_SCRIPT, file);
 }
 
-CoinStack *CoinStack::get_random(int base) {
-  return DyckPre::get_random(2, base << 1)->into_coin_stack();
+std::unique_ptr<CoinStack> CoinStack::get_random(int base) {
+  return DyckPre::get_random(2, base << 1)->to_coin_stack();
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "dyck_pre.hpp"
@@ -24,7 +25,7 @@ public:
    *
    * @return A coin stack
    */
-  static CoinStack *get_random(int base);
+  static std::unique_ptr<CoinStack> get_random(int base);
 
   /**
    * Plot the current coin stack.
@@ -40,7 +41,7 @@ public:
    * @return The next coin stack graph object
    *
    */
-  CoinStack *next();
+  std::unique_ptr<CoinStack> next();
 
 private:
   static constexpr std::string _PLOT_SCRIPT{"plot-coins.py"};

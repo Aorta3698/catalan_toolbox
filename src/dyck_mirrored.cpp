@@ -4,17 +4,18 @@
 #include <cassert>
 #include <functional>
 #include <iostream>
+#include <memory>
 
-Tree *DyckPreMirrored::to_tree() {
+std::unique_ptr<Tree> DyckPreMirrored::to_tree() {
   int id{};
   int idx{};
 
-  std::function<Node *()> build = [&]() {
+  std::function<std::unique_ptr<Node>()> build = [&]() {
     if (idx == this->length || this->path[idx] == '1') {
-      return new Node(++id);
+      return std::make_unique<Node>(++id);
     }
 
-    Node *cur_node = new Node(++id, this->r);
+    auto cur_node = std::make_unique<Node>(++id, this->r);
     int pos{this->r};
     while (pos--) {
       ++idx;
@@ -24,21 +25,15 @@ Tree *DyckPreMirrored::to_tree() {
     return cur_node;
   };
 
-  return new Tree(build());
+  return std::make_unique<Tree>(build());
 }
 
-Tree *DyckPreMirrored::into_tree() {
-  auto tree{this->to_tree()};
-  delete this;
-  return tree;
-}
-
-DyckPreMirrored *DyckPreMirrored::next() {
+std::unique_ptr<DyckPreMirrored> DyckPreMirrored::next() {
   // TODO
   assert(false);
 }
 
-DyckPreMirrored *DyckPreMirrored::get_random(int deg, int length) {
+std::unique_ptr<DyckPreMirrored> DyckPreMirrored::get_random(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";
     throw std::invalid_argument("");
@@ -48,7 +43,7 @@ DyckPreMirrored *DyckPreMirrored::get_random(int deg, int length) {
     std::cerr << "Warning: Dyck Path length is invalid and truncated.\n";
   }
   auto random_tree{Tree::get_random(deg, num_of_internal_nodes)};
-  return random_tree->into_dyck_pre_mirrored();
+  return random_tree->to_dyck_pre_mirrored();
 }
 
 bool DyckPreMirrored::is_valid(const std::string &path) {
@@ -90,7 +85,7 @@ void DyckPreMirrored::test_conversion() {
 
     auto dyck_path{DyckPreMirrored::get_random(branches, branches * nodes)};
     auto tree{dyck_path->to_tree()};
-    auto copied_path{tree->into_dyck_pre_mirrored()};
+    auto copied_path{tree->to_dyck_pre_mirrored()};
 
     ++stat_branches[branches];
     stat_internal_nodes[branches].push_back(nodes);
@@ -103,9 +98,6 @@ void DyckPreMirrored::test_conversion() {
       copied_path->print();
       assert(false);
     }
-
-    delete dyck_path;
-    delete copied_path;
 
     if (int c = (i - 1) / four_percent; c * four_percent == i - 1) {
       std::cout << "\r";

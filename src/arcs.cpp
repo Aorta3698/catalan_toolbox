@@ -6,32 +6,20 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 
-Chords *Arcs::to_chords() {
-  auto chords{new Chords(this->arcs)};
-  return chords;
+std::unique_ptr<Chords> Arcs::to_chords() {
+  return std::make_unique<Chords>(this->arcs);
 }
 
-Chords *Arcs::into_chords() {
-  auto chords{new Chords(this->arcs)};
-  delete this;
-  return chords;
-}
-
-Tree *Arcs::to_tree() {
+std::unique_ptr<Tree> Arcs::to_tree() {
   auto chords(this->to_chords());
-  return chords->into_tree();
+  return chords->to_tree();
 }
 
-Tree *Arcs::into_tree() {
-  auto chords{Arcs::to_chords()};
-  delete this;
-  return chords->into_tree();
-}
-
-Arcs *Arcs::get_random(int num_of_points) {
-  return Chords::get_random(num_of_points)->into_arcs();
+std::unique_ptr<Arcs> Arcs::get_random(int num_of_points) {
+  return Chords::get_random(num_of_points)->to_arcs();
 }
 
 void Arcs::plot(std::string file) {
@@ -59,7 +47,7 @@ void Arcs::plot(std::string file) {
   Util::plot(Arcs::_PLOT_SCRIPT, file);
 }
 
-Arcs *Arcs::next() {
+std::unique_ptr<Arcs> Arcs::next() {
   // TODO
   assert(false);
 }
@@ -85,7 +73,7 @@ void Arcs::test_conversion() {
        num_of_points += 2) {
     for (int i{}; i < Arcs::_NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_points >> 1)};
-      auto tree2{tree1->to_arcs()->into_tree()};
+      auto tree2{tree1->to_arcs()->to_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
@@ -95,8 +83,6 @@ void Arcs::test_conversion() {
         std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
-      tree1->self_destruct();
-      tree2->self_destruct();
     }
     std::cout << std::format("Total points = {:3} done for {} random tests!\n",
                              num_of_points, Arcs::_NUM_OF_TESTS);

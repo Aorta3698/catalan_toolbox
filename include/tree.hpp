@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -26,25 +27,24 @@ class CoinStack;
  *
  */
 struct Node {
-  // use pointer for now
   Node(int id, int node_count = 0) {
     this->id = id;
-    children = std::vector<Node *>(node_count);
+    children = std::vector<std::unique_ptr<Node>>(node_count);
   }
 
   inline bool is_internal_node() const { return !children.empty(); }
   inline bool is_leaf() const { return !is_internal_node(); }
   inline int child_count() const { return int(children.size()); }
 
-  std::vector<Node *> children;
+  std::vector<std::unique_ptr<Node>> children;
   int id;
 };
 
 class Tree {
 public:
-  Tree(Node *root) {
+  Tree(std::unique_ptr<Node> root) {
     this->k = root->child_count();
-    this->root = root;
+    this->root = std::move(root);
   }
 
   Tree(int k, std::string pattern = "") {
@@ -75,7 +75,7 @@ public:
    *
    * @return The root of the generated tree
    */
-  static Tree *get_random(int deg, int num_of_full_nodes);
+  static std::unique_ptr<Tree> get_random(int deg, int num_of_full_nodes);
 
   /**
    * Read the file that consists of one edge on each line
@@ -89,7 +89,7 @@ public:
    *
    * @return The full k-ary tree represented by the file
    */
-  static Tree *get_from_file(std::string file);
+  static std::unique_ptr<Tree> get_from_file(std::string file);
 
   /**
    * The asymptotic, average height of a k-ray tree with
@@ -107,32 +107,14 @@ public:
    *
    * @return Its coin stack object.
    */
-  CoinStack *to_coin_stack();
-
-  /**
-   * Convert a tree into its coin stack representation
-   *
-   * And then delete itself
-   *
-   * @return Its coin stack object.
-   */
-  CoinStack *into_coin_stack();
+  std::unique_ptr<CoinStack> to_coin_stack();
 
   /**
    * Convert a tree into its mirrored pre-order dyck path representation
    *
    * @return Its DyckPreMirrored object.
    */
-  DyckPreMirrored *to_dyck_pre_mirrored();
-
-  /**
-   * Convert a tree into its mirrored pre-order dyck path representation
-   *
-   * And then delete itself
-   *
-   * @return Its DyckPreMirrored object.
-   */
-  DyckPreMirrored *into_dyck_pre_mirrored();
+  std::unique_ptr<DyckPreMirrored> to_dyck_pre_mirrored();
 
   /**
    * Convert the current tree into
@@ -140,17 +122,7 @@ public:
    *
    * @return Its arcs graph representation
    */
-  Arcs *to_arcs();
-
-  /**
-   * Convert the current tree into
-   * its arcs graph representation
-   *
-   * And then delete itself
-   *
-   * @return Its arcs graph representation
-   */
-  Arcs *into_arcs();
+  std::unique_ptr<Arcs> to_arcs();
 
   /**
    * Convert the current tree into its
@@ -158,57 +130,21 @@ public:
    *
    * @return Its polygon triangulation representation
    */
-  Poly *to_poly();
-
-  /**
-   * Convert the current tree into its
-   * polygon triangulation representation
-   *
-   * And then delete itself
-   *
-   * @return Its polygon triangulation representation
-   */
-  Poly *into_poly();
+  std::unique_ptr<Poly> to_poly();
 
   /**
    * Convert the current tree into its chords graph representation
    *
    * @return Its chords graph representation
    */
-  Chords *to_chords();
-
-  /**
-   * Convert the current tree into its chords graph representation
-   *
-   * And then delete itself
-   *
-   * @return Its chords graph representation
-   */
-  Chords *into_chords();
+  std::unique_ptr<Chords> to_chords();
 
   /**
    * Convert a tree into its pre-order dyck path representation
    *
    * @return Its DyckPre representation.
    */
-  DyckPre *to_dyck_pre();
-
-  /**
-   * Convert a tree into its pre-order dyck path representation
-   *
-   * And then delete itself
-   *
-   * @return Its DyckPre representation.
-   */
-  DyckPre *into_dyck_pre();
-
-  /**
-   * Plot all the trees with n internal nodes.
-   * It only accepts at most 4 internal nodes.
-   *
-   * @param n:  Number of internal nodes
-   */
-  // void plot_all_trees(int n);
+  std::unique_ptr<DyckPre> to_dyck_pre();
 
   /**
    * Store tree into a file with one edge on each line,
@@ -231,7 +167,7 @@ public:
    * Rotate into the next tree.
    * @return The next tree.
    */
-  Tree *next();
+  std::unique_ptr<Tree> next();
 
   /**
    * Serializes the current tree into string.
@@ -240,11 +176,6 @@ public:
    * @return The unique serialization of the tree
    */
   std::string serialize();
-
-  /**
-   * Free memory used by the tree.
-   */
-  void self_destruct();
 
   /**
    * Compute the height of the tree - root by itself has a height of 1.
@@ -259,6 +190,6 @@ private:
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
 
   std::string avoid_pattern;
+  std::unique_ptr<Node> root;
   int k;
-  Node *root;
 };

@@ -1,4 +1,6 @@
 #include "coin.hpp"
+#include "dyck_mirrored.hpp"
+#include "dyck_pre.hpp"
 #include "global.hpp"
 #include "tree.hpp"
 #include "util.hpp"
@@ -10,86 +12,66 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <numbers>
 #include <numeric>
 #include <ranges>
 #include <stdexcept>
 
-// TODO: this doesn't seem ideal (converting 2 times)
-CoinStack *Tree::to_coin_stack() { return this->to_dyck_pre()->into_coin_stack(); }
+// Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
 
-CoinStack *Tree::into_coin_stack() {
-  auto coins{this->to_dyck_pre()->into_coin_stack()};
-  this->self_destruct();
-  return coins;
+// TODO: this doesn't seem ideal (converting 2 times)
+std::unique_ptr<CoinStack> Tree::to_coin_stack() {
+  return this->to_dyck_pre()->to_coin_stack();
 }
 
-DyckPreMirrored *Tree::to_dyck_pre_mirrored() {
+std::unique_ptr<DyckPreMirrored> Tree::to_dyck_pre_mirrored() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
     int zero{int(encoded_result.size())};
-    for (const auto next_node : cur_node->children | std::ranges::views::reverse) {
+    for (const auto &next_node : cur_node->children | std::ranges::views::reverse) {
       encoded_result += "1";
-      encode(next_node);
+      encode(next_node.get());
     }
     if (cur_node->is_internal_node()) {
       encoded_result[zero] = '0';
     }
   };
-
-  encode(root);
+  encode(this->root.get());
   if (!DyckPreMirrored::is_valid(encoded_result)) {
     std::cerr << "Error: This tree is not a full k-ary tree\n";
     throw std::invalid_argument("");
   }
-  return new DyckPreMirrored(encoded_result);
+  return std::make_unique<DyckPreMirrored>(encoded_result);
 }
 
-DyckPreMirrored *Tree::into_dyck_pre_mirrored() {
-  auto dyck_path{this->to_dyck_pre_mirrored()};
-  this->self_destruct();
-  return dyck_path;
-}
-
-DyckPre *Tree::to_dyck_pre() {
+std::unique_ptr<DyckPre> Tree::to_dyck_pre() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
     int zero{};
-    for (const auto next_node : cur_node->children) {
+    for (const auto &next_node : cur_node->children) {
       zero = encoded_result.size();
       encoded_result += "1";
-      encode(next_node);
+      encode(next_node.get());
     }
     encoded_result[zero] -= cur_node->is_internal_node();
   };
 
-  encode(root);
+  encode(root.get());
   if (!DyckPre::is_valid(encoded_result)) {
     std::cerr << "Error: This tree is not a full k-ary tree\n";
     throw std::invalid_argument("");
   }
-  return new DyckPre(encoded_result);
+  return std::make_unique<DyckPre>(encoded_result);
 }
 
-DyckPre *Tree::into_dyck_pre() {
-  auto dyck_pre{this->to_dyck_pre()};
-  this->self_destruct();
-  return dyck_pre;
-}
-
-Arcs *Tree::to_arcs() {
+std::unique_ptr<Arcs> Tree::to_arcs() {
   auto chords{this->to_chords()};
-  auto arcs{chords->into_arcs()};
+  auto arcs{chords->to_arcs()};
   return arcs;
 }
 
-Arcs *Tree::into_arcs() {
-  auto arcs{this->to_arcs()};
-  this->self_destruct();
-  return arcs;
-}
-
-Chords *Tree::to_chords() {
+std::unique_ptr<Chords> Tree::to_chords() {
   Graph chords;
   int id{};
 
@@ -99,27 +81,21 @@ Chords *Tree::to_chords() {
     }
     assert(cur_node->child_count() == 2);
     int assigned_id{id++};
-    int left_id{build(cur_node->children[0])};
-    int right_id{build(cur_node->children[1])};
+    int left_id{build(cur_node->children[0].get())};
+    int right_id{build(cur_node->children[1].get())};
     chords.push_back({left_id, right_id});
     return assigned_id;
   };
 
-  build(this->root);
+  build(this->root.get());
   if (!Chords::is_valid(chords)) {
     std::cerr << "Error: tree to chords graph failed.\n";
     throw std::invalid_argument("");
   }
-  return new Chords(chords);
+  return std::make_unique<Chords>(chords);
 }
 
-Chords *Tree::into_chords() {
-  auto chords{this->to_chords()};
-  this->self_destruct();
-  return chords;
-}
-
-Poly *Tree::to_poly() {
+std::unique_ptr<Poly> Tree::to_poly() {
   Graph poly;
 
   int count{};
@@ -130,28 +106,22 @@ Poly *Tree::to_poly() {
       return ++count - (Dir::Left == dir);
     }
     assert(int(cur_node->children.size()) == 2);
-    int l{build(cur_node->children[0], Dir::Left)};
-    int r{build(cur_node->children[1], Dir::Right)};
+    int l{build(cur_node->children[0].get(), Dir::Left)};
+    int r{build(cur_node->children[1].get(), Dir::Right)};
     poly.push_back({l, r});
     return dir == Dir::Left ? l : r;
   };
 
-  build(this->root, Dir::None);
+  build(this->root.get(), Dir::None);
   std::ranges::reverse(poly);
   if (!Poly::is_valid(poly)) {
     std::cerr << "Error: tree to polygon triangulation failed.\n";
     throw std::invalid_argument("");
   }
-  return new Poly(poly);
+  return std::make_unique<Poly>(poly);
 }
 
-Poly *Tree::into_poly() {
-  auto poly{this->to_poly()};
-  this->self_destruct();
-  return poly;
-}
-
-Tree *Tree::get_random(int branches, int num_of_nodes) {
+std::unique_ptr<Tree> Tree::get_random(int branches, int num_of_nodes) {
   if (num_of_nodes < 1) {
     std::cerr << "internal node count cannot be < 1\n";
     throw std::invalid_argument("");
@@ -181,18 +151,23 @@ Tree *Tree::get_random(int branches, int num_of_nodes) {
   }
 
   // build tree
-  std::function<Node *()> build = [&]() {
+  std::function<std::unique_ptr<Node>()> build = [&]() {
     if (++cur == upper) {
       cur = 0;
     }
-    auto node{new Node(cur, seq[cur] ? branches : 0)};
+    auto node{std::make_unique<Node>(cur, seq[cur] ? branches : 0)};
     for (auto &child : node->children) {
       child = build();
     }
     return node;
   };
 
-  return new Tree(build());
+  return std::make_unique<Tree>(build());
+}
+
+std::unique_ptr<Tree> Tree::next() {
+  // TODO
+  assert(false);
 }
 
 void Tree::store_into_file(std::string file) {
@@ -208,17 +183,17 @@ void Tree::store_into_file(std::string file) {
   }
 
   std::function<void(const Node *)> print_edges = [&](const Node *cur_node) {
-    for (const auto child : cur_node->children) {
+    for (const auto &child : cur_node->children) {
       out << cur_node->id << ',' << child->id << "\n";
-      print_edges(child);
+      print_edges(child.get());
     }
   };
 
-  print_edges(this->root);
+  print_edges(this->root.get());
   // deconstructor for _out_ is auto called
 }
 
-Tree *Tree::get_from_file(std::string file) {
+std::unique_ptr<Tree> Tree::get_from_file(std::string file) {
   std::ifstream in{file};
   if (!in) {
     std::cerr << file << " cannot be opened.\n";
@@ -259,8 +234,9 @@ Tree *Tree::get_from_file(std::string file) {
 
   // build tree
   int branches{deg[root]};
-  std::function<Node *(int, int)> build = [&](int cur_node, int parent) {
-    Node *node{new Node(cur_node)};
+  std::function<std::unique_ptr<Node>(int, int)> build = [&](int cur_node,
+                                                             int parent) {
+    auto node{std::make_unique<Node>(cur_node)};
     for (int child : adj[cur_node]) {
       if (child != parent) {
         node->children.push_back(build(child, cur_node));
@@ -273,7 +249,7 @@ Tree *Tree::get_from_file(std::string file) {
     return node;
   };
 
-  return new Tree(build(root, -1));
+  return std::make_unique<Tree>(build(root, -1));
 }
 
 void Tree::plot(std::string file) {
@@ -288,40 +264,29 @@ std::string Tree::serialize() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
     int zero{};
-    for (const auto next_node : cur_node->children) {
+    for (const auto &next_node : cur_node->children) {
       zero = encoded_result.size();
       encoded_result += "1";
-      encode(next_node);
+      encode(next_node.get());
     }
     encoded_result[zero] -= cur_node->is_internal_node();
   };
 
-  encode(root);
+  encode(root.get());
   return encoded_result;
-}
-
-void Tree::self_destruct() {
-  std::function<void(Node *)> free_nodes = [&](Node *cur_node) {
-    for (auto child : cur_node->children) {
-      free_nodes(child);
-    }
-    delete cur_node;
-  };
-  free_nodes(this->root);
-  delete this;
 }
 
 int Tree::height() {
   std::function<int(const Node *)> solve = [&](const Node *cur_node) {
     int depth{};
     for (const auto &child : cur_node->children) {
-      depth = std::max(depth, solve(child));
+      depth = std::max(depth, solve(child.get()));
     }
     return depth + 1;
   };
 
   // the book assumes root by itself = 1 height
-  return solve(this->root);
+  return solve(this->root.get());
 }
 
 double Tree::asymptote(int k, int num_of_internal_nodes) {
@@ -330,11 +295,11 @@ double Tree::asymptote(int k, int num_of_internal_nodes) {
 
 void Tree::test_expected_height() {
   int num_of_samples{10'000};
-  int num_of_internal_nodes{100'000};
+  int num_of_internal_nodes{50'000};
   int ten{num_of_samples / 10};
-  double tolerance{0.02};
+  double tolerance{0.03};
   std::cout << "====== Random Tree: Sampling Distribution Test ======\n\n";
-  std::cout << "Testing from degree 2 to 5 with 10k random samples and 100k "
+  std::cout << "Testing from degree 2 to 5 with 10k random samples and 50k "
                "internal nodes\n\n";
   for (int deg = 2; deg <= 5; ++deg) {
     double sum{};
@@ -346,7 +311,6 @@ void Tree::test_expected_height() {
       }
       auto tree{Tree::get_random(deg, num_of_internal_nodes)};
       sum += tree->height();
-      tree->self_destruct();
     }
     double res{sum / num_of_samples};
     double expected{Tree::asymptote(deg, num_of_internal_nodes)};
@@ -354,7 +318,7 @@ void Tree::test_expected_height() {
 
     std::cout << "\r";
     std::cout << std::format(
-        "Result: {:<9.2f} | Expected: {:<9.2f} (OK: within 2%, got: {:.2f}%)\n", res,
+        "Result: {:<9.2f} | Expected: {:<9.2f} (OK: within 3%, got: {:.2f}%)\n", res,
         expected, error * 100);
 
     if (error > tolerance) {

@@ -4,7 +4,7 @@
 #include "tree.hpp"
 
 #include <algorithm>
-#include <cassert>
+#include <memory>
 #include <stdexcept>
 #include <string>
 
@@ -49,7 +49,7 @@ public:
    *
    * @return A DyckPre (dyck path in pre-order)
    */
-  static DyckPre *get_random(int r, int len);
+  static std::unique_ptr<DyckPre> get_random(int r, int len);
 
   /**
    * Verify if the given string is a valid dyck path or not
@@ -66,17 +66,7 @@ public:
    *
    * @return The root of the tree represented by the dyck path
    */
-  Tree *to_tree();
-
-  /**
-   * Transform a dyck path to its pre-order tree representation.
-   * If the dyck path is not valid, throw an exception.
-   *
-   * And then delete itself
-   *
-   * @return The root of the tree represented by the dyck path
-   */
-  Tree *into_tree();
+  std::unique_ptr<Tree> to_tree();
 
   /**
    * Transform a dyck path to its coin stack representation.
@@ -84,24 +74,14 @@ public:
    *
    * @return The coin stack represented by the dyck path
    */
-  CoinStack *to_coin_stack();
-
-  /**
-   * Transform a dyck path to its coin stack representation.
-   * If the dyck path is not valid, throw an exception.
-   *
-   * And then delete itself
-   *
-   * @return The coin stack represented by the dyck path
-   */
-  CoinStack *into_coin_stack();
+  std::unique_ptr<CoinStack> to_coin_stack();
 
   /**
    * Get the next dyck path in pre-order
    *
    * @return The next dyck path in pre-order
    */
-  DyckPre *next();
+  std::unique_ptr<DyckPre> next();
 
   /**
    * Plot the current dyck path (above the line)

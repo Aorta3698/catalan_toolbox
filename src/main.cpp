@@ -59,7 +59,6 @@ int main(int argc, const char *argv[]) {
         while (count--) {
           auto coins{CoinStack::get_random(base)};
           coins->plot();
-          delete coins;
         }
       } else if (cmd == "4t") {
         // SKIP
@@ -73,7 +72,6 @@ int main(int argc, const char *argv[]) {
         while (count--) {
           auto dyck_pre{DyckPre::get_random(r, length)};
           dyck_pre->plot();
-          delete dyck_pre;
         }
       } else if (cmd == "3t") {
         DyckPre::test_conversion();
@@ -89,7 +87,6 @@ int main(int argc, const char *argv[]) {
         while (count--) {
           auto arcs{Arcs::get_random(num_of_points)};
           arcs->plot();
-          delete arcs;
         }
       } else if (cmd == "2t") {
         Arcs::test_conversion();
@@ -104,7 +101,6 @@ int main(int argc, const char *argv[]) {
         while (count--) {
           auto chords{Chords::get_random(num_of_points)};
           chords->plot();
-          delete chords;
         }
       } else if (cmd == "1t") {
         Chords::test_conversion();
@@ -119,7 +115,6 @@ int main(int argc, const char *argv[]) {
         while (count--) {
           auto poly{Poly::get_random(num_of_sides)};
           poly->plot();
-          delete poly;
         }
       } else if (cmd == "0t") {
         Poly::test_conversion();
@@ -127,7 +122,6 @@ int main(int argc, const char *argv[]) {
         int num_of_sides{Util::get_num(tokens.at(1))};
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
-        delete poly;
         //---------------------------------
       } else if (cmd == "quit" || cmd == "q") {
         break;
@@ -137,25 +131,21 @@ int main(int argc, const char *argv[]) {
         auto dyck_pre{DyckPre::get_random(r, len)};
         dyck_pre->print();
         prev_dyck_path = dyck_pre->get_path();
-        delete dyck_pre;
       } else if (cmd == "plot" || cmd == "p") {
         std::string dyck_path{tokens.size() == 2 ? tokens.at(1) : prev_dyck_path};
-        auto tree{(new DyckPre(dyck_path))->into_tree()};
+        auto tree{(new DyckPre(dyck_path))->to_tree()};
         tree->plot();
-        tree->self_destruct();
       } else if (cmd == "file" || cmd == "f") {
         std::string file{tokens.at(1)};
         auto tree{Tree::get_from_file(file)};
-        auto dyck_pre{tree->into_dyck_pre()};
+        auto dyck_pre{tree->to_dyck_pre()};
         dyck_pre->print();
         prev_dyck_path = dyck_pre->get_path();
-        delete dyck_pre;
       } else if (cmd == "save" || cmd == "s") {
         std::string dyck_path{tokens.at(1)};
         std::string file{tokens.at(2)};
-        auto tree{(new DyckPre(dyck_path))->into_tree()};
+        auto tree{(new DyckPre(dyck_path))->to_tree()};
         tree->store_into_file(file);
-        tree->self_destruct();
       } else {
         print_usage();
       }

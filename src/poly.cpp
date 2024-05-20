@@ -8,19 +8,20 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <unordered_set>
 
-Tree *Poly::to_tree() {
+std::unique_ptr<Tree> Poly::to_tree() {
   enum Dir { Up, Down };
   int tables[this->sides][2];
   std::memset(tables, 0, sizeof(tables));
-  std::vector<Node *> nodes(this->sides);
+  std::vector<std::unique_ptr<Node>> nodes(this->sides);
   std::vector<std::vector<int>> buckets(this->sides);
 
   // pre-processing
   for (int i{}; i < this->sides - 1; ++i) {
-    nodes[i] = new Node(i);
+    nodes[i] = std::make_unique<Node>(i);
     tables[i][Dir::Up] = i;
     tables[i + 1][Dir::Down] = i;
   }
@@ -35,23 +36,17 @@ Tree *Poly::to_tree() {
   for (int len{}; len < this->sides; ++len) {
     for (int idx : buckets[len]) {
       auto [l, r] = poly[idx];
-      auto parent = new Node(++id, 2);
-      parent->children[0] = nodes[tables[l][Dir::Up]];
-      parent->children[1] = nodes[tables[r][Dir::Down]];
+      auto parent = std::make_unique<Node>(++id, 2);
+      parent->children[0] = std::move(nodes[tables[l][Dir::Up]]);
+      parent->children[1] = std::move(nodes[tables[r][Dir::Down]]);
       int pos{tables[l][Dir::Up]};
-      nodes[pos] = parent;
+      nodes[pos] = std::move(parent);
       tables[r][Dir::Down] = pos;
       tables[l][Dir::Up] = pos;
     }
   }
 
-  return new Tree(nodes[tables[0][Dir::Up]]);
-}
-
-Tree *Poly::into_tree() {
-  auto tree{this->to_tree()};
-  delete this;
-  return tree;
+  return std::make_unique<Tree>(std::move(nodes[tables[0][Dir::Up]]));
 }
 
 void Poly::flip_and_plot() {
@@ -143,9 +138,9 @@ void Poly::flip_and_plot() {
   }
 }
 
-Poly *Poly::get_random(int num_of_sides) {
+std::unique_ptr<Poly> Poly::get_random(int num_of_sides) {
   auto tree{Tree::get_random(2, num_of_sides - 2)};
-  auto res{tree->into_poly()};
+  auto res{tree->to_poly()};
   return res;
 }
 
@@ -181,7 +176,7 @@ void Poly::plot(std::string file) {
   Util::plot(Poly::_PLOT_SCRIPT, file);
 }
 
-Poly *Poly::next() {
+std::unique_ptr<Poly> Poly::next() {
   // TODO: implement this
   assert(false);
 }
@@ -225,7 +220,7 @@ void Poly::test_conversion() {
   for (int num_of_sides{3}; num_of_sides <= Poly::_TEST_MAX_SIDES; ++num_of_sides) {
     for (int i{}; i < Poly::_NUM_OF_TESTS; ++i) {
       auto tree1{Tree::get_random(2, num_of_sides - 2)};
-      auto tree2{tree1->to_poly()->into_tree()};
+      auto tree2{tree1->to_poly()->to_tree()};
       std::string id1{tree1->serialize()};
       std::string id2{tree2->serialize()};
       if (id1 != id2) {
@@ -235,8 +230,6 @@ void Poly::test_conversion() {
         std::cerr << std::format("id2 = {}\n", id2);
         assert(false);
       }
-      tree1->self_destruct();
-      tree2->self_destruct();
     }
     std::cout << std::format("Total sides = {:3} done for {} random tests!\n",
                              num_of_sides, Poly::_NUM_OF_TESTS);

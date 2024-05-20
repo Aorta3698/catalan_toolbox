@@ -9,10 +9,11 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
-Tree *DyckPre::to_tree() {
+std::unique_ptr<Tree> DyckPre::to_tree() {
   // pre-compute some info
   int score{};
   std::unordered_map<int, std::vector<int>> zeros;
@@ -34,10 +35,10 @@ Tree *DyckPre::to_tree() {
 
   // construct the tree
   int id{};
-  std::function<Node *(int, int, int)> build = [&](int start, int end,
-                                                   int cur_score) {
+  std::function<std::unique_ptr<Node>(int, int, int)> build = [&](int start, int end,
+                                                                  int cur_score) {
     if (start > end) {
-      return new Node(++id);
+      return std::make_unique<Node>(++id);
     }
     // this assertion must hold
     // maybe a better name for "end" is "cur"
@@ -57,7 +58,7 @@ Tree *DyckPre::to_tree() {
     }
 
     // assign right-most child
-    auto root{new Node(++id, this->r)};
+    auto root{std::make_unique<Node>(++id, this->r)};
     int cur_child{this->r};
     root->children[--cur_child] = build(cur_zero[low] + 1, end, cur_score);
 
@@ -72,24 +73,14 @@ Tree *DyckPre::to_tree() {
     return root;
   };
 
-  return new Tree(build(0, this->length - 1, 0));
+  return std::make_unique<Tree>(build(0, this->length - 1, 0));
 }
 
-Tree *DyckPre::into_tree() {
-  auto tree{this->to_tree()};
-  delete this;
-  return tree;
+std::unique_ptr<CoinStack> DyckPre::to_coin_stack() {
+  return std::make_unique<CoinStack>(this->path);
 }
 
-CoinStack *DyckPre::to_coin_stack() { return new CoinStack(this->path); }
-
-CoinStack *DyckPre::into_coin_stack() {
-  auto coins{this->to_coin_stack()};
-  delete this;
-  return coins;
-}
-
-DyckPre *DyckPre::get_random(int deg, int length) {
+std::unique_ptr<DyckPre> DyckPre::get_random(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";
     throw std::invalid_argument("");
@@ -99,10 +90,10 @@ DyckPre *DyckPre::get_random(int deg, int length) {
     std::cerr << "Warning: Dyck Path length is invalid and truncated.\n";
   }
   auto random_tree{Tree::get_random(deg, num_of_internal_nodes)};
-  return random_tree->into_dyck_pre();
+  return random_tree->to_dyck_pre();
 }
 
-DyckPre *DyckPre::next() {
+std::unique_ptr<DyckPre> DyckPre::next() {
   // TODO
   assert(false);
 }
@@ -197,7 +188,7 @@ void DyckPre::test_conversion() {
 
     auto dyck_path{DyckPre::get_random(branches, branches * nodes)};
     auto tree{dyck_path->to_tree()};
-    auto copied_path{tree->into_dyck_pre()};
+    auto copied_path{tree->to_dyck_pre()};
 
     ++stat_branches[branches];
     stat_internal_nodes[branches].push_back(nodes);
@@ -210,9 +201,6 @@ void DyckPre::test_conversion() {
       copied_path->print();
       assert(false);
     }
-
-    delete dyck_path;
-    delete copied_path;
 
     if (int c = (i - 1) / four_percent; c * four_percent == i - 1) {
       std::cout << "\r";
