@@ -106,8 +106,10 @@ std::vector<Mutze::Pattern> Util::get_avoid_patterns() {
   while (1) {
     std::cout << "> ";
     std::cout.flush();
-    std::cin >> input;
-    Mutze::Pattern::read_patterns(input, patterns);
+    std::getline(std::cin, input);
+    if (!Mutze::Pattern::read_patterns(input, patterns)) {
+      continue;
+    }
     if (std::all_of(patterns.begin(), patterns.end(),
                     [](auto &p) { return p.is_friendly(); })) {
       break;
