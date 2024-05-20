@@ -44,7 +44,7 @@ std::string &strip(std::string &str);
 template <typename T> void print_vector(const T &vec);
 
 /**
- * Print a vector to console
+ * Print a vector of vector to console
  *
  * @param vec: The vector in question
  */

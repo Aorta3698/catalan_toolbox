@@ -17,7 +17,7 @@ template <typename T> void Util::print_vector(const T &t) {
   std::cerr << "\n";
 }
 
-template <typename T> void print_vvector(const T &t) {
+template <typename T> void Util::print_vvector(const T &t) {
   std::for_each(t.cbegin(), t.cend(), Util::print_vector<typename T::value_type>);
 }
 
