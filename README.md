@@ -81,10 +81,11 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Gallery for $C_4$ and $C_5$
 
 ### Enumeration
-- [x] Mutze lib imported and now able to enumerate pattern avoiding binary trees.
+- [x] Package Mutze codes into a C++ library.
+- [x] Use the above to enumerate pattern avoiding binary trees.
 - [x] Generalize the above to all Catalan structures.
 - [x] Able to visualize pattern avoiding Calatan structures.
-- [x] Save all of the above to svg on the disk.
+- [x] Save all of the above as svg files on the disk.
 - [ ] Able to enumerate generalized Catalan structures lexicographically via an interator.
 
 ### Other
