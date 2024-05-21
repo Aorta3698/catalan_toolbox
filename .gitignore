@@ -6,8 +6,7 @@ catalan_toolbox
 test*
 for_me.md
 
-avoid/
-lexi/
+out/
 obj/
 test*/
 visualizer/*

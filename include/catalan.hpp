@@ -15,7 +15,7 @@ public:
   auto self() { return static_cast<T *>(this); };
   auto self() const { return static_cast<T const *>(this); };
   void to_file(std::string file = "");
-  static void of(const Mutze::Tree);
+  static void of(const Mutze::Tree &);
 
   /**
    * Enumerate pattern avoiding Catalan structures.
@@ -26,10 +26,12 @@ public:
     std::string file;
     std::cout << "\nEnter total number of nodes: ";
     std::cin >> n;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::cout << "Enter the desired filename prefix: ";
     std::getline(std::cin, file);
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.clear();
 
+    std::cout << "\n\nCurrent setting is 1 second per svg.\n";
     int count{};
     auto mutze_tree = Mutze::Tree(n, patterns);
     auto ok{1};
@@ -37,10 +39,17 @@ public:
       auto cat{T::of(mutze_tree)};
       cat->to_svg(file + std::to_string(count++));
       ok &= mutze_tree.next();
+      using namespace std::chrono_literals;
+      std::this_thread::sleep_for(1s);
+      std::cout << "\r";
+      std::cout << std::format("{} svg done!", count);
     }
+    std::cout << "\n\nAll done!\n\n";
   }
 
   void to_svg(std::string outfile) {
+    self()->to_file(T::_DEFAULT_PREFIX_FILE);
+
     if (fork() == 0) {
       std::string python{"./visualizer/bin/python3"};
       std::string plotter{std::format("./visualizer/{}", T::_PLOT_SCRIPT)};

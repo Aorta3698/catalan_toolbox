@@ -36,7 +36,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<DyckPre> of(const Mutze::Tree mtree);
+  static std::unique_ptr<DyckPre> of(const Mutze::Tree &mtree);
 
   /**
    * 100,000 test cases of creating a random dyck path, converting it to tree

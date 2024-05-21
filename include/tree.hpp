@@ -112,7 +112,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Tree> of(const Mutze::Tree mtree);
+  static std::unique_ptr<Tree> of(const Mutze::Tree &mtree);
 
   /**
    * Enumerate *binary* trees given some or no friendly patterns.

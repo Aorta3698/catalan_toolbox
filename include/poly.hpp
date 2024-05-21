@@ -25,7 +25,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Poly> of(const Mutze::Tree mtree);
+  static std::unique_ptr<Poly> of(const Mutze::Tree &mtree);
 
   /**
    * Create a random polygon triangulation

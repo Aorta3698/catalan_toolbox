@@ -17,7 +17,7 @@ edges_del = []
 is_full = 0
 
 with open(sys.argv[1]) as infile:
-    tmp = infile.readline()
+    tmp = infile.readline().strip()
     is_full = tmp == "1"
     for line in infile:
         u, v = line.strip().split(",")
@@ -38,7 +38,6 @@ if not is_full:
         plot_instance.edge_artists[e].set_alpha(0)
     for v in leaves_del:
         plot_instance.node_artists[v].set_alpha(0)
-
 
 if len(sys.argv) == 2:
     plt.show()

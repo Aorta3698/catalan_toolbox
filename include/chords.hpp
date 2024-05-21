@@ -51,7 +51,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Chords> of(const Mutze::Tree mtree);
+  static std::unique_ptr<Chords> of(const Mutze::Tree &mtree);
 
   /**
    * Transform the current chords to its tree representation.

@@ -23,7 +23,7 @@
 
 // Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
 
-std::unique_ptr<Tree> Tree::of(const Mutze::Tree mtree) {
+std::unique_ptr<Tree> Tree::of(const Mutze::Tree &mtree) {
   return Tree::get_from_Mutze(mtree);
 }
 

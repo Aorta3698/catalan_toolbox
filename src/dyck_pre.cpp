@@ -12,7 +12,7 @@
 #include <unordered_map>
 #include <vector>
 
-std::unique_ptr<DyckPre> DyckPre::of(const Mutze::Tree mtree) {
+std::unique_ptr<DyckPre> DyckPre::of(const Mutze::Tree &mtree) {
   auto tree{Tree::get_from_Mutze(mtree)};
   return tree->to_dyck_pre();
 }
