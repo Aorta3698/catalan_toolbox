@@ -74,7 +74,7 @@ std::array<double, 2> Util::rotate(double x, double y, double deg) {
 }
 
 void Util::plot(std::string script, std::string file) {
-  if (fork() == 0) { // TODO: calling fork inside thread is not good
+  if (fork() == 0) {
     std::string python{"./visualizer/bin/python3 "};
     std::string plotter{"./visualizer/" + script + " "};
     std::string cmd{python + plotter + file};

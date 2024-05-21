@@ -22,7 +22,7 @@ std::unique_ptr<Arcs> Arcs::get_random(int num_of_points) {
   return Chords::get_random(num_of_points)->to_arcs();
 }
 
-void Arcs::plot(std::string file) {
+void Arcs::to_file(std::string file) {
   if (file == "") {
     file = Arcs::_DEFAULT_PREFIX_FILE;
   }
@@ -43,8 +43,6 @@ void Arcs::plot(std::string file) {
   for (auto [a, b] : arcs) {
     out << a << "," << b << "\n";
   }
-
-  Util::plot(Arcs::_PLOT_SCRIPT, file);
 }
 
 std::unique_ptr<Arcs> Arcs::next() {

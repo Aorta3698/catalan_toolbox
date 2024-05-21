@@ -56,15 +56,10 @@ for e in T:
     P.edge_artists[e].set_alpha(1.0)
     P.edge_artists[e].update_width(0.02)
 
-path = ""
 if len(sys.argv) == 2:
     plt.show()
-    sys.exit()
-elif sys.argv[2] == "a":
-    path = "./avoid"
-elif sys.argv[2] == "l":
-    path = "./lexi"
-if not os.path.exists(path):
-    os.makedirs(path)
-
-plt.savefig(f"{path}/{sys.argv[3]}.svg", bbox_inches="tight")
+else:
+    path = "./out"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")

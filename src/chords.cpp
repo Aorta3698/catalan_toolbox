@@ -50,7 +50,7 @@ std::unique_ptr<Chords> Chords::next() {
   assert(false);
 }
 
-void Chords::plot(std::string file) {
+void Chords::to_file(std::string file) {
   if (file == "") {
     file = Chords::_DEFAULT_PREFIX_FILE;
   }
@@ -74,8 +74,6 @@ void Chords::plot(std::string file) {
   for (auto [a, b] : chords) {
     out << a << "," << b << "\n";
   }
-
-  Util::plot(Chords::_PLOT_SCRIPT, file);
 }
 
 void Chords::exchage_chords() {

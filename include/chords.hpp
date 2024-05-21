@@ -1,14 +1,16 @@
 #pragma once
 
+#include <memory>
+
 #include "arcs.hpp"
+#include "catalan.hpp"
 #include "global.hpp"
 #include "tree.hpp"
-#include <memory>
 
 class Tree;
 class Arcs;
 
-class Chords {
+class Chords : public Catalan<Chords> {
 public:
   Chords(Graph chords) {
     this->chords = chords;
@@ -65,9 +67,12 @@ public:
   std::unique_ptr<Chords> next();
 
   /**
-   * Plot the current chords graph
+   * Store the current chords graph in a file
+   * file by default is _DEFAULT_PREFIX_FILE
+   *
+   * @param file: The file to store it
    */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * Exchange 2 chords until the user quits.
@@ -75,12 +80,12 @@ public:
    */
   void exchage_chords();
 
-private:
   static constexpr std::string _PLOT_SCRIPT{"plot-chords.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".chords"};
   static constexpr int _NUM_OF_TESTS{20'000};
   static constexpr int _TEST_MAX_SIDES{200};
 
+private:
   Graph chords;
   int points;
 };

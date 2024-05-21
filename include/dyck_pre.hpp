@@ -1,5 +1,6 @@
 #pragma once
 
+#include "catalan.hpp"
 #include "coin.hpp"
 #include "tree.hpp"
 
@@ -12,7 +13,7 @@
 class Tree;
 class CoinStack;
 
-class DyckPre {
+class DyckPre : public Catalan<DyckPre> {
 public:
   DyckPre(std::string path) {
     this->path = path;
@@ -85,12 +86,12 @@ public:
   std::unique_ptr<DyckPre> next();
 
   /**
-   * Plot the current dyck path (above the line)
+   * Store the current dyck path (above the line) into a file.
    *
    * @param file: Where the current DyckPre would be stored - _DEFAULT_PREFIX_FILE by
    * default
    */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * Flip a mountain of the current dyck path
@@ -102,13 +103,13 @@ public:
   inline int size() const { return this->length; }
   inline void print() const { std::cout << this->path << "\n"; }
 
-private:
   static constexpr std::string_view _PLOT_SCRIPT{"plot-dyck-path.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".dyck"};
   static constexpr int _NUM_OF_TESTS = 1e5;
   static constexpr int _TEST_MAX_EDGES = 1e4;
   static constexpr int _TEST_MAX_BRANCHES = 1e2;
 
+private:
   std::string path;
   int length;
   int r;

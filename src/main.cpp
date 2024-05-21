@@ -10,6 +10,7 @@
 
 #include <exception>
 #include <iostream>
+#include <memory>
 #include <ranges>
 #include <string>
 #include <unistd.h>
@@ -52,7 +53,7 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "6t") {
         DyckPreMirrored::test_conversion();
       } else if (cmd == "6e") {
-        Tree::enumerate_avoiding();
+        // Tree::enumerate_avoiding();
         //----------------------------------
       } else if (cmd == "5r") {
         // SKIP
@@ -141,7 +142,8 @@ int main(int argc, const char *argv[]) {
         prev_dyck_path = dyck_pre->get_path();
       } else if (cmd == "plot" || cmd == "p") {
         std::string dyck_path{tokens.size() == 2 ? tokens.at(1) : prev_dyck_path};
-        auto tree{(new DyckPre(dyck_path))->to_tree()};
+        auto path{std::make_unique<DyckPre>(dyck_path)};
+        auto tree{path->to_tree()};
         tree->plot();
       } else if (cmd == "file" || cmd == "f") {
         std::string file{tokens.at(1)};
@@ -153,7 +155,7 @@ int main(int argc, const char *argv[]) {
         std::string dyck_path{tokens.at(1)};
         std::string file{tokens.at(2)};
         auto tree{(new DyckPre(dyck_path))->to_tree()};
-        tree->store_into_file(file);
+        tree->to_file(file);
       } else {
         print_usage();
       }

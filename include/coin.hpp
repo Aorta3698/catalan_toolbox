@@ -3,11 +3,12 @@
 #include <memory>
 #include <string>
 
+#include "catalan.hpp"
 #include "dyck_pre.hpp"
 
 class DyckPre;
 
-class CoinStack {
+class CoinStack : public Catalan<CoinStack> {
 public:
   CoinStack(const std::string path) {
     // TODO: check the path
@@ -28,12 +29,11 @@ public:
   static std::unique_ptr<CoinStack> get_random(int base);
 
   /**
-   * Plot the current coin stack.
+   * Store the current coin stack as file
    *
-   * @param file: file to store info needed for graphing it - _DEFAULT_PREFIX_FILE as
-   * the default.
+   * @param file: file to store it  - _DEFAULT_PREFIX_FILE as the default.
    */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * get the next coin stack graph object
@@ -43,10 +43,10 @@ public:
    */
   std::unique_ptr<CoinStack> next();
 
-private:
   static constexpr std::string _PLOT_SCRIPT{"plot-coins.py"};
   static constexpr std::string _DEFAULT_PREFIX_FILE{".coins"};
 
+private:
   std::string path;
   int base;
 };

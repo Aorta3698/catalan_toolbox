@@ -201,26 +201,26 @@ std::unique_ptr<Tree> Tree::get_from_Mutze(const Mutze::Tree &mutze_tree) {
   return std::make_unique<Tree>(build(1, sz), false);
 }
 
-void Tree::enumerate_avoiding() {
-  auto patterns{Util::get_avoid_patterns()};
+// void Tree::enumerate_avoiding() {
+//   auto patterns{Util::get_avoid_patterns()};
 
-  int n{};
-  std::cout << "\nEnter total number of nodes: ";
-  std::cin >> n;
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//   int n{};
+//   std::cout << "\nEnter total number of nodes: ";
+//   std::cin >> n;
+//   std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-  auto mutze_tree = Mutze::Tree(n, patterns);
-  auto ok{1};
-  while (ok) {
-    auto tree{get_from_Mutze(mutze_tree)};
-    tree->plot();
-    std::cout << "Press Enter to Continue";
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    ok &= mutze_tree.next();
-  }
-}
+//   auto mutze_tree = Mutze::Tree(n, patterns);
+//   auto ok{1};
+//   while (ok) {
+//     auto tree{get_from_Mutze(mutze_tree)};
+//     tree->plot();
+//     std::cout << "Press Enter to Continue";
+//     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+//     ok &= mutze_tree.next();
+//   }
+// }
 
-void Tree::store_into_file(std::string file) {
+void Tree::to_file(std::string file) {
   if (file == "") {
     file = Tree::_DEFAULT_DB_FILE;
   }
@@ -231,6 +231,7 @@ void Tree::store_into_file(std::string file) {
     std::cerr << std::format("{} cannot be opened.\n", file);
     throw std::invalid_argument("");
   }
+  out << this->is_full << "\n";
 
   std::function<void(const Node *)> print_edges = [&](const Node *cur_node) {
     for (const auto &child : cur_node->children) {
@@ -302,15 +303,15 @@ std::unique_ptr<Tree> Tree::get_from_file(std::string file) {
   return std::make_unique<Tree>(build(root, -1));
 }
 
-void Tree::plot(std::string file) {
-  if (file == "") {
-    file = Tree::_DEFAULT_PREFIX_FILE;
-  }
-  this->store_into_file(file);
-  std::string script{this->is_full ? Tree::_PLOT_SCRIPT_FULL
-                                   : Tree::_PLOT_SCRIPT_NOT_FULL};
-  Util::plot(script, file);
-}
+// void Tree::plot(std::string file) {
+//   if (file == "") {
+//     file = Tree::_DEFAULT_PREFIX_FILE;
+//   }
+//   this->to_file(file);
+//   std::string script{this->is_full ? Tree::_PLOT_SCRIPT_FULL
+//                                    : Tree::_PLOT_SCRIPT_NOT_FULL};
+//   Util::plot(script, file);
+// }
 
 std::string Tree::serialize() {
   std::string encoded_result{};

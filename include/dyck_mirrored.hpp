@@ -78,11 +78,11 @@ public:
   inline int size() const { return this->length; }
   inline void print() const { std::cout << this->path << "\n"; }
 
-private:
   static constexpr int _NUM_OF_TESTS = 1e5;
   static constexpr int _TEST_MAX_EDGES = 1e4;
   static constexpr int _TEST_MAX_BRANCHES = 1e2;
 
+private:
   std::string path;
   int length;
   int r;

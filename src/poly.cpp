@@ -144,7 +144,7 @@ std::unique_ptr<Poly> Poly::get_random(int num_of_sides) {
   return res;
 }
 
-void Poly::plot(std::string file) {
+void Poly::to_file(std::string file) {
   if (file == "") {
     file = Poly::_DEFAULT_PREFIX_FILE;
   }
@@ -172,8 +172,6 @@ void Poly::plot(std::string file) {
   for (auto [a, b] : this->poly) {
     out << a << "," << b << "\n";
   }
-
-  Util::plot(Poly::_PLOT_SCRIPT, file);
 }
 
 std::unique_ptr<Poly> Poly::next() {

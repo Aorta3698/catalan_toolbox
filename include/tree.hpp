@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "arcs.hpp"
+#include "catalan.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
 #include "dyck_mirrored.hpp"
@@ -42,7 +43,7 @@ struct Node {
   int id;
 };
 
-class Tree {
+class Tree : public Catalan<Tree> {
 public:
   Tree(std::unique_ptr<Node> root, bool is_full = true) {
     this->k = root->child_count();
@@ -162,13 +163,7 @@ public:
    *
    * @param file:  Output filename
    */
-  void store_into_file(std::string file = "");
-
-  /**
-   * Plot the current k-ary tree.
-   * @param file:   The output file. By default, it is _DEFAULT_FILE_PREFIX
-   */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * Rotate into the next tree.
@@ -196,12 +191,11 @@ public:
    */
   void enumerate_lexico();
 
-private:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
-  static constexpr std::string _PLOT_SCRIPT_FULL{"plot-tree.py"};
-  static constexpr std::string_view _PLOT_SCRIPT_NOT_FULL{"plot-non-full-tree.py"};
+  static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
 
+private:
   std::unique_ptr<Node> root;
   bool is_full;
   int k;

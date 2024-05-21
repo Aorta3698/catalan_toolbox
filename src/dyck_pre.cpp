@@ -103,7 +103,7 @@ void DyckPre::flip_mountain() {
   assert(false);
 }
 
-void DyckPre::plot(std::string file) {
+void DyckPre::to_file(std::string file) {
   if (file == "") {
     file = DyckPre::_DEFAULT_PREFIX_FILE;
   }
@@ -143,8 +143,6 @@ void DyckPre::plot(std::string file) {
   for (int i{}; i < this->length; ++i) {
     out << i << "," << i + 1 << "\n";
   }
-
-  Util::plot(std::string{DyckPre::_PLOT_SCRIPT}, file);
 }
 
 bool DyckPre::is_valid(const std::string &path) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "catalan.hpp"
 #include "chords.hpp"
 #include "global.hpp"
 #include "tree.hpp"
@@ -8,7 +9,7 @@
 class Tree;
 class Chords;
 
-class Arcs {
+class Arcs : public Catalan<Arcs> {
 public:
   Arcs(Graph arcs) {
     this->arcs = arcs;
@@ -67,11 +68,11 @@ public:
   std::unique_ptr<Chords> to_chords();
 
   /**
-   * Plot the current arcs graph
+   * Store the current arcs graph as a file
    *
-   * @param file:  The file to store the arcs graph. Default to _DEFAULT_PREFIX_FILE
+   * @param file:  The file to store it. Default to _DEFAULT_PREFIX_FILE
    */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * Exchange 2 arcs until the user quits.
@@ -79,12 +80,12 @@ public:
    */
   void exchage_arcs();
 
-private:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".arcs"};
   static constexpr std::string _PLOT_SCRIPT{"plot-arcs.py"};
   static constexpr int _NUM_OF_TESTS{20'000};
   static constexpr int _TEST_MAX_SIDES{200};
 
+private:
   Graph arcs;
   int points;
 };

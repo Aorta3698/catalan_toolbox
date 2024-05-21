@@ -1,13 +1,15 @@
 #pragma once
 
+#include "catalan.hpp"
 #include "global.hpp"
 #include "tree.hpp"
+
 #include <memory>
 #include <string>
 
 class Tree;
 
-class Poly {
+class Poly : public Catalan<Poly> {
 public:
   Poly(Graph poly) {
     this->poly = poly; // poly includes the root top side
@@ -48,9 +50,12 @@ public:
   std::unique_ptr<Tree> to_tree();
 
   /**
-   * Plot the current polygon triangulation
+   * Store the current polygon triangulation into a file
+   * file by default is _DEFAULT_PREFIX_FILE
+   *
+   * @param file: The file to store it
    */
-  void plot(std::string file = "");
+  void to_file(std::string file = "");
 
   /**
    * Get the next polygon triangulation
@@ -64,13 +69,13 @@ public:
    */
   void flip_and_plot();
 
-private:
   static constexpr std::string _PLOT_SCRIPT = "plot-poly.py";
   static constexpr std::string _DEFAULT_PREFIX_FILE = ".poly";
   static constexpr std::string _WATCHDOG_FILE = ".polylog";
   static constexpr int _NUM_OF_TESTS{20'000};
   static constexpr int _TEST_MAX_SIDES{100};
 
+private:
   Graph poly;
   int sides;
 };

@@ -8,7 +8,7 @@
 #include <stdexcept>
 #include <unordered_map>
 
-void CoinStack::plot(std::string file) {
+void CoinStack::to_file(std::string file) {
   if (file == "") {
     file = CoinStack::_DEFAULT_PREFIX_FILE;
   }
@@ -46,8 +46,6 @@ void CoinStack::plot(std::string file) {
     ++x_steps;
     prev_map[y_steps] = x_steps;
   }
-
-  Util::plot(CoinStack::_PLOT_SCRIPT, file);
 }
 
 std::unique_ptr<CoinStack> CoinStack::get_random(int base) {

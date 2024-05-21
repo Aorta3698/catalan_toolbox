@@ -104,15 +104,10 @@ if __name__ == "__main__":
     observer.schedule(handler, ".", recursive=False)
     observer.start()
 
-    path = ""
     if len(sys.argv) == 2:
         plt.show()
     else:
-        if sys.argv[2] == "a":
-            path = "./avoid"
-        elif sys.argv[2] == "l":
-            path = "./lexi"
+        path = "./out"
         if not os.path.exists(path):
             os.makedirs(path)
-
-        plt.savefig(f"{path}/{sys.argv[3]}.svg", bbox_inches="tight")
+        plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")
