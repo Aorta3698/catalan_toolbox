@@ -23,8 +23,8 @@
 
 // Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
 
-std::unique_ptr<Tree> Tree::of(const Mutze::Tree &mtree) {
-  return Tree::get_from_Mutze(mtree);
+std::unique_ptr<Tree> Tree::of(const std::string &mtree) {
+  return Tree::get_from_traversal(mtree);
 }
 
 // TODO: this doesn't seem ideal (converting 2 times)
@@ -172,16 +172,9 @@ std::unique_ptr<Tree> Tree::get_random(int branches, int num_of_nodes) {
   return std::make_unique<Tree>(build());
 }
 
-std::unique_ptr<Tree> Tree::get_from_Mutze(const Mutze::Tree &mutze_tree) {
-  // steal cout
-  std::stringstream buffer;
-  std::streambuf *old = std::cout.rdbuf(buffer.rdbuf());
-  mutze_tree.print();
-  std::string tree_text = buffer.str();
-  std::cout.rdbuf(old);
-
+std::unique_ptr<Tree> Tree::get_from_traversal(const std::string &traversal) {
   // convert to int vector
-  auto tmp{Util::split_string(tree_text, ' ')};
+  auto tmp{Util::split_string(traversal, ' ')};
   std::vector<int> vertices{};
   std::transform(tmp.begin(), tmp.end(), std::back_inserter(vertices),
                  [](const auto &s) { return std::stoi(s); });

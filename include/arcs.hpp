@@ -25,7 +25,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Arcs> of(const Mutze::Tree &mtree);
+  static std::unique_ptr<Arcs> of(const std::string &mtree);
 
   /**
    * Verify if the given graph is a valid Arcs graph or not

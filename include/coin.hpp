@@ -25,7 +25,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<CoinStack> of(const Mutze::Tree &mtree);
+  static std::unique_ptr<CoinStack> of(const std::string &mtree);
 
   /**
    * Get a random coin stack

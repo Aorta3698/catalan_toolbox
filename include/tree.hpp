@@ -10,7 +10,6 @@
 #include "coin.hpp"
 #include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
-#include "mutze_tree.hpp"
 #include "poly.hpp"
 
 // forward declaration
@@ -53,7 +52,6 @@ public:
     this->type = type;
   }
 
-  // loved c++20
   auto operator<=>(const Tree &rhs) const = default;
 
   /**
@@ -101,11 +99,12 @@ public:
   static double asymptote(int k, int num_of_internal_nodes);
 
   /**
-   * Build a binary tree from Mutze avoiding tree.
+   * Build a binary tree from the traversal sequence produnced by Mutze avoiding
+   * tree.
    *
-   * @param mutze_tree: A mutze_tree with avoiding patterns loaded.
+   * @param traversal: An in-order, pre-order traversal sequence
    */
-  static std::unique_ptr<Tree> get_from_Mutze(const Mutze::Tree &mutze_tree);
+  static std::unique_ptr<Tree> get_from_traversal(const std::string &traversal);
 
   /**
    * Constructor a catalan structure from the current mutze tree.
@@ -114,7 +113,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Tree> of(const Mutze::Tree &mtree);
+  static std::unique_ptr<Tree> of(const std::string &mtree);
 
   /**
    * Convert a tree into its coin stack representation

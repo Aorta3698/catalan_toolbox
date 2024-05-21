@@ -2,6 +2,7 @@
 
 #include <format>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <unistd.h>
@@ -35,8 +36,15 @@ public:
     int count{};
     auto mutze_tree = Mutze::Tree(n, patterns);
     auto ok{1};
+
     while (ok) {
-      auto cat{T::of(mutze_tree)};
+      // steal cout
+      std::stringstream buffer;
+      std::streambuf *old = std::cout.rdbuf(buffer.rdbuf());
+      mutze_tree.print();
+      std::cout.rdbuf(old);
+
+      auto cat{T::of(buffer.str())};
       cat->to_svg(file + std::to_string(count++));
       ok &= mutze_tree.next();
       using namespace std::chrono_literals;

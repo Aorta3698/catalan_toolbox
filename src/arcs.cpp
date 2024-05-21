@@ -8,8 +8,8 @@
 #include <memory>
 #include <stdexcept>
 
-std::unique_ptr<Arcs> Arcs::of(const Mutze::Tree &mtree) {
-  auto tree{Tree::get_from_Mutze(mtree)};
+std::unique_ptr<Arcs> Arcs::of(const std::string &mtree) {
+  auto tree{Tree::get_from_traversal(mtree)};
   return tree->to_arcs();
 }
 

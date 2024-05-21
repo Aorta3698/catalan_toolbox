@@ -12,8 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
-std::unique_ptr<DyckPre> DyckPre::of(const Mutze::Tree &mtree) {
-  auto tree{Tree::get_from_Mutze(mtree)};
+std::unique_ptr<DyckPre> DyckPre::of(const std::string &mtree) {
+  auto tree{Tree::get_from_traversal(mtree)};
   return tree->to_dyck_pre();
 }
 
