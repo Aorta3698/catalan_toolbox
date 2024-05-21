@@ -9,7 +9,7 @@ These are the goals that I'd like to achieve:
 
 - [ ] Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
 
-- [x] Enumeration of `pattarn avoiding` binary trees.
+- [x] Enumeration of `pattarn avoiding` Catalan structures.
 
 See [Milestones](#Milestones) for sub items break down.
 
@@ -82,7 +82,9 @@ It is because that the visualizer is not started on the main thread and apparent
 
 ### Enumeration
 - [x] Mutze lib imported and now able to enumerate pattern avoiding binary trees.
-- [x] Able to visualize pattern avoiding binary trees.
+- [x] Generalize the above to all Catalan structures.
+- [x] Able to visualize pattern avoiding Calatan structures.
+- [x] Save all of the above to svg on the disk.
 - [ ] Able to enumerate generalized Catalan structures lexicographically via an interator.
 
 ### Other
