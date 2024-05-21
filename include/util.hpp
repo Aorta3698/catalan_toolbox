@@ -1,5 +1,6 @@
 #pragma once
 
+#include "global.hpp"
 #include "mutze_pattern.hpp"
 
 #include <algorithm>
@@ -10,6 +11,24 @@
 #include <vector>
 
 namespace Util {
+static std::array<mint, 10'001> fact;
+
+/**
+ * The necessary init for storing factorial.
+ *
+ */
+void setup_comb();
+
+/**
+ * Compute n choose k
+ *
+ * @param n:  The top number
+ * @param k:  The bottom number
+ *
+ * @return n choose k
+ */
+mint combinations(int n, int k);
+
 /**
  * Split str by the given delimiter
  *

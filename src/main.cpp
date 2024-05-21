@@ -18,6 +18,11 @@
 #include <vector>
 
 int main(int argc, const char *argv[]) {
+  if (!init()) {
+    std::cerr << "init failed\n";
+    return -1;
+  }
+
   std::cout << "0 - triangulation\n"
             << "1 - chords\n"
             << "2 - arcs\n"
@@ -194,4 +199,9 @@ void print_usage() {
     std::cout << "    ";
     std::cout << cmd << std::string(cmd_spc - int(cmd.size()), ' ') << desc << "\n";
   }
+}
+
+bool init() {
+  Util::setup_comb();
+  return true;
 }

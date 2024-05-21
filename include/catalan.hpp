@@ -2,11 +2,13 @@
 
 #include <format>
 #include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
 #include <thread>
 #include <unistd.h>
 
+#include "ktree_iter.hpp"
 #include "mutze_tree.hpp"
 #include "util.hpp"
 
@@ -15,8 +17,25 @@ public:
   auto operator<=>(const Catalan &rhs) const = default;
   auto self() { return static_cast<T *>(this); };
   auto self() const { return static_cast<T const *>(this); };
-  void to_file(std::string file = "");
-  static void of(const Mutze::Tree &);
+
+  // ------------ child functions -------------
+  static std::unique_ptr<T> of(const std::string &);
+  virtual std::unique_ptr<T> of_bit(const std::string &) = 0;
+  virtual void to_file(std::string file = "") = 0;
+
+  std::unique_ptr<T> next_lexi() {
+    auto cur{self()};
+    std::string bit_str{cur->to_tree()->to_bitstring()};
+    auto [k, n] = Lexi::get_k_n(bit_str);
+    auto pos{Lexi::rank(bit_str, k, n) + 1};
+    auto [next_bit_str, ok] = Lexi::unrank(pos, k, n);
+    if (ok == Lexi::NOT_OK) {
+      std::cout << "The current Catalan structure is already the last one in "
+                   "lexicographical order.\n";
+      return cur;
+    }
+    return T::of_bit(next_bit_str);
+  }
 
   /**
    * Enumerate pattern avoiding Catalan structures.

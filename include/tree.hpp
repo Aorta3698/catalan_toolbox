@@ -43,6 +43,7 @@ struct Node {
 };
 
 class Tree : public Catalan<Tree> {
+
 public:
   enum TreeType { Non_Full, Full };
 
@@ -107,13 +108,29 @@ public:
   static std::unique_ptr<Tree> get_from_traversal(const std::string &traversal);
 
   /**
-   * Constructor a catalan structure from the current mutze tree.
+   * Construct a catalan structure from the current mutze tree.
    *
    * @param mtree:  Mutze tree
    *
    * @return catalan structure of the current class
    */
   static std::unique_ptr<Tree> of(const std::string &mtree);
+
+  /**
+   * Construct a catalan structure from the 01 bitstring
+   *
+   * @param bitstring: 01 bitstring in pre-order traversal
+   *
+   * @return The k-ary tree represented by the bitstring
+   */
+  static std::unique_ptr<Tree> get_from_bitstring(const std::string &bitstring);
+
+  /**
+   * Get the bitstring representation of the current k-ary tree
+   *
+   * @return 01 bitstring in pre-order traversal
+   */
+  std::string to_bitstring();
 
   /**
    * Convert a tree into its coin stack representation
