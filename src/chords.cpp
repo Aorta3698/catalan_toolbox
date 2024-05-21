@@ -9,6 +9,11 @@
 #include <memory>
 #include <stdexcept>
 
+std::unique_ptr<Chords> Chords::of(const Mutze::Tree mtree) {
+  auto tree{Tree::get_from_Mutze(mtree)};
+  return tree->to_chords();
+}
+
 std::unique_ptr<Tree> Chords::to_tree() {
   int portal[this->points];
   int id{};

@@ -1,7 +1,11 @@
 #pragma once
 
 #include "mutze_pattern.hpp"
+
+#include <algorithm>
 #include <array>
+#include <iostream>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -35,28 +39,6 @@ int get_num(std::string str);
  * @return A vector containing k random numbers
  */
 std::string &strip(std::string &str);
-
-/**
- * Print a vector to console
- *
- * @param vec: The vector in question
- */
-template <typename T> void print_vector(const T &vec);
-
-/**
- * Print a vector of vector to console
- *
- * @param vec: The vector in question
- */
-template <typename T> void print_vvector(const T &vec);
-
-/**
- * Print a C array to console
- *
- * @param arr: The C-style array in question
- * @param len: Length of the C-style array
- */
-template <typename T> void print_c_array(const T *arr, int len);
 
 /**
  * Get n^{th} Catalan number. Throw an exception if int overflow.
@@ -99,4 +81,38 @@ void plot(std::string script, std::string file);
  * For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'
  */
 std::vector<Mutze::Pattern> get_avoid_patterns();
+
+/**
+ * Print a vector to console
+ *
+ * @param vec: The vector in question
+ */
+template <typename T> void print_vector(const T &vec) {
+  std::copy(vec.cbegin(), vec.cend(),
+            std::ostream_iterator<typename T::value_type>(std::cerr, ", "));
+  std::cerr << "\n";
+}
+
+/**
+ * Print a vector of vector to console
+ *
+ * @param vec: The vector in question
+ */
+template <typename T> void print_vvector(const T &vec) {
+  std::for_each(vec.cbegin(), vec.cend(),
+                Util::print_vector<typename T::value_type>);
+}
+
+/**
+ * Print a C array to console
+ *
+ * @param arr: The C-style array in question
+ * @param len: Length of the C-style array
+ */
+template <typename T> void print_c_array(const T *arr, int len) {
+  for (int i{}; i < len; ++i) {
+    std::cerr << arr[i] << " ";
+  }
+  std::cerr << "\n";
+}
 } // namespace Util

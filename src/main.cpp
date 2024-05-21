@@ -24,7 +24,7 @@ int main(int argc, const char *argv[]) {
             << "3 - dyck path pre-order\n"
             << "4 - coins\n"
             << "5 - dyck path pre-order mirrored\n"
-            << "6 - Mutze Tree Enumeration\n\n";
+            << "6 - trees\n\n";
 
   std::string prev_dyck_path{};
   std::string prev_cmd{};
@@ -51,9 +51,9 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "6r") {
         // SKIP
       } else if (cmd == "6t") {
-        DyckPreMirrored::test_conversion();
-      } else if (cmd == "6e") {
-        // Tree::enumerate_avoiding();
+        // skip
+      } else if (cmd == "6m") {
+        Tree::enumerate_avoiding();
         //----------------------------------
       } else if (cmd == "5r") {
         // SKIP
@@ -71,8 +71,8 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "4t") {
         // SKIP
-      } else if (cmd == "4e") {
-        // SKIP
+      } else if (cmd == "4m") {
+        CoinStack::enumerate_avoiding();
         //----------------------------------
       } else if (cmd == "3r") {
         int r{Util::get_num(tokens.at(1))};
@@ -84,6 +84,8 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "3t") {
         DyckPre::test_conversion();
+      } else if (cmd == "3m") {
+        DyckPre::enumerate_avoiding();
       } else if (cmd == "3e") {
         int r{Util::get_num(tokens.at(1))};
         int length{Util::get_num(tokens.at(2))};
@@ -97,6 +99,8 @@ int main(int argc, const char *argv[]) {
           auto arcs{Arcs::get_random(num_of_points)};
           arcs->plot();
         }
+      } else if (cmd == "2m") {
+        Arcs::enumerate_avoiding();
       } else if (cmd == "2t") {
         Arcs::test_conversion();
       } else if (cmd == "2e") {
@@ -113,6 +117,8 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "1t") {
         Chords::test_conversion();
+      } else if (cmd == "1m") {
+        Chords::enumerate_avoiding();
       } else if (cmd == "1e") {
         int num_of_points{Util::get_num(tokens.at(1))};
         auto chords{Chords::get_random(num_of_points)};
@@ -127,6 +133,8 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "0t") {
         Poly::test_conversion();
+      } else if (cmd == "0m") {
+        Poly::enumerate_avoiding();
       } else if (cmd == "0f") {
         int num_of_sides{Util::get_num(tokens.at(1))};
         auto poly{Poly::get_random(num_of_sides)};

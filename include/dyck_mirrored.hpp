@@ -24,7 +24,6 @@ public:
     }
   }
 
-  // loved c++20
   auto operator<=>(const DyckPreMirrored &rhs) const = default;
 
   /**

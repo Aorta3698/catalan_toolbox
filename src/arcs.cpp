@@ -1,13 +1,17 @@
 #include "arcs.hpp"
 #include "chords.hpp"
 #include "tree.hpp"
-#include "util.hpp"
 
 #include <cassert>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+
+std::unique_ptr<Arcs> Arcs::of(const Mutze::Tree mtree) {
+  auto tree{Tree::get_from_Mutze(mtree)};
+  return tree->to_arcs();
+}
 
 std::unique_ptr<Chords> Arcs::to_chords() {
   return std::make_unique<Chords>(this->arcs);

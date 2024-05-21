@@ -12,6 +12,11 @@
 #include <stdexcept>
 #include <unordered_set>
 
+std::unique_ptr<Poly> Poly::of(const Mutze::Tree mtree) {
+  auto tree{Tree::get_from_Mutze(mtree)};
+  return tree->to_poly();
+}
+
 std::unique_ptr<Tree> Poly::to_tree() {
   enum Dir { Up, Down };
   int tables[this->sides][2];

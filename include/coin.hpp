@@ -16,8 +16,16 @@ public:
     this->base = int(path.size()) >> 1;
   }
 
-  // loved c++20
   auto operator<=>(const CoinStack &rhs) const = default;
+
+  /**
+   * Constructor a catalan structure from the current mutze tree.
+   *
+   * @param mtree:  Mutze tree
+   *
+   * @return catalan structure of the current class
+   */
+  static std::unique_ptr<CoinStack> of(const Mutze::Tree mtree);
 
   /**
    * Get a random coin stack

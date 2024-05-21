@@ -17,7 +17,6 @@ public:
     this->points = int(chords.size()) << 1;
   }
 
-  // loved c++20
   auto operator<=>(const Chords &rhs) const = default;
 
   /**
@@ -44,6 +43,15 @@ public:
    * @return True if it is a valid chords graph, false otherwise
    */
   static bool is_valid(const Graph &graph);
+
+  /**
+   * Constructor a catalan structure from the current mutze tree.
+   *
+   * @param mtree:  Mutze tree
+   *
+   * @return catalan structure of the current class
+   */
+  static std::unique_ptr<Chords> of(const Mutze::Tree mtree);
 
   /**
    * Transform the current chords to its tree representation.

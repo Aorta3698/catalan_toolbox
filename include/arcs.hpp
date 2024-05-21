@@ -16,8 +16,16 @@ public:
     this->points = int(arcs.size()) << 1;
   }
 
-  // loved c++20
   auto operator<=>(const Arcs &rhs) const = default;
+
+  /**
+   * Constructor a catalan structure from the current mutze tree.
+   *
+   * @param mtree:  Mutze tree
+   *
+   * @return catalan structure of the current class
+   */
+  static std::unique_ptr<Arcs> of(const Mutze::Tree mtree);
 
   /**
    * Verify if the given graph is a valid Arcs graph or not

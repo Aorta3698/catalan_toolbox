@@ -4,29 +4,10 @@
 #include <array>
 #include <cmath>
 #include <iostream>
-#include <iterator>
 #include <limits>
 #include <numbers>
 #include <sstream>
-#include <thread>
 #include <unistd.h>
-
-template <typename T> void Util::print_vector(const T &t) {
-  std::copy(t.cbegin(), t.cend(),
-            std::ostream_iterator<typename T::value_type>(std::cerr, ", "));
-  std::cerr << "\n";
-}
-
-template <typename T> void Util::print_vvector(const T &t) {
-  std::for_each(t.cbegin(), t.cend(), Util::print_vector<typename T::value_type>);
-}
-
-template <typename T> void Util::print_c_array(const T array[], int size) {
-  for (int i{}; i < size; ++i) {
-    std::cerr << array[i] << " ";
-  }
-  std::cerr << "\n";
-}
 
 std::vector<std::string> Util::split_string(std::string s, char delimiter) {
   std::transform(s.begin(), s.end(), s.begin(),
@@ -71,18 +52,6 @@ std::array<double, 2> Util::rotate(double x, double y, double deg) {
   double ny{x * std::sin(radian) + y * std::cos(radian)};
 
   return {nx, ny};
-}
-
-void Util::plot(std::string script, std::string file) {
-  if (fork() == 0) {
-    std::string python{"./visualizer/bin/python3 "};
-    std::string plotter{"./visualizer/" + script + " "};
-    std::string cmd{python + plotter + file};
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(100ms);
-    std::system(cmd.c_str());
-    std::exit(EXIT_SUCCESS);
-  }
 }
 
 std::vector<Mutze::Pattern> Util::get_avoid_patterns() {

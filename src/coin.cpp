@@ -1,5 +1,4 @@
 #include "coin.hpp"
-#include "util.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -7,6 +6,11 @@
 #include <memory>
 #include <stdexcept>
 #include <unordered_map>
+
+std::unique_ptr<CoinStack> CoinStack::of(const Mutze::Tree mtree) {
+  auto tree{Tree::get_from_Mutze(mtree)};
+  return tree->to_coin_stack();
+}
 
 void CoinStack::to_file(std::string file) {
   if (file == "") {

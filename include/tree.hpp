@@ -99,16 +99,25 @@ public:
   static double asymptote(int k, int num_of_internal_nodes);
 
   /**
-   * Enumerate *binary* trees given some or no friendly patterns.
-   */
-  static void enumerate_avoiding();
-
-  /**
    * Build a binary tree from Mutze avoiding tree.
    *
    * @param mutze_tree: A mutze_tree with avoiding patterns loaded.
    */
   static std::unique_ptr<Tree> get_from_Mutze(const Mutze::Tree &mutze_tree);
+
+  /**
+   * Constructor a catalan structure from the current mutze tree.
+   *
+   * @param mtree:  Mutze tree
+   *
+   * @return catalan structure of the current class
+   */
+  static std::unique_ptr<Tree> of(const Mutze::Tree mtree);
+
+  /**
+   * Enumerate *binary* trees given some or no friendly patterns.
+   */
+  // static void enumerate_avoiding();
 
   /**
    * Convert a tree into its coin stack representation

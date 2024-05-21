@@ -1,7 +1,6 @@
 #include "dyck_pre.hpp"
 #include "global.hpp"
 #include "tree.hpp"
-#include "util.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -12,6 +11,11 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+
+std::unique_ptr<DyckPre> DyckPre::of(const Mutze::Tree mtree) {
+  auto tree{Tree::get_from_Mutze(mtree)};
+  return tree->to_dyck_pre();
+}
 
 std::unique_ptr<Tree> DyckPre::to_tree() {
   // pre-compute some info

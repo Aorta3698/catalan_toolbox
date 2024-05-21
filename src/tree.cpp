@@ -23,6 +23,10 @@
 
 // Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
 
+std::unique_ptr<Tree> Tree::of(const Mutze::Tree mtree) {
+  return Tree::get_from_Mutze(mtree);
+}
+
 // TODO: this doesn't seem ideal (converting 2 times)
 std::unique_ptr<CoinStack> Tree::to_coin_stack() {
   return this->to_dyck_pre()->to_coin_stack();

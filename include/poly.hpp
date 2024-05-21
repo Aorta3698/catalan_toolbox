@@ -16,8 +16,16 @@ public:
     this->sides = int(poly.size()) + 2;
   }
 
-  // loved c++20
   auto operator<=>(const Poly &rhs) const = default;
+
+  /**
+   * Constructor a catalan structure from the current mutze tree.
+   *
+   * @param mtree:  Mutze tree
+   *
+   * @return catalan structure of the current class
+   */
+  static std::unique_ptr<Poly> of(const Mutze::Tree mtree);
 
   /**
    * Create a random polygon triangulation
