@@ -45,10 +45,12 @@ struct Node {
 
 class Tree : public Catalan<Tree> {
 public:
-  Tree(std::unique_ptr<Node> root, bool is_full = true) {
+  enum TreeType { Non_Full, Full };
+
+  Tree(std::unique_ptr<Node> root, TreeType type = TreeType::Full) {
     this->k = root->child_count();
     this->root = std::move(root);
-    this->is_full = is_full;
+    this->type = type;
   }
 
   // loved c++20
@@ -113,11 +115,6 @@ public:
    * @return catalan structure of the current class
    */
   static std::unique_ptr<Tree> of(const Mutze::Tree &mtree);
-
-  /**
-   * Enumerate *binary* trees given some or no friendly patterns.
-   */
-  // static void enumerate_avoiding();
 
   /**
    * Convert a tree into its coin stack representation
@@ -206,6 +203,6 @@ public:
 
 private:
   std::unique_ptr<Node> root;
-  bool is_full;
+  TreeType type;
   int k;
 };
