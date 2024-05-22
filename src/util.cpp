@@ -4,7 +4,6 @@
 #include <array>
 #include <cmath>
 #include <iostream>
-#include <limits>
 #include <numbers>
 #include <sstream>
 #include <unistd.h>
@@ -69,43 +68,4 @@ std::array<double, 2> Util::rotate(double x, double y, double deg) {
   double ny{x * std::sin(radian) + y * std::cos(radian)};
 
   return {nx, ny};
-}
-
-std::vector<Mutze::Pattern> Util::get_avoid_patterns() {
-  std::vector<Mutze::Pattern> patterns;
-  std::string input{};
-
-  std::cout << "Each pattern is a pair of preorder\n";
-  std::cout << "permutation and corresponding edge type list, separated by\n";
-  std::cout << "comma; multiple patterns are separated by semicolon\n\n";
-  std::cout << "Edge type: 1 -> contiguous, 0 -> non-contiguous\n\n";
-  std::cout << "For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'\n\n";
-
-  std::cout << "Only friendly patterns will be accepted. A friendly pattern is one "
-               "where:\n";
-  std::cout << "1. The largest vertex is neither the root nor a leaf\n";
-  std::cout << "2. The edges on the right branch starting at the root, except "
-               "possibly the last one, are all non-contiguous\n";
-  std::cout << "3. If the edge from k to its parent is contiguous, then the edge to "
-               "its left child must be non-contiguous.\n\n";
-
-  while (1) {
-    std::cout << "> ";
-    std::cout.flush();
-    std::getline(std::cin, input);
-    if (!Mutze::Pattern::read_patterns(input, patterns)) {
-      continue;
-    }
-    if (std::all_of(patterns.begin(), patterns.end(),
-                    [](auto &p) { return p.is_friendly(); })) {
-      break;
-    }
-    std::cout << "At least one pattern given is not friendly. Try again.\n";
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    patterns.clear();
-  }
-
-  return patterns;
 }

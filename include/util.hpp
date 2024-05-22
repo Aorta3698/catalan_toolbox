@@ -1,7 +1,6 @@
 #pragma once
 
 #include "global.hpp"
-#include "mutze_pattern.hpp"
 
 #include <algorithm>
 #include <array>
@@ -87,19 +86,6 @@ std::array<double, 2> rotate(double x, double y, double deg);
  * @param file    : The input file to the script
  */
 void plot(std::string script, std::string file);
-
-/**
- * Set the avoid patterns for Mutze pattern avoiding trees
- *
- * It will only accept friendly patterns.
- *
- * each pattern is a pair of preorder
- * permutation and corresponding edge type list, separated by
- * comma; multiple patterns are separated by semicolon
- *
- * For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'
- */
-std::vector<Mutze::Pattern> get_avoid_patterns();
 
 /**
  * Print a vector to console
