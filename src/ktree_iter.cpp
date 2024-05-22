@@ -1,5 +1,4 @@
 #include <gmpxx.h>
-#include <stdexcept>
 #include <string>
 
 #include "ktree_iter.hpp"
@@ -89,7 +88,7 @@ mint Lexi::rank(std::string bit_string, int k, int num_of_nodes) {
   return index;
 }
 
-std::pair<std::string, bool> Lexi::unrank(mint pos, int k, int num_of_nodes) {
+std::pair<std::string, Lexi::Res> Lexi::unrank(mint pos, int k, int num_of_nodes) {
   int count{num_of_nodes};
   std::string bit_string(num_of_nodes * k + 1, '0');
   for (int i{}; i < k * num_of_nodes && count; ++i) {
