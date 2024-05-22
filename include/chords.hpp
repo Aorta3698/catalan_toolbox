@@ -10,9 +10,9 @@
 class Tree;
 class Arcs;
 
-class Chords : public Catalan<Chords> {
+class Chords : public Catalan<Chords>, public OsOp {
 public:
-  Chords(Graph chords) {
+  Chords(Graph chords) : OsOp(_PLOT_SCRIPT, _DEFAULT_PREFIX_FILE) {
     this->chords = chords;
     this->points = int(chords.size()) << 1;
   }
@@ -45,13 +45,13 @@ public:
   static bool is_valid(const Graph &graph);
 
   /**
-   * Constructor a catalan structure from the current mutze tree.
+   * Constructor a catalan structure from the current base tree
    *
-   * @param mtree:  Mutze tree
+   * @param tree:  current base tree
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Chords> of(const std::string &mtree);
+  static std::unique_ptr<Chords> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * Transform the current chords to its tree representation.

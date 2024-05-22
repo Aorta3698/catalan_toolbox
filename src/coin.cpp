@@ -7,8 +7,8 @@
 #include <stdexcept>
 #include <unordered_map>
 
-std::unique_ptr<CoinStack> CoinStack::of(const std::string &mtree) {
-  auto tree{Tree::get_from_traversal(mtree)};
+std::unique_ptr<CoinStack> CoinStack::of(std::unique_ptr<BaseTree> base_tree) {
+  auto tree{Tree::of(std::move(base_tree))};
   return tree->to_coin_stack();
 }
 

@@ -9,8 +9,8 @@
 #include <memory>
 #include <stdexcept>
 
-std::unique_ptr<Chords> Chords::of(const std::string &mtree) {
-  auto tree{Tree::get_from_traversal(mtree)};
+std::unique_ptr<Chords> Chords::of(std::unique_ptr<BaseTree> base_tree) {
+  auto tree{Tree::of(std::move(base_tree))};
   return tree->to_chords();
 }
 

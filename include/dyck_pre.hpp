@@ -13,9 +13,9 @@
 class Tree;
 class CoinStack;
 
-class DyckPre : public Catalan<DyckPre> {
+class DyckPre : public Catalan<DyckPre>, public OsOp {
 public:
-  DyckPre(std::string path) {
+  DyckPre(std::string path) : OsOp(std::string{_PLOT_SCRIPT}, _DEFAULT_PREFIX_FILE) {
     this->path = path;
     this->length = int(path.size());
     this->r = this->length / std::ranges::count(path, '0');
@@ -30,13 +30,13 @@ public:
   auto operator<=>(const DyckPre &rhs) const = default;
 
   /**
-   * Constructor a catalan structure from the current mutze tree.
+   * Constructor a catalan structure from the current base tree
    *
-   * @param mtree:  Mutze tree
+   * @param tree:  current base tree
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<DyckPre> of(const std::string &mtree);
+  static std::unique_ptr<DyckPre> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * 100,000 test cases of creating a random dyck path, converting it to tree

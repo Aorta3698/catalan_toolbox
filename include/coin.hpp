@@ -2,15 +2,16 @@
 
 #include <memory>
 #include <string>
+#include <unistd.h>
 
 #include "catalan.hpp"
 #include "dyck_pre.hpp"
 
 class DyckPre;
 
-class CoinStack : public Catalan<CoinStack> {
+class CoinStack : public Catalan<CoinStack>, public OsOp {
 public:
-  CoinStack(const std::string path) {
+  CoinStack(const std::string path) : OsOp(_PLOT_SCRIPT, _DEFAULT_PREFIX_FILE) {
     // TODO: check the path
     this->path = path;
     this->base = int(path.size()) >> 1;
@@ -19,13 +20,13 @@ public:
   auto operator<=>(const CoinStack &rhs) const = default;
 
   /**
-   * Constructor a catalan structure from the current mutze tree.
+   * Constructor a catalan structure from the current base tree
    *
-   * @param mtree:  Mutze tree
+   * @param tree:  current base tree
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<CoinStack> of(const std::string &mtree);
+  static std::unique_ptr<CoinStack> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * Get a random coin stack

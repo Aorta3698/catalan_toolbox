@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "arcs.hpp"
+#include "base_tree.hpp"
 #include "catalan.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
@@ -21,47 +21,15 @@ class DyckPreMirrored;
 class Arcs;
 class CoinStack;
 
-/**
- * Node class represents a tree node
- *
- */
-struct Node {
-  Node(int id, int node_count = 0) {
-    this->id = id;
-    children = std::vector<std::unique_ptr<Node>>(node_count);
-  }
-
-  inline bool is_internal_node() const { return !children.empty(); }
-  inline bool is_leaf() const { return !is_internal_node(); }
-  inline int child_count() const { return int(children.size()); }
-
-  // use raw pointer for parent if needed:
-  // https://www.reddit.com/r/cpp_questions/comments/njqjlk/building_a_tree_with_smart_pointers_parental/
-  // https://codereview.stackexchange.com/a/191297
-  std::vector<std::unique_ptr<Node>> children;
-  int id;
-};
-
-class Tree : public Catalan<Tree> {
+class Tree : public Catalan<Tree>, public BaseTree {
 
 public:
-  enum TreeType { Non_Full, Full };
+  Tree(std::unique_ptr<BaseTree> tree) : BaseTree(std::move(tree)){};
 
-  Tree(std::unique_ptr<Node> root, TreeType type = TreeType::Full) {
-    this->k = root->child_count();
-    this->root = std::move(root);
-    this->type = type;
-  }
+  Tree(std::unique_ptr<Node> root, TreeType type = TreeType::Full)
+      : BaseTree(std::move(root), type) {}
 
   auto operator<=>(const Tree &rhs) const = default;
-
-  /**
-   * From degree 2 to 5 (due to time), sample 10k random trees with
-   * 100k internal nodes, and then compare it to the expected height.
-   *
-   * Assert in error if they differ by more than 1%.
-   */
-  static void test_expected_height();
 
   /**
    * Create a random full k-ary tree, which corresponds
@@ -89,17 +57,6 @@ public:
   static std::unique_ptr<Tree> get_from_file(std::string file);
 
   /**
-   * The asymptotic, average height of a k-ray tree with
-   * num_of_internal_nodes internal nodes.
-   *
-   * @param k:                     Degree of the tree
-   * @param num_of_internal_nodes: Number of internal nodes
-   *
-   * @return The asymptotic, average height of the tree
-   */
-  static double asymptote(int k, int num_of_internal_nodes);
-
-  /**
    * Build a binary tree from the traversal sequence produnced by Mutze avoiding
    * tree.
    *
@@ -114,7 +71,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Tree> of(const std::string &mtree);
+  static std::unique_ptr<Tree> of(std::unique_ptr<BaseTree> base_tree);
 
   /**
    * Construct a catalan structure from the 01 bitstring
@@ -124,13 +81,6 @@ public:
    * @return The k-ary tree represented by the bitstring
    */
   static std::unique_ptr<Tree> get_from_bitstring(const std::string &bitstring);
-
-  /**
-   * Get the bitstring representation of the current k-ary tree
-   *
-   * @return 01 bitstring in pre-order traversal
-   */
-  std::string to_bitstring();
 
   /**
    * Convert a tree into its coin stack representation
@@ -177,48 +127,14 @@ public:
   std::unique_ptr<DyckPre> to_dyck_pre();
 
   /**
-   * Store tree into a file with one edge on each line,
-   * and both vertex separated by a comma.
-   *
-   * It throws an exception if the file given
-   * can not be opened.
-   *
-   * @param file:  Output filename
-   */
-  void to_file(std::string file = "");
-
-  /**
    * Rotate into the next tree.
    * @return The next tree.
    */
   std::unique_ptr<Tree> next();
-
-  /**
-   * Serializes the current tree into string.
-   * Different tree has its own unique serialization.
-   *
-   * @return The unique serialization of the tree
-   */
-  std::string serialize();
-
-  /**
-   * Compute the height of the tree - root by itself has a height of 1.
-   *
-   * @return Height of the tree
-   */
-  int height();
-
-  /**
-   * Enumerate *k-ary* trees lexicographically.
-   */
-  void enumerate_lexico();
 
   static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
 
 private:
-  std::unique_ptr<Node> root;
-  TreeType type;
-  int k;
 };

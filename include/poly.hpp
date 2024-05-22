@@ -9,9 +9,9 @@
 
 class Tree;
 
-class Poly : public Catalan<Poly> {
+class Poly : public Catalan<Poly>, public OsOp {
 public:
-  Poly(Graph poly) {
+  Poly(Graph poly) : OsOp(_PLOT_SCRIPT, _DEFAULT_PREFIX_FILE) {
     this->poly = poly; // poly includes the root top side
     this->sides = int(poly.size()) + 2;
   }
@@ -19,13 +19,13 @@ public:
   auto operator<=>(const Poly &rhs) const = default;
 
   /**
-   * Constructor a catalan structure from the current mutze tree.
+   * Constructor a catalan structure from the current base tree
    *
-   * @param mtree:  Mutze tree
+   * @param tree:  current base tree
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<Poly> of(const std::string &mtree);
+  static std::unique_ptr<Poly> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * Create a random polygon triangulation
