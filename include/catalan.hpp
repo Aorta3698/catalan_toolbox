@@ -11,6 +11,8 @@
 #include "base_tree.hpp"
 #include "ktree_iter.hpp"
 #include "mutze_tree.hpp"
+#include "os_op.hpp"
+#include "util.hpp"
 
 template <class T> class Catalan {
 public:
@@ -113,6 +115,13 @@ private:
         << "3. If the edge from k to its parent is contiguous, then the edge to "
            "its left child must be non-contiguous.\n\n";
 
+    std::cout
+        << "=== PSA ===\n Make sure that it doesn't go over 9 vertices because "
+           "11023456789 is ambiguous!\n ";
+    std::cout
+        << "I may have to rip apart the mutze lib to fix it but it is not high up "
+           "on my priority list. \n\n";
+
     while (1) {
       std::cout << "> ";
       std::cout.flush();
@@ -121,7 +130,8 @@ private:
         continue;
       }
       if (std::all_of(patterns.begin(), patterns.end(),
-                      [](auto &p) { return p.is_friendly(); })) {
+                      [](auto &p) { return p.is_friendly(); }) &&
+          confirm_patterns_by_plotting(input)) {
         break;
       }
       std::cout << "At least one pattern given is not friendly. Try again.\n";
@@ -132,5 +142,42 @@ private:
     }
 
     return patterns;
+  }
+
+  static bool confirm_patterns_by_plotting(std::string input) {
+    std::vector<std::string> patterns = Util::split_string(input, ';');
+    int id{};
+    for (const auto &pattern : patterns) {
+      auto tmp = Util::split_string(pattern, ',');
+      auto tree_str{tmp[0]};
+      auto edges{tmp[1]};
+
+      // plot and show user
+      auto tree{BaseTree::get_from_traversal(tree_str)};
+
+      std::string prefix{tree->_DEFAULT_PREFIX_FILE};
+      std::string dotted_edges{"e\n"};
+      dotted_edges += std::to_string(std::ranges::count(edges, '0'));
+      dotted_edges += "\n";
+      for (int i{}; i < int(edges.size()); ++i) {
+        if (edges[i] == '0') {
+          dotted_edges += std::format("{} {}\n", tree_str[i], tree_str[i + 1]);
+        }
+      }
+
+      std::string outfile{prefix + std::to_string(++id)};
+      OsOp::write_to_file(outfile, dotted_edges);
+      tree->to_file(OsOp::FileOp::Append, outfile);
+      tree->_just_plot(outfile);
+    }
+
+    // ask for confirmation
+    std::string ans;
+    std::string valid{"yYnN"};
+    do {
+      std::cout << "Confirm that it is correct (Y/n): ";
+      std::getline(std::cin, ans);
+    } while (ans != "" && valid.find(ans) == std::string::npos);
+    return ans == "y" || ans == "Y" || ans == "";
   }
 };

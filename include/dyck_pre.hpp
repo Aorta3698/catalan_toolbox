@@ -99,7 +99,7 @@ public:
    * @param file: Where the current DyckPre would be stored - _DEFAULT_PREFIX_FILE by
    * default
    */
-  void to_file(std::string file = "");
+  void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
 
   /**
    * Flip a mountain of the current dyck path

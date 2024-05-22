@@ -26,12 +26,14 @@ std::unique_ptr<Arcs> Arcs::get_random(int num_of_points) {
   return Chords::get_random(num_of_points)->to_arcs();
 }
 
-void Arcs::to_file(std::string file) {
+void Arcs::to_file(FileOp mode, std::string file) {
   if (file == "") {
     file = Arcs::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
-  std::ofstream out{file};
+  std::ofstream out{file, file_mode};
   if (!out) {
     std::cerr << std::format("{} cannot be opened.\n", file);
     throw std::invalid_argument("");

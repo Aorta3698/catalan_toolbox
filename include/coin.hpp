@@ -42,7 +42,7 @@ public:
    *
    * @param file: file to store it  - _DEFAULT_PREFIX_FILE as the default.
    */
-  void to_file(std::string file = "");
+  void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
 
   /**
    * get the next coin stack graph object

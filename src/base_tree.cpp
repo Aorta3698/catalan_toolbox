@@ -121,13 +121,15 @@ BaseTree::get_from_traversal(const std::string &traversal) {
   return std::make_unique<BaseTree>(build(1, sz), TreeType::Non_Full);
 }
 
-void BaseTree::to_file(std::string file) {
+void BaseTree::to_file(FileOp mode, std::string file) {
   if (file == "") {
-    file = BaseTree::_DEFAULT_DB_FILE;
+    file = BaseTree::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
   assert(this->root);
-  std::ofstream out{file};
+  std::ofstream out{file, file_mode};
   if (!out) {
     std::cerr << std::format("{} cannot be opened.\n", file);
     throw std::invalid_argument("");

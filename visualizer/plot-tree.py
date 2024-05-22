@@ -12,12 +12,25 @@ os.environ["XDG_SESSION_TYPE"] = "xcb"
 n = 0
 G = []
 E = defaultdict(list)
+DE = []
 leaves_del = []
 edges_del = []
 is_full = 0
 
 with open(sys.argv[1]) as infile:
     tmp = infile.readline().strip()
+    if tmp == "e":
+        n_dotted = int(infile.readline().strip())
+        for _ in range(n_dotted):
+            u, v = line.strip().split(",")
+            u, v = int(u), int(v)
+            if u > v:
+                tmp = u
+                u = v
+                v = tmp
+            DE.append((u, v))
+        tmp = infile.readline().strip()
+
     is_full = tmp == "1"
     for line in infile:
         u, v = line.strip().split(",")
@@ -32,6 +45,10 @@ for key, val in E.items():
         edges_del.append(val[0])
 
 plot_instance = Graph(G, node_layout="dot")
+
+for e in DE:
+    plot_instance.edge_artists[e].set_color("pink")
+    plot_instance.edge_artists[e].set_alpha(0.5)
 
 if not is_full:
     for e in edges_del:

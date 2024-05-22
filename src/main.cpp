@@ -168,7 +168,7 @@ int main(int argc, const char *argv[]) {
         std::string dyck_path{tokens.at(1)};
         std::string file{tokens.at(2)};
         auto tree{(new DyckPre(dyck_path))->to_tree()};
-        tree->to_file(file);
+        tree->to_file(OsOp::FileOp::Truncate, file);
       } else {
         print_usage();
       }

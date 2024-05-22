@@ -63,7 +63,7 @@ public:
    *
    * @param file: The file to store it
    */
-  void to_file(std::string file = "");
+  void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
 
   /**
    * Get the next polygon triangulation

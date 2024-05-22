@@ -107,11 +107,14 @@ void DyckPre::flip_mountain() {
   assert(false);
 }
 
-void DyckPre::to_file(std::string file) {
+void DyckPre::to_file(FileOp mode, std::string file) {
   if (file == "") {
     file = DyckPre::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
+  std::ofstream out{file, file_mode};
   double scale = 0.3;
   double up{1 * scale};
   double down{(this->r - 1) * scale};
@@ -119,7 +122,6 @@ void DyckPre::to_file(std::string file) {
   double x{};
   double y{};
 
-  std::ofstream out{file};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";
     throw std::invalid_argument("");

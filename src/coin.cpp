@@ -12,12 +12,14 @@ std::unique_ptr<CoinStack> CoinStack::of(std::unique_ptr<BaseTree> base_tree) {
   return tree->to_coin_stack();
 }
 
-void CoinStack::to_file(std::string file) {
+void CoinStack::to_file(FileOp mode, std::string file) {
   if (file == "") {
     file = CoinStack::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
-  std::ofstream out{file};
+  std::ofstream out{file, file_mode};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";
     throw std::invalid_argument("");

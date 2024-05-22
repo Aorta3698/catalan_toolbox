@@ -80,7 +80,7 @@ public:
    *
    * @param file:  The file to store it. Default to _DEFAULT_PREFIX_FILE
    */
-  void to_file(std::string file = "");
+  void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
 
   /**
    * Exchange 2 arcs until the user quits.

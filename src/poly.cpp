@@ -149,12 +149,14 @@ std::unique_ptr<Poly> Poly::get_random(int num_of_sides) {
   return res;
 }
 
-void Poly::to_file(std::string file) {
+void Poly::to_file(FileOp mode, std::string file) {
   if (file == "") {
     file = Poly::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
-  std::ofstream out{file};
+  std::ofstream out{file, file_mode};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";
     throw std::invalid_argument("");

@@ -76,7 +76,7 @@ public:
    *
    * @param file:  Output filename
    */
-  void to_file(std::string file = "");
+  void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
 
   /**
    * Serializes the current tree into string.

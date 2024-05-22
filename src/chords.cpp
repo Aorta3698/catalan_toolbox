@@ -54,13 +54,14 @@ std::unique_ptr<Chords> Chords::next() {
   // TODO
   assert(false);
 }
-
-void Chords::to_file(std::string file) {
+void Chords::to_file(FileOp mode, std::string file) {
   if (file == "") {
     file = Chords::_DEFAULT_PREFIX_FILE;
   }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
 
-  std::ofstream out{file};
+  std::ofstream out{file, file_mode};
   if (!out) {
     std::cerr << file << " cannot be opened.\n";
     throw std::invalid_argument("");
