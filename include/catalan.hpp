@@ -79,6 +79,7 @@ public:
       std::this_thread::sleep_for(1s);
       std::cout << "\r";
       std::cout << std::format("{} svg done!", count);
+      std::cout.flush();
     }
     std::cout << "\n\nAll done!\n\n";
   }
@@ -123,22 +124,22 @@ private:
            "on my priority list. \n\n";
 
     while (1) {
+      patterns.clear();
       std::cout << "> ";
       std::cout.flush();
+      std ::cin.clear();
       std::getline(std::cin, input);
       if (!Mutze::Pattern::read_patterns(input, patterns)) {
         continue;
       }
-      if (std::all_of(patterns.begin(), patterns.end(),
-                      [](auto &p) { return p.is_friendly(); }) &&
-          confirm_patterns_by_plotting(input)) {
+      if (std::any_of(patterns.begin(), patterns.end(),
+                      [](auto &p) { return !p.is_friendly(); })) {
+        std::cout << "At least one pattern given is not friendly. Try again.\n";
+        continue;
+      }
+      if (confirm_patterns_by_plotting(input)) {
         break;
       }
-      std::cout << "At least one pattern given is not friendly. Try again.\n";
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-      patterns.clear();
     }
 
     return patterns;
@@ -149,11 +150,18 @@ private:
     int id{};
     for (const auto &pattern : patterns) {
       auto tmp = Util::split_string(pattern, ',');
+
       auto tree_str{tmp[0]};
       auto edges{tmp[1]};
+      std::string tree_s;
+      for (int i{}; i < int(tree_str.size()); ++i) {
+        tree_s += tree_str[i];
+        tree_s += " ";
+      }
+      tree_s.pop_back();
 
       // plot and show user
-      auto tree{BaseTree::get_from_traversal(tree_str)};
+      auto tree{BaseTree::get_from_traversal(tree_s)};
 
       std::string prefix{tree->_DEFAULT_PREFIX_FILE};
       std::string dotted_edges{"e\n"};
@@ -161,7 +169,7 @@ private:
       dotted_edges += "\n";
       for (int i{}; i < int(edges.size()); ++i) {
         if (edges[i] == '0') {
-          dotted_edges += std::format("{} {}\n", tree_str[i], tree_str[i + 1]);
+          dotted_edges += std::format("{},{}\n", tree_str[i], tree_str[i + 1]);
         }
       }
 
@@ -175,9 +183,13 @@ private:
     std::string ans;
     std::string valid{"yYnN"};
     do {
-      std::cout << "Confirm that it is correct (Y/n): ";
+      std::cout << "Solid grey line = edge type 1; Translucent pink lines = edge "
+                   "type 0\n";
+      std::cout << "Confirm that the avoiding patterns shown on screen are correct "
+                   "(Y/n): ";
       std::getline(std::cin, ans);
-    } while (ans != "" && valid.find(ans) == std::string::npos);
-    return ans == "y" || ans == "Y" || ans == "";
+    } while (!ans.empty() && valid.find(ans) == std::string::npos);
+    std ::cin.clear();
+    return ans == "y" || ans == "Y" || ans.empty();
   }
 };

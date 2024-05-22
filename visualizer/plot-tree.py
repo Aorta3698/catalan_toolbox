@@ -22,12 +22,8 @@ with open(sys.argv[1]) as infile:
     if tmp == "e":
         n_dotted = int(infile.readline().strip())
         for _ in range(n_dotted):
-            u, v = line.strip().split(",")
+            u, v = infile.readline().strip().split(",")
             u, v = int(u), int(v)
-            if u > v:
-                tmp = u
-                u = v
-                v = tmp
             DE.append((u, v))
         tmp = infile.readline().strip()
 
@@ -35,7 +31,7 @@ with open(sys.argv[1]) as infile:
     for line in infile:
         u, v = line.strip().split(",")
         u, v = int(u), int(v)
-        G.append((u, v))
+        G.append((u, v))  ## must be from parent to child (from my trial and error)
         E[u].append((u, v))
         E[v].append((u, v))
 
@@ -46,10 +42,15 @@ for key, val in E.items():
 
 plot_instance = Graph(G, node_layout="dot")
 
+## dotted edges for mutze pattern avoiding trees
 for e in DE:
+    if e not in plot_instance.edge_artists:
+        ee = (e[1], e[0])
+        e = ee
     plot_instance.edge_artists[e].set_color("pink")
-    plot_instance.edge_artists[e].set_alpha(0.5)
+    plot_instance.edge_artists[e].set_alpha(0.35)
 
+## full k-ary tree or non-full
 if not is_full:
     for e in edges_del:
         plot_instance.edge_artists[e].set_alpha(0)

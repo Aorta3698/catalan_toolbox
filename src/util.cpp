@@ -33,7 +33,7 @@ std::vector<std::string> Util::split_string(std::string s, char delimiter) {
   std::vector<std::string> ans;
   std::string cur_str{};
   while (std::getline(ss, cur_str, delimiter)) {
-    ans.push_back(cur_str);
+    ans.push_back(Util::strip(cur_str));
   }
   return ans;
 }

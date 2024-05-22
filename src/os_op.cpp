@@ -1,11 +1,18 @@
 #include <format>
+#include <fstream>
 #include <string>
 #include <thread>
 #include <unistd.h>
 
 #include "os_op.hpp"
 
-void OsOp::write_to_file(std::string outfile, std::string content, FileOp file_op) {}
+void OsOp::write_to_file(std::string outfile, std::string content, FileOp mode) {
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
+
+  std::ofstream out{outfile, file_mode};
+  out << content;
+}
 
 void OsOp::to_svg(std::string outfile) {
   to_file(FileOp::Truncate, data_file);
