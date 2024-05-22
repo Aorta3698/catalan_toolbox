@@ -84,8 +84,9 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Package Mutze codes into a C++ library.
 - [x] Use the above to enumerate pattern avoiding binary trees.
 - [x] Generalize the above to all Catalan structures.
-- [x] Able to visualize pattern avoiding Calatan structures.
-- [x] Save all of the above as svg files on the disk.
+- [x] Plot the patterns and ask users to comfirm the patterns.
+- [x] Plot pattern avoiding Calatan structures.
+- [x] Save all of the above as svg files onto the disk.
 - [ ] Able to enumerate generalized Catalan structures lexicographically via an interator.
 
 ### Other

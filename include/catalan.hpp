@@ -35,6 +35,8 @@ public:
     return T::of_bit(next_bit_str);
   }
 
+  // TODO: 1. save to folder instead each files in ./out/
+  // TODO: 2. offer to save avoiding patterns as svg too
   /**
    * Enumerate pattern avoiding Catalan structures.
    */
