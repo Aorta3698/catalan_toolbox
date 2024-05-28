@@ -187,6 +187,11 @@ credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarnin
 - [Catalan Numbers, Their Generalization, and Their Uses](https://www.math.uakron.edu/~cossey/636papers/hilton%20and%20pedersen.pdf)
 
 ---
+## Counting
+[Non-Contiguous Pattern Avoidance in Binary Trees](https://www.combinatorics.org/ojs/index.php/eljc/article/view/v19i3p22/pdf)
+[Generating Function ELI5](https://www.reddit.com/r/explainlikeimfive/comments/1e0h10/eli5generating_functions/)
+
+---
 ## Super Catalan
 - [Elements of the sets enumerated by super-Catalan numbers](https://math.haifa.ac.il/toufik/enumerative/supercat.pdf)
 
