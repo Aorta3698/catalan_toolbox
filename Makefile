@@ -30,6 +30,8 @@ else
     ifeq ($(UNAME_S),Darwin)
         CXXFLAGS += -D OSX
         CXX := g++-14
+        CPPFLAGS += -I/opt/homebrew/include
+        LDFLAGS += -L/opt/homebrew/lib
     endif
     UNAME_P := $(shell uname -p)
     ifeq ($(UNAME_P),x86_64)
