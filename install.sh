@@ -13,7 +13,7 @@ if ! command -v $PYTHON &> /dev/null; then
   exit 1
 fi
 
-if ! python -m venv $DIR; then
+if ! $PYTHON -m venv $DIR; then
   echo >&2 "Python virtual environment creation failed!"
   exit 1
 fi
