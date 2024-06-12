@@ -36,12 +36,12 @@ VIR=${VIR%.*}
 NETGRAPH=$DIR/lib/python$VIR/site-packages/netgraph
 
 if ! $PYTHON -m venv $DIR; then
-  echo >&2 "Python virtual environment creation ${BOLD}${RED}FAILED!${NORMAL}"
+  echo >&2 "Python virtual environment creation ${BOLD}${UNDERLINE}FAILED!${NORMAL}"
   exit 1
 fi
 
 if ! $PIP install -r $DIR/req.txt; then
-  echo >&2 "Python package dependency installation ${BOLD}${RED}FAILED!${NORMAL}"
+  echo >&2 "Python package dependency installation ${BOLD}${UNDERLINE}FAILED!${NORMAL}"
   exit 1
 fi
 
@@ -57,11 +57,11 @@ else
 fi
 
 if ! make; then
-  echo >&2 "Makefile ${BOLD}${RED}FAILED${NORMAL} to compile!"
+  echo >&2 "Makefile ${BOLD}${UNDERLINE}FAILED${NORMAL} to compile!"
   exit 1
 fi
 
-printf "\nInstallation ${BOLD}${GREEN}SUCCEEDED!${NORMAL}\n"
+printf "\nInstallation ${BOLD}${UNDERLINE}SUCCEEDED!${NORMAL}\n"
 
 # https://stackoverflow.com/questions/5190966/using-sed-to-insert-tabs
 # https://stackoverflow.com/a/8394273
