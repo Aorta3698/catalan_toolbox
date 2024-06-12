@@ -8,7 +8,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 CPPFLAGS := -Iinclude -Ilib -MMD -MP
 CXXFLAGS := -Wall -std=c++23 -O3
 LDFLAGS  := -Llib
-LDLIBS   := -lgmp -lmutze -lmutze_arm
+LDLIBS   := -lgmp
 
 ifeq ($(OS),Windows_NT)
     CXXFLAGS += -D WIN32
@@ -42,6 +42,9 @@ else
     endif
     ifneq ($(filter arm%,$(UNAME_P)),)
         CXXFLAGS += -D ARM
+        LDLIBS += -lmutze_arm
+    else
+    	LDLIBS += -lmutze
     endif
 endif
 
