@@ -29,6 +29,7 @@ else
     endif
     ifeq ($(UNAME_S),Darwin)
         CXXFLAGS += -D OSX
+        CXX := g++-14
     endif
     UNAME_P := $(shell uname -p)
     ifeq ($(UNAME_P),x86_64)
@@ -42,9 +43,14 @@ else
     endif
 endif
 
+OK := $(shell command -v $(CXX) 2> /dev/null)
+
 .PHONY: all clean
 
 all: $(EXE)
+ifndef OK
+	$(error "g++-14 compiler is not installed!")
+endif
 
 $(EXE): $(OBJ)
 	$(CXX) -std=c++23 $(LDFLAGS) $^ $(LDLIBS) -o $@
