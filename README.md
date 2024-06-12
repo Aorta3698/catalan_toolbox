@@ -115,6 +115,10 @@ This will create a python virtual environment, install all dependencies, and the
 
 It also attempts to silence the warning described below.
 
+The provided script has been tested on:
+- Arch Linux (Distrobox within Fedora Silverblue)
+- Macbook M1 first gen
+
 ## RuntimeWarning: invalid value encountered in divide
 Netgraph lib currently has this warning as discussed by the library creator [here](https://github.com/paulbrodersen/netgraph/issues/81); to suppress this harming warning, put
 ```
