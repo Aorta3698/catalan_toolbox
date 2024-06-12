@@ -3,6 +3,7 @@
 DIR=./visualizer
 PIP=$DIR/bin/pip
 PYTHON=python3
+OS=$(uname -s)
 
 if ! command -v $PYTHON &> /dev/null; then
   PYTHON=python
@@ -28,8 +29,15 @@ if ! $PIP install -r $DIR/req.txt; then
   exit 1
 fi
 
-if ! sed -i.macos_sucks $'360i\\\tnp.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
-  echo >&2 "Failed to silence warnings from Netgraph. It's no big deal though."
+if [ "$OS" = "Darwin" ]; then ## stupid macos
+  if ! sed -i.macos_sucks $'359i\\\t
+    np.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
+    echo >&2 "Failed to silence warnings from Netgraph. It's no big deal though."
+  fi
+else
+  if ! sed -i $'360i\\\tnp.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
+    echo >&2 "Failed to silence warnings from Netgraph. It's no big deal though."
+  fi
 fi
 
 if ! make; then
