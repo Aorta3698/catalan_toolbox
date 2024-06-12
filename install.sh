@@ -19,7 +19,7 @@ if ! $PYTHON -m venv $DIR; then
 fi
 
 if ! $PIP install -r $DIR/req.txt; then
-  echo >&2 "python package dependency installation failed!"
+  echo >&2 "Python package dependency installation failed!"
   exit 1
 fi
 
