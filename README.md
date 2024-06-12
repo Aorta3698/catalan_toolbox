@@ -113,6 +113,8 @@ Additionally, make sure that [GNU GMP library](https://gmplib.org/) is installed
 
 This will create a python virtual environment, install all dependencies, and then run Makefile.
 
+It also attempts to silence the warning described below.
+
 ## RuntimeWarning: invalid value encountered in divide
 Netgraph lib currently has this warning as discussed by the library creator [here](https://github.com/paulbrodersen/netgraph/issues/81); to suppress this harming warning, put
 ```

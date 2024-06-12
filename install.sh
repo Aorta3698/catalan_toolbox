@@ -28,7 +28,7 @@ if ! $PIP install -r $DIR/req.txt; then
   exit 1
 fi
 
-if ! sed -i $'360i\\\tnp.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
+if ! sed -i.macos_sucks $'360i\\\tnp.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
   echo >&2 "Failed to silence warnings from Netgraph. It's no big deal though."
 fi
 
