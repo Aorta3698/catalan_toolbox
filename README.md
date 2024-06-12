@@ -109,7 +109,7 @@ The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version suppo
 Additionally, make sure that [GNU GMP library](https://gmplib.org/) is installed (bignum lib).
 
 ## MacOS
-Install GNU GMP and g++-14 from [Homebrew](brew.sh).
+Install GNU GMP and g++-14 from [Homebrew](https://brew.sh).
 
 ## Steps To Follow
 - Run `./install.sh`
