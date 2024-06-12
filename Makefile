@@ -8,7 +8,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 CPPFLAGS := -Iinclude -Ilib -MMD -MP
 CXXFLAGS := -Wall -std=c++23 -O3
 LDFLAGS  := -Llib
-LDLIBS   := -lgmp -lmutze
+LDLIBS   := -lgmp -lmutze -lmutze_arm
 
 ifeq ($(OS),Windows_NT)
     CXXFLAGS += -D WIN32
