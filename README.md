@@ -103,28 +103,15 @@ It is because that the visualizer is not started on the main thread and apparent
 
 ---
 # Compile Instruction
-## Python Packages To Install
-- `Networkx`
-- `Matplotlib`
-- `Pydot`
-- `PyQt6`
-- `Netgraph`
-- `Watchdog`
-
 ## C++23
 The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version supports it.
 
 Additionally, make sure that [GNU GMP library](https://gmplib.org/) is installed (bignum lib).
 
 ## Steps To Follow
-- First create a Python venv named `visualizer` 
-- Install all needed dependenceis listed way above
-- Enter `make` into the terminal
+- Run `./install.sh`
 
-## How to Update Python venv
-```
-python -m venv /path/to/new/virtual/environment
-```
+This will create a python virtual environment, install all dependencies, and then run Makefile.
 
 ## RuntimeWarning: invalid value encountered in divide
 Netgraph lib currently has this warning as discussed by the library creator [here](https://github.com/paulbrodersen/netgraph/issues/81); to suppress this harming warning, put
