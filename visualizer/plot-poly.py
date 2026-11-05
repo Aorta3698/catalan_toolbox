@@ -120,8 +120,8 @@ def draw_tree(ax):
             markeredgecolor="black",
             markeredgewidth=0.75,
         )
-        if v in parents and v != tree_edges[0][0]:
-            ax.text(x, y, v, fontsize=12, ha="center", va="center")
+        if v in parents:
+            ax.text(x, y, v, fontsize=12, ha="center", va="center_baseline")
     ax.axis("off")
 
 
