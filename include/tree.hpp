@@ -8,7 +8,6 @@
 #include "catalan.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "poly.hpp"
 
@@ -17,7 +16,6 @@
 class Poly;
 class Chords;
 class DyckPre;
-class DyckPreMirrored;
 class Arcs;
 class CoinStack;
 
@@ -88,13 +86,6 @@ public:
    * @return Its coin stack object.
    */
   std::unique_ptr<CoinStack> to_coin_stack();
-
-  /**
-   * Convert a tree into its mirrored pre-order dyck path representation
-   *
-   * @return Its DyckPreMirrored object.
-   */
-  std::unique_ptr<DyckPreMirrored> to_dyck_pre_mirrored();
 
   /**
    * Convert the current tree into

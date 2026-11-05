@@ -33,26 +33,6 @@ std::unique_ptr<CoinStack> Tree::to_coin_stack() {
   return this->to_dyck_pre()->to_coin_stack();
 }
 
-std::unique_ptr<DyckPreMirrored> Tree::to_dyck_pre_mirrored() {
-  std::string encoded_result{};
-  std::function<void(const Node *)> encode = [&](const Node *cur_node) {
-    int zero{int(encoded_result.size())};
-    for (const auto &next_node : cur_node->children | std::ranges::views::reverse) {
-      encoded_result += "1";
-      encode(next_node.get());
-    }
-    if (cur_node->is_internal_node()) {
-      encoded_result[zero] = '0';
-    }
-  };
-  encode(this->root.get());
-  if (!DyckPreMirrored::is_valid(encoded_result)) {
-    std::cerr << "Error: This tree is not a full k-ary tree\n";
-    throw std::invalid_argument("");
-  }
-  return std::make_unique<DyckPreMirrored>(encoded_result);
-}
-
 std::unique_ptr<DyckPre> Tree::to_dyck_pre() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
