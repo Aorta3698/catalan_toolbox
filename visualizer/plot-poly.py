@@ -4,33 +4,52 @@ import os
 import sys
 import time
 
-from watchdog.observers import Observer
-from watchdog.events import PatternMatchingEventHandler
+
+def load():
+    global num_of_points
+    G.clear()
+    node_positions.clear()
+    tree_positions.clear()
+    tree_edges.clear()
+
+    with open(sys.argv[1]) as infile:
+        num_of_points = int(infile.readline())
+        for i in range(num_of_points):
+            line = infile.readline()
+            x, y = line.strip().split(",")
+            node_positions[i] = (float(x), float(y))
+        for line in infile:
+            if line.strip() == "tree":
+                break
+            u, v = line.strip().split(",")
+            e = (int(u), int(v))
+            G.append(e)
+        if infile.readline():
+            for _ in range(int(infile.readline())):
+                v, x, y = infile.readline().strip().split(",")
+                tree_positions[int(v)] = (float(x), float(y))
+            for line in infile:
+                u, v = line.strip().split(",")
+                tree_edges.append((int(u), int(v)))
 
 
-class MyHandler(PatternMatchingEventHandler):
-    def __init__(self):
-        super().__init__(patterns=[".polylog"], ignore_directories=True)
+def check():
+    global stamp
+    if not os.path.exists(".polylog") or os.stat(".polylog").st_mtime_ns == stamp:
+        return
+    try:
+        load()
+    except ValueError:
+        return
+    stamp = os.stat(".polylog").st_mtime_ns
 
-    def on_modified(self, event):
-        # https://stackoverflow.com/questions/44278369/how-to-keep-matplotlib-python-window-in-background
-
-        with open(".polylog") as file:
-            e = int(file.readline())
-            u, v = file.readline().strip().split(",")
-            u, v = int(u), int(v)
-
-            ## TODO: right now, whole graph gets redrawn every flip, which is bad for performance
-            idx = e + num_of_points - 1
-            G[idx] = (u, v)
-
-            draw()
-            plt.gcf().canvas.draw_idle()
-            plt.gcf().canvas.flush_events()
+    ## TODO: right now, whole graph gets redrawn every flip, which is bad for performance
+    draw()
+    plt.gcf().canvas.draw_idle()
 
 
 def draw():
-    ax = plt.gca()
+    ax = axs[0]
     ax.clear()
     for i, (u, v) in enumerate(G):
         (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
@@ -71,6 +90,31 @@ def draw():
     ax.set_aspect("equal")
     ax.axis("off")
 
+    if tree_edges:
+        draw_tree(axs[1])
+
+
+def draw_tree(ax):
+    ax.clear()
+    parents = {u for u, _ in tree_edges}
+    for u, v in tree_edges:
+        (x1, y1), (x2, y2) = tree_positions[u], tree_positions[v]
+        ax.plot([x1, x2], [y1, y2], color="black", alpha=0.5, linewidth=1.5)
+
+    for v, (x, y) in tree_positions.items():
+        ax.plot(
+            x,
+            y,
+            "o",
+            markersize=22 if v in parents else 8,
+            markerfacecolor="white",
+            markeredgecolor="black",
+            markeredgewidth=0.75,
+        )
+        if v in parents and v != tree_edges[0][0]:
+            ax.text(x, y, v, fontsize=12, ha="center", va="center")
+    ax.axis("off")
+
 
 if __name__ == "__main__":
 
@@ -80,27 +124,24 @@ if __name__ == "__main__":
 
     G = []
     node_positions = {}
-
-    with open(sys.argv[1]) as infile:
-        num_of_points = int(infile.readline())
-        for i in range(num_of_points):
-            line = infile.readline()
-            x, y = line.strip().split(",")
-            node_positions[i] = (float(x), float(y))
-        for line in infile:
-            u, v = line.strip().split(",")
-            e = (int(u), int(v))
-            G.append(e)
+    tree_positions = {}
+    tree_edges = []
+    load()
 
     width = 4.8 + 0.30 * num_of_points
     height = 3.2 + 0.30 * num_of_points
-    plt.figure(figsize=(width, height))
+    if tree_edges:
+        fig, axs = plt.subplots(1, 2, figsize=(2 * width, height))
+    else:
+        fig, ax = plt.subplots(figsize=(width, height))
+        axs = [ax]
     draw()
 
-    handler = MyHandler()
-    observer = Observer()
-    observer.schedule(handler, ".", recursive=False)
-    observer.start()
+    if tree_edges:
+        stamp = None
+        timer = fig.canvas.new_timer(interval=100)
+        timer.add_callback(check)
+        timer.start()
 
     if len(sys.argv) == 2:
         plt.show()

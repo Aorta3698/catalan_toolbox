@@ -12,4 +12,3 @@ PyQt6-Qt6==6.7.1
 PyQt6-sip==13.6.0
 python-dateutil==2.9.0.post0
 six==1.16.0
-watchdog==4.0.1

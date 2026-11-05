@@ -63,7 +63,7 @@ void Poly::flip_and_plot() {
   int relationship[sz + this->sides][3];
   int tables[this->sides][2];
   std::memset(tables, 0, sizeof(tables));
-  std::memset(tables, 0, sizeof(relationship));
+  std::memset(relationship, 0, sizeof(relationship));
   std::vector<std::vector<int>> buckets(this->sides);
   std::function<Edge(int)> get_edge = [&](int idx) {
     return idx < sz ? this->poly[idx] : std::array<int, 2>{{idx - sz, idx - sz + 1}};
@@ -92,8 +92,24 @@ void Poly::flip_and_plot() {
     }
   }
 
+  std::function<std::unique_ptr<Node>(int)> subtree = [&](int i) {
+    if (i >= sz) {
+      return std::make_unique<Node>(i);
+    }
+    auto node{std::make_unique<Node>(i, 2)};
+    node->children[0] = subtree(relationship[i][Relation::Left]);
+    node->children[1] = subtree(relationship[i][Relation::Right]);
+    return node;
+  };
+  auto save = [&]() {
+    this->to_file();
+    OsOp::write_to_file(Poly::_DEFAULT_PREFIX_FILE, "tree\n", FileOp::Append);
+    Tree{subtree(0)}.to_file(FileOp::Append, Poly::_DEFAULT_PREFIX_FILE);
+  };
+
   // plot it to user
-  this->plot();
+  save();
+  this->_just_plot(Poly::_DEFAULT_PREFIX_FILE);
 
   // flip an edge - O(1)
   while (1) {
@@ -133,6 +149,7 @@ void Poly::flip_and_plot() {
 
     // update graph
     this->poly[idx] = {{u, v}};
+    save();
     std::ofstream out{Poly::_WATCHDOG_FILE};
     if (!out) {
       std::cerr << std::format("{} cannot be opened.\n", Poly::_WATCHDOG_FILE);
