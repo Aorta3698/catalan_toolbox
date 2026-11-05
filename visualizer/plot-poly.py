@@ -61,10 +61,8 @@ def draw():
     diagonals.clear()
     for i, (u, v) in enumerate(G):
         (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
-        if i < num_of_points - 1:
+        if i < num_of_points:
             ax.plot([x1, x2], [y1, y2], color="black", alpha=0.5, linewidth=1.5)
-        elif i == num_of_points - 1:
-            ax.plot([x1, x2], [y1, y2], color="green", alpha=0.5, linewidth=3)
         else:
             line = ax.plot([x1, x2], [y1, y2], color="pink", linewidth=3, pickradius=7)[0]
             diagonals[line] = i - num_of_points + 1
