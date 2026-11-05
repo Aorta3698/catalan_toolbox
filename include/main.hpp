@@ -1,7 +1,10 @@
 #pragma once
 
+#include <string>
+#include <vector>
+
 /**
- * Print usage of the program to the console
+ * Print usage
  */
 void print_usage();
 
@@ -9,3 +12,13 @@ void print_usage();
  * Init
  */
 bool init();
+
+/**
+ * Print help for commands
+ */
+void print_hint(const std::vector<std::string> &tokens);
+
+/**
+ * This form a command names, with "tri" for "triangulation"
+ */
+std::string form_name(const std::vector<std::string> &tokens);

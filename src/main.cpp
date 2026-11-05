@@ -1,7 +1,6 @@
 #include "arcs.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck_mirrored.hpp"
 #include "dyck_pre.hpp"
 #include "main.hpp"
 #include "poly.hpp"
@@ -10,10 +9,7 @@
 
 #include <exception>
 #include <iostream>
-#include <memory>
-#include <ranges>
 #include <string>
-#include <unistd.h>
 #include <utility>
 #include <vector>
 
@@ -23,157 +19,114 @@ int main(int argc, const char *argv[]) {
     return -1;
   }
 
-  std::cout << "0 - triangulation\n"
-            << "1 - chords\n"
-            << "2 - arcs\n"
-            << "3 - dyck path pre-order\n"
-            << "4 - coins\n"
-            << "5 - dyck path pre-order mirrored\n"
-            << "6 - trees\n\n";
+  print_usage();
 
-  std::string prev_dyck_path{};
-  std::string prev_cmd{};
   do {
     std::string input{};
     std::cout << "> ";
-    std::getline(std::cin, input);
-    if (input == "r") {
-      input = prev_cmd;
-    } else {
-      prev_cmd = input;
+    if (!std::getline(std::cin, input)) {
+      std::cout << "\n";
+      break;
+    }
+    if (Util::strip(input).empty()) {
+      continue;
     }
     std::vector<std::string> tokens{Util::split_string(input, ' ')};
 
     try {
       std::string cmd = tokens.at(0);
-      if (cmd == "test" || cmd == "t") {
+      std::string form{form_name(tokens)};
+      if (cmd == "test" && form.empty()) {
         Tree::test_expected_height();
         DyckPre::test_conversion();
-        DyckPreMirrored::test_conversion();
         Poly::test_conversion();
         Chords::test_conversion();
         Arcs::test_conversion();
-      } else if (cmd == "6r") {
-        // SKIP
-      } else if (cmd == "6t") {
+      } else if (cmd == "plot" && form == "tree") {
+        int k{Util::get_num(tokens.at(2))};
+        int num_of_nodes{Util::get_num(tokens.at(3))};
+        int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
+        while (count--) {
+          auto tree{Tree::get_random(k, num_of_nodes)};
+          tree->plot();
+        }
+      } else if (cmd == "test" && form == "tree") {
         // skip
-      } else if (cmd == "6m") {
+      } else if (cmd == "avoid" && form == "tree") {
         Tree::enumerate_avoiding();
         //----------------------------------
-      } else if (cmd == "5r") {
-        // SKIP
-      } else if (cmd == "5t") {
-        DyckPreMirrored::test_conversion();
-      } else if (cmd == "5e") {
-        // SKIP
-        //----------------------------------
-      } else if (cmd == "4r") {
-        int base{Util::get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(3))};
+      } else if (cmd == "plot" && form == "coins") {
+        int base{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto coins{CoinStack::get_random(base)};
           coins->plot();
         }
-      } else if (cmd == "4t") {
+      } else if (cmd == "test" && form == "coins") {
         // SKIP
-      } else if (cmd == "4m") {
+      } else if (cmd == "avoid" && form == "coins") {
         CoinStack::enumerate_avoiding();
         //----------------------------------
-      } else if (cmd == "3r") {
-        int r{Util::get_num(tokens.at(1))};
-        int length{Util::get_num(tokens.at(2))};
-        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
+      } else if (cmd == "plot" && form == "dyck") {
+        int r{Util::get_num(tokens.at(2))};
+        int length{Util::get_num(tokens.at(3))};
+        int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
         while (count--) {
           auto dyck_pre{DyckPre::get_random(r, length)};
           dyck_pre->plot();
         }
-      } else if (cmd == "3t") {
+      } else if (cmd == "test" && form == "dyck") {
         DyckPre::test_conversion();
-      } else if (cmd == "3m") {
+      } else if (cmd == "avoid" && form == "dyck") {
         DyckPre::enumerate_avoiding();
-      } else if (cmd == "3e") {
-        int r{Util::get_num(tokens.at(1))};
-        int length{Util::get_num(tokens.at(2))};
-        auto dyck_pre{DyckPre::get_random(r, length)};
-        dyck_pre->flip_mountain();
         //----------------------------------
-      } else if (cmd == "2r") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
+      } else if (cmd == "plot" && form == "arcs") {
+        int num_of_arcs{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
-          auto arcs{Arcs::get_random(num_of_points)};
+          auto arcs{Arcs::get_random(2 * num_of_arcs)};
           arcs->plot();
         }
-      } else if (cmd == "2m") {
+      } else if (cmd == "avoid" && form == "arcs") {
         Arcs::enumerate_avoiding();
-      } else if (cmd == "2t") {
+      } else if (cmd == "test" && form == "arcs") {
         Arcs::test_conversion();
-      } else if (cmd == "2e") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        auto arcs{Arcs::get_random(num_of_points)};
-        arcs->exchage_arcs();
         //----------------------------------
-      } else if (cmd == "1r") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
+      } else if (cmd == "plot" && form == "chords") {
+        int num_of_chords{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
-          auto chords{Chords::get_random(num_of_points)};
+          auto chords{Chords::get_random(2 * num_of_chords)};
           chords->plot();
         }
-      } else if (cmd == "1t") {
+      } else if (cmd == "test" && form == "chords") {
         Chords::test_conversion();
-      } else if (cmd == "1m") {
+      } else if (cmd == "avoid" && form == "chords") {
         Chords::enumerate_avoiding();
-      } else if (cmd == "1e") {
-        int num_of_points{Util::get_num(tokens.at(1))};
-        auto chords{Chords::get_random(num_of_points)};
-        chords->exchage_chords();
         //----------------------------------
-      } else if (cmd == "0r") {
-        int num_of_sides{Util::get_num(tokens.at(1))};
-        int count{tokens.size() == 2 ? 1 : Util::get_num(tokens.at(2))};
+      } else if (cmd == "plot" && form == "triangulation") {
+        int num_of_sides{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto poly{Poly::get_random(num_of_sides)};
           poly->plot();
         }
-      } else if (cmd == "0t") {
+      } else if (cmd == "test" && form == "triangulation") {
         Poly::test_conversion();
-      } else if (cmd == "0m") {
+      } else if (cmd == "avoid" && form == "triangulation") {
         Poly::enumerate_avoiding();
-      } else if (cmd == "0f") {
+      } else if (cmd == "flip") {
         int num_of_sides{Util::get_num(tokens.at(1))};
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
         //---------------------------------
       } else if (cmd == "quit" || cmd == "q") {
         break;
-      } else if (cmd == "gen" || cmd == "g") {
-        int r{Util::get_num(tokens.at(1))};
-        int len{Util::get_num(tokens.at(2))};
-        auto dyck_pre{DyckPre::get_random(r, len)};
-        dyck_pre->print();
-        prev_dyck_path = dyck_pre->get_path();
-      } else if (cmd == "plot" || cmd == "p") {
-        std::string dyck_path{tokens.size() == 2 ? tokens.at(1) : prev_dyck_path};
-        auto path{std::make_unique<DyckPre>(dyck_path)};
-        auto tree{path->to_tree()};
-        tree->plot();
-      } else if (cmd == "file" || cmd == "f") {
-        std::string file{tokens.at(1)};
-        auto tree{Tree::get_from_file(file)};
-        auto dyck_pre{tree->to_dyck_pre()};
-        dyck_pre->print();
-        prev_dyck_path = dyck_pre->get_path();
-      } else if (cmd == "save" || cmd == "s") {
-        std::string dyck_path{tokens.at(1)};
-        std::string file{tokens.at(2)};
-        auto tree{(new DyckPre(dyck_path))->to_tree()};
-        tree->to_file(OsOp::FileOp::Truncate, file);
       } else {
-        print_usage();
+        print_hint(tokens);
       }
     } catch (std::exception &e) {
-      print_usage();
+      print_hint(tokens);
     }
   } while (1);
 
@@ -183,25 +136,72 @@ int main(int argc, const char *argv[]) {
 };
 
 void print_usage() {
-  int cmd_spc{30};
+  int cmd_spc{28};
   std::vector<std::pair<std::string, std::string>> cmds{
-      {"gen <deg> <len>", "(g) Generate a random dyck path"},
-      {"plot [dyck path]", "(p) Plot a full k-ary tree from (given/prev) dyck path"},
-      {"file <file>", "(e) Read a tree file (1 edge on each line) into dyck path"},
-      {"all <num>", "(a) Plot all binary trees with internal nodes <= 4"},
-      {"save <dyck path> <file>", "(s) Save the dyck path as a tree in file"},
-      {"test", "(t) Run all test cases"},
-      {"help", "(h) Print this message"},
-      {"quit", "(q) Quit the program"}};
+      {"plot <form> <size> [count]", "draw random objects of one form"},
+      {"flip <vertices>", "flip the diagonals with its dual tree beside it"},
+      {"avoid <form>", "list the objects that avoid given patterns"},
+      {"test [form]", "run the tests (every form if none is given)"},
+      {"help", "show help menu"},
+      {"quit", "quit"}};
+  int form_spc{22};
+  std::vector<std::pair<std::string, std::string>> forms{
+      {"FORM", "SIZE"},
+      {"triangulation (tri)", "vertices"},
+      {"chords, arcs", "chords or arcs"},
+      {"dyck", "k, then length"},
+      {"coins", "coins in the bottom row"},
+      {"tree", "k, then internal nodes"}};
 
-  std::cout << "commands:\n";
+  std::cout << "Catalan Toolbox\n\n";
   for (auto &[cmd, desc] : cmds) {
-    std::cout << "    ";
+    std::cout << "  ";
     std::cout << cmd << std::string(cmd_spc - int(cmd.size()), ' ') << desc << "\n";
   }
+  std::cout << "\n";
+  for (auto &[form, size] : forms) {
+    std::cout << "  ";
+    std::cout << form << std::string(form_spc - int(form.size()), ' ') << size << "\n";
+  }
+  std::cout << "\n";
 }
 
 bool init() {
   // Util::setup_comb();
   return true;
+}
+
+void print_hint(const std::vector<std::string> &tokens) {
+  std::string cmd{tokens.empty() ? "" : tokens[0]};
+  std::string form{form_name(tokens)};
+  if (cmd == "flip") {
+    std::cout << "flip needs the number of vertices, e.g. flip 8\n";
+  } else if (cmd == "plot" && form == "triangulation") {
+    std::cout << "plot triangulation needs the number of vertices, e.g. plot tri 8\n";
+  } else if (cmd == "plot" && form == "chords") {
+    std::cout << "plot chords needs the number of chords, e.g. plot chords 4\n";
+  } else if (cmd == "plot" && form == "arcs") {
+    std::cout << "plot arcs needs the number of arcs, e.g. plot arcs 4\n";
+  } else if (cmd == "plot" && form == "dyck") {
+    std::cout << "plot dyck needs k, then the length, e.g. plot dyck 2 10\n";
+  } else if (cmd == "plot" && form == "coins") {
+    std::cout << "plot coins needs the coins in the bottom row, e.g. plot coins 5\n";
+  } else if (cmd == "plot" && form == "tree") {
+    std::cout << "plot tree needs k, then the internal nodes, e.g. plot tree 2 5\n";
+  } else if (cmd == "plot") {
+    std::cout << "plot needs a form and its size, e.g. plot tri 8\n";
+  } else if (cmd == "avoid") {
+    std::cout << "avoid needs a form, e.g. avoid tree\n";
+  } else if (cmd == "test") {
+    std::cout << "test takes a form, e.g. test dyck, or none to run every test\n";
+  } else {
+    print_usage();
+  }
+}
+
+std::string form_name(const std::vector<std::string> &tokens) {
+  if (tokens.size() < 2) {
+    return "";
+  }
+  return tokens[1] == "tri" ? "triangulation" : tokens[1];
 }
