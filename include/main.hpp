@@ -19,6 +19,6 @@ bool init();
 void print_hint(const std::vector<std::string> &tokens);
 
 /**
- * This form a command names, with "tri" for "triangulation"
+ * Return the full name of a word
  */
-std::string form_name(const std::vector<std::string> &tokens);
+std::string form_name(const std::string &word);

@@ -34,8 +34,8 @@ int main(int argc, const char *argv[]) {
     std::vector<std::string> tokens{Util::split_string(input, ' ')};
 
     try {
-      std::string cmd = tokens.at(0);
-      std::string form{form_name(tokens)};
+      std::string cmd = form_name(tokens.at(0));
+      std::string form{tokens.size() > 1 ? form_name(tokens[1]) : ""};
       if (cmd == "test" && form.empty()) {
         Tree::test_expected_height();
         DyckPre::test_conversion();
@@ -120,7 +120,9 @@ int main(int argc, const char *argv[]) {
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
         //---------------------------------
-      } else if (cmd == "quit" || cmd == "q") {
+      } else if (cmd == "enumerate") {
+        std::cout << "enumerate isn't built yet\n";
+      } else if (cmd == "quit") {
         break;
       } else {
         print_hint(tokens);
@@ -139,15 +141,16 @@ void print_usage() {
   int cmd_spc{28};
   std::vector<std::pair<std::string, std::string>> cmds{
       {"plot <form> <size> [count]", "draw random objects of one form"},
+      {"enu[merate] <form> <size>", "save every object of one size as an svg"},
       {"flip <vertices>", "flip the diagonals with its dual tree beside it"},
       {"avoid <form>", "list the objects that avoid given patterns"},
       {"test [form]", "run the tests (every form if none is given)"},
       {"help", "show help menu"},
-      {"quit", "quit"}};
+      {"q[uit]", "quit"}};
   int form_spc{22};
   std::vector<std::pair<std::string, std::string>> forms{
       {"FORM", "SIZE"},
-      {"triangulation (tri)", "vertices"},
+      {"tri[angulation]", "vertices"},
       {"chords, arcs", "chords or arcs"},
       {"dyck", "k, then length"},
       {"coins", "coins in the bottom row"},
@@ -172,8 +175,8 @@ bool init() {
 }
 
 void print_hint(const std::vector<std::string> &tokens) {
-  std::string cmd{tokens.empty() ? "" : tokens[0]};
-  std::string form{form_name(tokens)};
+  std::string cmd{tokens.empty() ? "" : form_name(tokens[0])};
+  std::string form{tokens.size() > 1 ? form_name(tokens[1]) : ""};
   if (cmd == "flip") {
     std::cout << "flip needs the number of vertices, e.g. flip 8\n";
   } else if (cmd == "plot" && form == "triangulation") {
@@ -199,9 +202,15 @@ void print_hint(const std::vector<std::string> &tokens) {
   }
 }
 
-std::string form_name(const std::vector<std::string> &tokens) {
-  if (tokens.size() < 2) {
-    return "";
+std::string form_name(const std::string &word) {
+  if (word == "tri") {
+    return "triangulation";
   }
-  return tokens[1] == "tri" ? "triangulation" : tokens[1];
+  if (word == "enu") {
+    return "enumerate";
+  }
+  if (word == "q") {
+    return "quit";
+  }
+  return word;
 }
