@@ -48,9 +48,17 @@ def check():
     plt.gcf().canvas.draw_idle()
 
 
+def on_click(event):
+    for line, k in diagonals.items():
+        if line.contains(event)[0]:
+            print(k, flush=True)
+            return
+
+
 def draw():
     ax = axs[0]
     ax.clear()
+    diagonals.clear()
     for i, (u, v) in enumerate(G):
         (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
         if i < num_of_points - 1:
@@ -58,7 +66,8 @@ def draw():
         elif i == num_of_points - 1:
             ax.plot([x1, x2], [y1, y2], color="green", alpha=0.5, linewidth=3)
         else:
-            ax.plot([x1, x2], [y1, y2], color="pink", linewidth=3)
+            line = ax.plot([x1, x2], [y1, y2], color="pink", linewidth=3, pickradius=7)[0]
+            diagonals[line] = i - num_of_points + 1
             angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
             if angle > 90:
                 angle -= 180
@@ -126,6 +135,7 @@ if __name__ == "__main__":
     node_positions = {}
     tree_positions = {}
     tree_edges = []
+    diagonals = {}
     load()
 
     width = 4.8 + 0.30 * num_of_points
@@ -142,6 +152,7 @@ if __name__ == "__main__":
         timer = fig.canvas.new_timer(interval=100)
         timer.add_callback(check)
         timer.start()
+        fig.canvas.mpl_connect("button_press_event", on_click)
 
     if len(sys.argv) == 2:
         plt.show()

@@ -110,28 +110,23 @@ void Poly::flip_and_plot() {
 
   // plot it to user
   save();
-  this->_just_plot(Poly::_DEFAULT_PREFIX_FILE);
+  std::string window{std::format("./visualizer/bin/python3 ./visualizer/{} {}",
+                                 Poly::_PLOT_SCRIPT, Poly::_DEFAULT_PREFIX_FILE)};
+  FILE *clicks{popen(window.c_str(), "r")};
+  if (!clicks) {
+    std::cerr << "The flip window could not be started.\n";
+    return;
+  }
+  std::cout << "Click a diagonal to flip it. Close the window to return.\n";
 
   // flip an edge - O(1)
   while (1) {
     int idx{-1};
-    while (idx < 0 || idx >= sz) {
-      std::cout << "Select an edge to flip (0 to quit): ";
-      std::string line{};
-      if (!std::getline(std::cin, line)) {
-        std::cin.clear();
-        std::clearerr(stdin);
-        std::cout << "\n";
+    while (idx < 1 || idx >= sz) {
+      if (std::fscanf(clicks, "%d", &idx) != 1) {
+        pclose(clicks);
         return;
       }
-      try {
-        idx = Util::strip(line) == "0" ? 0 : Util::get_num(line);
-      } catch (std::exception &e) {
-        idx = -1;
-      }
-    }
-    if (!idx) {
-      break;
     }
 
     // locate the other 2 vertices

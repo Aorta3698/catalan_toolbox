@@ -72,7 +72,7 @@ public:
   std::unique_ptr<Poly> next();
 
   /**
-   * Flip an edge of a polygon triangulation until the user quits
+   * Flip each diagonal clicked in the window until the window is closed.
    * It takes O(n) pre-processing time and O(1) per edge flip.
    */
   void flip_and_plot();
