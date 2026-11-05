@@ -3,7 +3,6 @@ import numpy as np
 import os
 import sys
 
-from netgraph import Graph
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
@@ -52,11 +51,26 @@ ax.xaxis.set_ticks_position("none")
 ax.yaxis.set_ticks_position("none")
 
 
-Graph(
-    G,
-    node_layout=node_positions,
-    ax=ax,
+for u, v in G:
+    (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
+    ax.plot([x1, x2], [y1, y2], color="black", alpha=0.5, linewidth=1.5)
+xs = [x for x, _ in node_positions.values()]
+ys = [y for _, y in node_positions.values()]
+ax.plot(
+    xs,
+    ys,
+    "o",
+    markersize=8,
+    markerfacecolor="white",
+    markeredgecolor="black",
+    markeredgewidth=0.75,
 )
+
+ax.set_xticks([])
+ax.set_yticks([])
+ax.set_aspect("equal")
+for spine in ax.spines.values():
+    spine.set_visible(False)
 
 ## none of the below works...
 

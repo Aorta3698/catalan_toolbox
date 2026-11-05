@@ -68,8 +68,7 @@ public:
   std::string to_bitstring();
 
   /**
-   * Store tree into a file with one edge on each line,
-   * and both vertex separated by a comma.
+   * Store tree into a file
    *
    * It throws an exception if the file given
    * can not be opened.

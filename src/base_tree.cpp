@@ -136,6 +136,30 @@ void BaseTree::to_file(FileOp mode, std::string file) {
   }
   out << this->type << "\n";
 
+  // where to draw each node
+  std::string positions{};
+  int node_count{};
+  int leaf_count{};
+  std::function<double(const Node *, int)> place = [&](const Node *cur_node,
+                                                       int depth) {
+    double x{};
+    if (cur_node->is_leaf()) {
+      x = leaf_count++;
+    } else {
+      double first{place(cur_node->children.front().get(), depth + 1)};
+      double last{first};
+      for (int i{1}; i < cur_node->child_count(); ++i) {
+        last = place(cur_node->children[i].get(), depth + 1);
+      }
+      x = (first + last) / 2;
+    }
+    positions += std::format("{},{},{}\n", cur_node->id, x, -depth);
+    ++node_count;
+    return x;
+  };
+  place(this->root.get(), 0);
+  out << node_count << "\n" << positions;
+
   std::function<void(const Node *)> print_edges = [&](const Node *cur_node) {
     for (const auto &child : cur_node->children) {
       out << cur_node->id << ',' << child->id << "\n";

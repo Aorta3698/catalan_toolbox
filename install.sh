@@ -3,7 +3,6 @@
 DIR=./visualizer
 PIP=$DIR/bin/pip
 PYTHON=python3
-OS=$(uname -s)
 
 BLACK=$(tput setaf 0)
 RED=$(tput setab 1)
@@ -30,11 +29,6 @@ if ! command -v $PYTHON &> /dev/null; then
   exit 1
 fi
 
-VIR=$($PYTHON --version)
-VIR=${VIR#Python *}
-VIR=${VIR%.*}
-NETGRAPH=$DIR/lib/python$VIR/site-packages/netgraph
-
 if ! $PYTHON -m venv $DIR; then
   echo >&2 "Python virtual environment creation ${BOLD}${UNDERLINE}FAILED!${NORMAL}"
   exit 1
@@ -43,17 +37,6 @@ fi
 if ! $PIP install -r $DIR/req.txt; then
   echo >&2 "Python package dependency installation ${BOLD}${UNDERLINE}FAILED!${NORMAL}"
   exit 1
-fi
-
-if [ "$OS" = "Darwin" ]; then ## stupid macos
-  if ! sed -i.macos_sucks $'359i\\\t
-    np.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
-    echo >&2 "Failed to silence warnings from Netgraph. It's ${UNDERLINE}no big deal${NORMAL} though."
-  fi
-else
-  if ! sed -i $'360i\\\tnp.seterr(divide="ignore", invalid="ignore")' $NETGRAPH/_utils.py; then
-    echo >&2 "Failed to silence warnings from Netgraph. It's ${UNDERLINE}no big deal${NORMAL} though."
-  fi
 fi
 
 if ! make; then

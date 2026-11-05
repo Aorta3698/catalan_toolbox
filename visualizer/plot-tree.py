@@ -3,7 +3,6 @@ import os
 import sys
 
 from collections import defaultdict
-from netgraph import Graph
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
@@ -11,6 +10,7 @@ os.environ["XDG_SESSION_TYPE"] = "xcb"
 
 n = 0
 G = []
+node_positions = {}
 E = defaultdict(list)
 DE = []
 leaves_del = []
@@ -28,6 +28,9 @@ with open(sys.argv[1]) as infile:
         tmp = infile.readline().strip()
 
     is_full = tmp == "1"
+    for _ in range(int(infile.readline())):
+        v, x, y = infile.readline().strip().split(",")
+        node_positions[int(v)] = (float(x), float(y))
     for line in infile:
         u, v = line.strip().split(",")
         u, v = int(u), int(v)
@@ -40,22 +43,30 @@ for key, val in E.items():
         leaves_del.append(key)
         edges_del.append(val[0])
 
-plot_instance = Graph(G, node_layout="dot")
+ax = plt.gca()
+for e in G:
+    (x1, y1), (x2, y2) = node_positions[e[0]], node_positions[e[1]]
+    color, alpha = "black", 0.5
+    ## dotted edges for mutze pattern avoiding trees
+    if e in DE or (e[1], e[0]) in DE:
+        color, alpha = "pink", 0.35
+    ## full k-ary tree or non-full
+    if not is_full and e in edges_del:
+        alpha = 0
+    ax.plot([x1, x2], [y1, y2], color=color, alpha=alpha, linewidth=2.4)
 
-## dotted edges for mutze pattern avoiding trees
-for e in DE:
-    if e not in plot_instance.edge_artists:
-        ee = (e[1], e[0])
-        e = ee
-    plot_instance.edge_artists[e].set_color("pink")
-    plot_instance.edge_artists[e].set_alpha(0.35)
-
-## full k-ary tree or non-full
-if not is_full:
-    for e in edges_del:
-        plot_instance.edge_artists[e].set_alpha(0)
-    for v in leaves_del:
-        plot_instance.node_artists[v].set_alpha(0)
+for v, (x, y) in node_positions.items():
+    if is_full or v not in leaves_del:
+        ax.plot(
+            x,
+            y,
+            "o",
+            markersize=14,
+            markerfacecolor="white",
+            markeredgecolor="black",
+            markeredgewidth=1.2,
+        )
+ax.axis("off")
 
 if len(sys.argv) == 2:
     plt.show()

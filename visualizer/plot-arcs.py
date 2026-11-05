@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import sys
-import networkx as nx
-from netgraph import Graph
+from matplotlib.patches import Arc
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
@@ -49,21 +48,34 @@ plt.plot(
     alpha=0.3,
 )
 
-## plot chords graph
-P = Graph(
-    G,
-    node_layout=node_positions,
-    edge_labels=edge_labels,
-    edge_label_fontdict=dict(size=14),
-    edge_layout="arc",
-    # ax=ax,
-)
+ax = plt.gca()
+for (u, v), label in edge_labels.items():
+    (x1, y1), (x2, _) = node_positions[u], node_positions[v]
+    d = abs(x2 - x1)
+    ax.add_patch(
+        Arc(((x1 + x2) / 2, y1), d, d, theta1=180, theta2=360, color="pink", linewidth=2.7)
+    )
+    ax.text(
+        (x1 + x2) / 2,
+        y1 - d / 2,
+        label,
+        fontsize=14,
+        ha="center",
+        va="center",
+        bbox=dict(boxstyle="round", ec="white", fc="white"),
+    )
 
-## style inner edges
-for e in T:
-    P.edge_artists[e].set_color("pink")
-    P.edge_artists[e].set_alpha(1.0)
-    P.edge_artists[e].update_width(0.02)
+ax.plot(
+    x,
+    y,
+    "o",
+    markersize=8,
+    markerfacecolor="white",
+    markeredgecolor="black",
+    markeredgewidth=0.75,
+)
+ax.set_aspect("equal")
+ax.axis("off")
 
 if len(sys.argv) == 2:
     plt.show()

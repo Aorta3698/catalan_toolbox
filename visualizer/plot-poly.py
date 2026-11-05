@@ -1,19 +1,16 @@
 import matplotlib.pyplot as plt
+import math
 import os
 import sys
 import time
-from netgraph import Graph
-from netgraph import InteractiveGraph
 
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
 
 
 class MyHandler(PatternMatchingEventHandler):
-    def __init__(self, plot, T):
+    def __init__(self):
         super().__init__(patterns=[".polylog"], ignore_directories=True)
-        self.plot = plot
-        self.T = T
 
     def on_modified(self, event):
         # https://stackoverflow.com/questions/44278369/how-to-keep-matplotlib-python-window-in-background
@@ -24,39 +21,55 @@ class MyHandler(PatternMatchingEventHandler):
             u, v = int(u), int(v)
 
             ## TODO: right now, whole graph gets redrawn every flip, which is bad for performance
-            ## maybe figure out this: https://github.com/paulbrodersen/netgraph/issues/20
             idx = e + num_of_points - 1
-            old_e = G[idx]
             G[idx] = (u, v)
-            T[idx] = (u, v)
-            del edge_labels[old_e]
-            edge_labels[(u, v)] = e
 
-            self.plot.fig.clear()
-            self.plot = InteractiveGraph(
-                G,
-                node_layout=node_positions,
-                edge_labels=edge_labels,
-                edge_label_fontdict=dict(size=14),
+            draw()
+            plt.gcf().canvas.draw_idle()
+            plt.gcf().canvas.flush_events()
+
+
+def draw():
+    ax = plt.gca()
+    ax.clear()
+    for i, (u, v) in enumerate(G):
+        (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
+        if i < num_of_points - 1:
+            ax.plot([x1, x2], [y1, y2], color="black", alpha=0.5, linewidth=1.5)
+        elif i == num_of_points - 1:
+            ax.plot([x1, x2], [y1, y2], color="green", alpha=0.5, linewidth=3)
+        else:
+            ax.plot([x1, x2], [y1, y2], color="pink", linewidth=3)
+            angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+            if angle > 90:
+                angle -= 180
+            elif angle < -90:
+                angle += 180
+            ax.text(
+                (x1 + x2) / 2,
+                (y1 + y2) / 2,
+                i - num_of_points + 1,
+                fontsize=14,
+                rotation=angle,
+                rotation_mode="anchor",
+                ha="center",
+                va="center",
+                bbox=dict(boxstyle="round", ec="white", fc="white"),
             )
 
-            style(self.T, self.plot)
-            self.plot.fig.canvas.draw_idle()
-            self.plot.fig.canvas.flush_events()
-
-
-def style(T, P):
-    ## style root
-    root = T[num_of_points - 1]
-    P.edge_artists[root].set_color("green")
-    P.edge_artists[root].set_alpha(0.5)
-    P.edge_artists[root].update_width(0.02)
-
-    ## style inner edges
-    for e in T[num_of_points::]:
-        P.edge_artists[e].set_color("pink")
-        P.edge_artists[e].set_alpha(1.0)
-        P.edge_artists[e].update_width(0.02)
+    xs = [x for x, _ in node_positions.values()]
+    ys = [y for _, y in node_positions.values()]
+    ax.plot(
+        xs,
+        ys,
+        "o",
+        markersize=8,
+        markerfacecolor="white",
+        markeredgecolor="black",
+        markeredgewidth=0.75,
+    )
+    ax.set_aspect("equal")
+    ax.axis("off")
 
 
 if __name__ == "__main__":
@@ -66,7 +79,6 @@ if __name__ == "__main__":
     os.environ["XDG_SESSION_TYPE"] = "xcb"
 
     G = []
-    T = []
     node_positions = {}
 
     with open(sys.argv[1]) as infile:
@@ -79,27 +91,13 @@ if __name__ == "__main__":
             u, v = line.strip().split(",")
             e = (int(u), int(v))
             G.append(e)
-            T.append(e)
-
-    edge_labels = {}
-    id = 1
-    for e in T[num_of_points:]:
-        edge_labels[e] = id
-        id = id + 1
 
     width = 4.8 + 0.30 * num_of_points
     height = 3.2 + 0.30 * num_of_points
     plt.figure(figsize=(width, height))
-    P = InteractiveGraph(
-        G,
-        node_layout=node_positions,
-        edge_labels=edge_labels,
-        edge_label_fontdict=dict(size=14),
-    )
+    draw()
 
-    style(T, P)
-
-    handler = MyHandler(P, T)
+    handler = MyHandler()
     observer = Observer()
     observer.schedule(handler, ".", recursive=False)
     observer.start()

@@ -1,14 +1,11 @@
 import matplotlib.pyplot as plt
 import os
 import sys
-import networkx as nx
-from netgraph import Graph
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-G = []
 T = []
 node_positions = {}
 k = 0
@@ -27,7 +24,6 @@ with open(sys.argv[1]) as infile:
         xx, yy = line.strip().split(",")
         xx, yy = float(xx), float(yy)
         node_positions[k] = (xx, yy)
-        G.append((k, k))
         k = k + 1
 
 ## set image dimension
@@ -35,13 +31,14 @@ width = 4.8 + 0.40 * num_of_coins_at_base
 height = 3.2 + 0.40 * num_of_coins_at_base
 plt.figure(figsize=(width, height))
 
-Graph(
-    G,
-    node_layout=node_positions,
-    edge_alpha=0,
-    node_size=rad * 100,
-    node_edge_width=1,
-)
+ax = plt.gca()
+for xx, yy in node_positions.values():
+    ax.add_patch(
+        plt.Circle((xx, yy), rad, facecolor="white", edgecolor="black", linewidth=0.75)
+    )
+ax.autoscale_view()
+ax.set_aspect("equal")
+ax.axis("off")
 
 if len(sys.argv) == 2:
     plt.show()

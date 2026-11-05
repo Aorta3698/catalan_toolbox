@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
+import math
 import os
 import sys
-import networkx as nx
-from netgraph import Graph
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
@@ -41,20 +40,39 @@ ax = plt.subplot()
 circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--", alpha=0.3)
 ax.add_patch(circle)
 
-## plot chords graph
-P = Graph(
-    G,
-    node_layout=node_positions,
-    edge_labels=edge_labels,
-    edge_label_fontdict=dict(size=14),
-    ax=ax,
-)
+for (u, v), label in edge_labels.items():
+    (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
+    ax.plot([x1, x2], [y1, y2], color="pink", linewidth=2.4)
+    angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
+    if angle > 90:
+        angle -= 180
+    elif angle < -90:
+        angle += 180
+    ax.text(
+        (x1 + x2) / 2,
+        (y1 + y2) / 2,
+        label,
+        fontsize=14,
+        rotation=angle,
+        rotation_mode="anchor",
+        ha="center",
+        va="center",
+        bbox=dict(boxstyle="round", ec="white", fc="white"),
+    )
 
-## style inner edges
-for e in T:
-    P.edge_artists[e].set_color("pink")
-    P.edge_artists[e].set_alpha(1.0)
-    P.edge_artists[e].update_width(0.02)
+xs = [x for x, _ in node_positions.values()]
+ys = [y for _, y in node_positions.values()]
+ax.plot(
+    xs,
+    ys,
+    "o",
+    markersize=8,
+    markerfacecolor="white",
+    markeredgecolor="black",
+    markeredgewidth=0.75,
+)
+ax.set_aspect("equal")
+ax.axis("off")
 
 if len(sys.argv) == 2:
     plt.show()
