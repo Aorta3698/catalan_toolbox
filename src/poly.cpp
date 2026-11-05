@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 #include <fstream>
 #include <functional>
@@ -116,7 +117,18 @@ void Poly::flip_and_plot() {
     int idx{-1};
     while (idx < 0 || idx >= sz) {
       std::cout << "Select an edge to flip (0 to quit): ";
-      std::cin >> idx;
+      std::string line{};
+      if (!std::getline(std::cin, line)) {
+        std::cin.clear();
+        std::clearerr(stdin);
+        std::cout << "\n";
+        return;
+      }
+      try {
+        idx = Util::strip(line) == "0" ? 0 : Util::get_num(line);
+      } catch (std::exception &e) {
+        idx = -1;
+      }
     }
     if (!idx) {
       break;
