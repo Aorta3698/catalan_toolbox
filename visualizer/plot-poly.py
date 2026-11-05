@@ -68,6 +68,8 @@ def draw():
         else:
             line = ax.plot([x1, x2], [y1, y2], color="pink", linewidth=3, pickradius=7)[0]
             diagonals[line] = i - num_of_points + 1
+            if not tree_edges:
+                continue
             angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
             if angle > 90:
                 angle -= 180

@@ -28,12 +28,6 @@ with open(sys.argv[1]) as infile:
         G.append(e)
         T.append(e)
 
-edge_labels = {}
-id = 1
-for e in T:
-    edge_labels[e] = id
-    id = id + 1
-
 
 ## set image dimension
 width = 4.8 + 0.15 * num_of_points
@@ -49,20 +43,11 @@ plt.plot(
 )
 
 ax = plt.gca()
-for (u, v), label in edge_labels.items():
+for u, v in T:
     (x1, y1), (x2, _) = node_positions[u], node_positions[v]
     d = abs(x2 - x1)
     ax.add_patch(
         Arc(((x1 + x2) / 2, y1), d, d, theta1=180, theta2=360, color="pink", linewidth=2.7)
-    )
-    ax.text(
-        (x1 + x2) / 2,
-        y1 - d / 2,
-        label,
-        fontsize=14,
-        ha="center",
-        va="center",
-        bbox=dict(boxstyle="round", ec="white", fc="white"),
     )
 
 ax.plot(

@@ -58,8 +58,7 @@ std::unique_ptr<BaseTree> BaseTree::get_random(int branches, int num_of_nodes) {
 
   // randomly select internal nodes
   int upper{branches * num_of_nodes + 1};
-  bool seq[upper];
-  std::memset(seq, 0, sizeof(seq));
+  std::vector<char> seq(upper);
   std::vector<int> indexes(upper);
   std::iota(indexes.begin(), indexes.end(), 0);
   std::shuffle(indexes.begin(), indexes.end(), g_256ss);

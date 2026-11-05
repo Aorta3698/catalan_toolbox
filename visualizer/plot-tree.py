@@ -1,21 +1,14 @@
 import matplotlib.pyplot as plt
+import numpy as np
 import os
 import sys
-
-from collections import defaultdict
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-n = 0
-G = []
-node_positions = {}
-E = defaultdict(list)
-DE = []
-leaves_del = []
-edges_del = []
-is_full = 0
+DE = set()
+skip = 2
 
 with open(sys.argv[1]) as infile:
     tmp = infile.readline().strip()
@@ -24,48 +17,63 @@ with open(sys.argv[1]) as infile:
         for _ in range(n_dotted):
             u, v = infile.readline().strip().split(",")
             u, v = int(u), int(v)
-            DE.append((u, v))
+            DE.add((u, v))
         tmp = infile.readline().strip()
+        skip += 2 + n_dotted
 
     is_full = tmp == "1"
-    for _ in range(int(infile.readline())):
-        v, x, y = infile.readline().strip().split(",")
-        node_positions[int(v)] = (float(x), float(y))
-    for line in infile:
-        u, v = line.strip().split(",")
-        u, v = int(u), int(v)
-        G.append((u, v))  ## must be from parent to child (from my trial and error)
-        E[u].append((u, v))
-        E[v].append((u, v))
+    n = int(infile.readline())
 
-for key, val in E.items():
-    if len(val) == 1:
-        leaves_del.append(key)
-        edges_del.append(val[0])
+nodes = np.loadtxt(sys.argv[1], delimiter=",", skiprows=skip, max_rows=n, ndmin=2)
+edges = np.loadtxt(sys.argv[1], delimiter=",", skiprows=skip + n, dtype=int, ndmin=2)
+ids = nodes[:, 0].astype(int)
+x = np.zeros(ids.max() + 1)
+y = np.zeros(ids.max() + 1)
+x[ids] = nodes[:, 1]
+y[ids] = nodes[:, 2]
+u, v = edges[:, 0], edges[:, 1]
 
+
+leaf = np.bincount(edges.ravel(), minlength=len(x)) == 1
+shown = np.full(len(edges), is_full) | ~(leaf[u] | leaf[v])
+
+dotted = np.full(len(edges), False)
+for a, b in DE:
+    dotted |= ((u == a) & (v == b)) | ((u == b) & (v == a))
+
+leaves = x.max() + 1
+levels = 1 - y.min()
+width = min(14, max(6.4, 0.25 * leaves))
+height = min(8, max(4.8, 0.45 * levels))
+space = min(0.8 * 72 * width / leaves, 0.8 * 72 * height / levels)
+
+
+def segments(keep):
+    gap = np.full(keep.sum(), np.nan)
+    xs = np.column_stack([x[u[keep]], x[v[keep]], gap]).ravel()
+    ys = np.column_stack([y[u[keep]], y[v[keep]], gap]).ravel()
+    return xs, ys
+
+
+plt.figure(figsize=(width, height))
 ax = plt.gca()
-for e in G:
-    (x1, y1), (x2, y2) = node_positions[e[0]], node_positions[e[1]]
-    color, alpha = "black", 0.5
-    ## dotted edges for mutze pattern avoiding trees
-    if e in DE or (e[1], e[0]) in DE:
-        color, alpha = "pink", 0.35
-    ## full k-ary tree or non-full
-    if not is_full and e in edges_del:
-        alpha = 0
-    ax.plot([x1, x2], [y1, y2], color=color, alpha=alpha, linewidth=2.4)
+linewidth = min(2.4, max(0.3, space / 6))
+xs, ys = segments(shown & ~dotted)
+ax.plot(xs, ys, color="black", alpha=0.5, linewidth=linewidth)
+xs, ys = segments(shown & dotted)
+ax.plot(xs, ys, color="pink", alpha=0.35, linewidth=linewidth)
 
-for v, (x, y) in node_positions.items():
-    if is_full or v not in leaves_del:
-        ax.plot(
-            x,
-            y,
-            "o",
-            markersize=14,
-            markerfacecolor="white",
-            markeredgecolor="black",
-            markeredgewidth=1.2,
-        )
+if space >= 4:
+    drawn = ids if is_full else ids[~leaf[ids]]
+    ax.plot(
+        x[drawn],
+        y[drawn],
+        "o",
+        markersize=min(14, 0.7 * space),
+        markerfacecolor="white",
+        markeredgecolor="black",
+        markeredgewidth=min(1.2, space / 10),
+    )
 ax.axis("off")
 
 if len(sys.argv) == 2:

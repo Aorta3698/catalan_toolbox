@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import math
 import os
 import sys
 
@@ -23,12 +22,6 @@ with open(sys.argv[1]) as infile:
         G.append(e)
         T.append(e)
 
-edge_labels = {}
-id = 1
-for e in T:
-    edge_labels[e] = id
-    id = id + 1
-
 
 ## set image dimension
 width = 4.8 + 0.15 * num_of_points
@@ -40,25 +33,9 @@ ax = plt.subplot()
 circle = plt.Circle((0.0, 0.0), 1, fill=False, linestyle="--", alpha=0.3)
 ax.add_patch(circle)
 
-for (u, v), label in edge_labels.items():
+for u, v in T:
     (x1, y1), (x2, y2) = node_positions[u], node_positions[v]
     ax.plot([x1, x2], [y1, y2], color="pink", linewidth=2.4)
-    angle = math.degrees(math.atan2(y2 - y1, x2 - x1))
-    if angle > 90:
-        angle -= 180
-    elif angle < -90:
-        angle += 180
-    ax.text(
-        (x1 + x2) / 2,
-        (y1 + y2) / 2,
-        label,
-        fontsize=14,
-        rotation=angle,
-        rotation_mode="anchor",
-        ha="center",
-        va="center",
-        bbox=dict(boxstyle="round", ec="white", fc="white"),
-    )
 
 xs = [x for x, _ in node_positions.values()]
 ys = [y for _, y in node_positions.values()]
