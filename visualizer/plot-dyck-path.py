@@ -72,32 +72,6 @@ ax.set_aspect("equal")
 for spine in ax.spines.values():
     spine.set_visible(False)
 
-## none of the below works...
-
-# ax.get_xaxis().set_ticks([])
-# ax.get_yaxis().set_ticks([])
-# ax.yaxis.set_ticks_position("left")
-# ax.xaxis.set_ticks_position("bottom")
-# ax.spines["top"].set_visible(False)
-# ax.spines["right"].set_visible(False)
-# ax.spines["bottom"].set_visible(False)
-# ax.spines["left"].set_visible(False)
-# ax.minorticks_off()
-# plt.tick_params(
-#     axis="y",  # changes apply to the x-axis
-#     which="both",  # both major and minor ticks are affected
-#     bottom=False,  # ticks along the bottom edge are off
-#     top=False,  # ticks along the top edge are off
-#     labelbottom=False,
-# )  # labels along the bottom edge are off
-# plt.tick_params(
-#     axis="y",  # changes apply to the x-axis
-#     which="both",  # both major and minor ticks are affected
-#     bottom=False,  # ticks along the bottom edge are off
-#     top=False,  # ticks along the top edge are off
-#     labelbottom=False,
-# )  # labels along the bottom edge are off
-
 if len(sys.argv) == 2:
     plt.show()
 else:
