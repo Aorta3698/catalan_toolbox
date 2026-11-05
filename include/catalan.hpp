@@ -38,9 +38,9 @@ public:
   // TODO: 1. save to folder instead each files in ./out/
   // TODO: 2. offer to save avoiding patterns as svg too
   /**
-   * Enumerate pattern avoiding Catalan structures.
+   * Enumerate pattern avoiding Catalan structures, or all with n internal nodes.
    */
-  static void enumerate_avoiding() {
+  static void enumerate_avoiding(int n = 0) {
     constexpr bool has_toString = requires { T::of; };
     if constexpr (!has_toString) {
       std::cerr << "Aborting: where is static of() function?\n";
@@ -48,12 +48,14 @@ public:
     }
 
     // take input
-    auto patterns{Catalan<T>::get_avoid_patterns()};
-    int n{};
+    std::vector<Mutze::Pattern> patterns;
     std::string file;
-    std::cout << "\nEnter total number of nodes: ";
-    std::cin >> n;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    if (!n) {
+      patterns = Catalan<T>::get_avoid_patterns();
+      std::cout << "\nEnter total number of nodes: ";
+      std::cin >> n;
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     std::cout << "Enter the desired filename prefix: ";
     std::getline(std::cin, file);
     std::cin.clear();

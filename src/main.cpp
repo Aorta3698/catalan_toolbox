@@ -120,8 +120,26 @@ int main(int argc, const char *argv[]) {
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
         //---------------------------------
-      } else if (cmd == "enumerate") {
-        std::cout << "enumerate isn't built yet\n";
+      } else if (cmd == "enumerate" && form == "tree" && tokens.at(2) == "2") {
+        Tree::enumerate_avoiding(Util::get_num(tokens.at(3)));
+      } else if (cmd == "enumerate" && form == "dyck" && tokens.at(2) == "2") {
+        int length{Util::get_num(tokens.at(3))};
+        if (length % 2) {
+          throw std::invalid_argument("");
+        }
+        DyckPre::enumerate_avoiding(length / 2);
+      } else if (cmd == "enumerate" && form == "coins") {
+        CoinStack::enumerate_avoiding(Util::get_num(tokens.at(2)));
+      } else if (cmd == "enumerate" && form == "arcs") {
+        Arcs::enumerate_avoiding(Util::get_num(tokens.at(2)));
+      } else if (cmd == "enumerate" && form == "chords") {
+        Chords::enumerate_avoiding(Util::get_num(tokens.at(2)));
+      } else if (cmd == "enumerate" && form == "triangulation") {
+        int num_of_sides{Util::get_num(tokens.at(2))};
+        if (num_of_sides < 3) {
+          throw std::invalid_argument("");
+        }
+        Poly::enumerate_avoiding(num_of_sides - 2);
       } else if (cmd == "quit") {
         break;
       } else {
@@ -193,6 +211,8 @@ void print_hint(const std::vector<std::string> &tokens) {
     std::cout << "plot tree needs k, then the internal nodes, e.g. plot tree 2 5\n";
   } else if (cmd == "plot") {
     std::cout << "plot needs a form and its size, e.g. plot tri 8\n";
+  } else if (cmd == "enumerate") {
+    std::cout << "enumerate needs a form and its size as in plot (k = 2 only atm), e.g. enu tri 6\n";
   } else if (cmd == "avoid") {
     std::cout << "avoid needs a form, e.g. avoid tree\n";
   } else if (cmd == "test") {
