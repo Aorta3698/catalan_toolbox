@@ -202,6 +202,6 @@ void print_usage() {
 }
 
 bool init() {
-  Util::setup_comb();
+  // Util::setup_comb();
   return true;
 }

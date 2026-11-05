@@ -10,13 +10,13 @@
 #include <vector>
 
 namespace Util {
-static std::array<mint, 10'001> fact;
+// static std::array<mint, 10'001> fact;
 
 /**
  * The necessary init for storing factorial.
  *
  */
-void setup_comb();
+// void setup_comb();
 
 /**
  * Compute n choose k
@@ -26,7 +26,7 @@ void setup_comb();
  *
  * @return n choose k
  */
-mint combinations(int n, int k);
+// mint combinations(int n, int k);
 
 /**
  * Split str by the given delimiter

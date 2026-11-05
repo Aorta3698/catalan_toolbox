@@ -1,4 +1,4 @@
-#include <gmpxx.h>
+// #include <gmpxx.h>
 #include <string>
 
 #include "ktree_iter.hpp"
@@ -72,37 +72,37 @@
 //   return ans;
 // }
 
-mint Lexi::rank(std::string bit_string, int k, int num_of_nodes) {
-  int count{num_of_nodes - 1};
-  mint index{1};
+// mint Lexi::rank(std::string bit_string, int k, int num_of_nodes) {
+//   int count{num_of_nodes - 1};
+//   mint index{1};
 
-  for (int i{1}; i <= k * (num_of_nodes - 1) && count; ++i) {
-    if (bit_string[i] - '0') {
-      int pos_n{k * num_of_nodes - i - 1};
-      index += Util::combinations(pos_n, count) -
-               Util::combinations(pos_n, count - 1) * (k - 1);
-      --count;
-    }
-  }
+//   for (int i{1}; i <= k * (num_of_nodes - 1) && count; ++i) {
+//     if (bit_string[i] - '0') {
+//       int pos_n{k * num_of_nodes - i - 1};
+//       index += Util::combinations(pos_n, count) -
+//                Util::combinations(pos_n, count - 1) * (k - 1);
+//       --count;
+//     }
+//   }
 
-  return index;
-}
+//   return index;
+// }
 
-std::pair<std::string, Lexi::Res> Lexi::unrank(mint pos, int k, int num_of_nodes) {
-  int count{num_of_nodes};
-  std::string bit_string(num_of_nodes * k + 1, '0');
-  for (int i{}; i < k * num_of_nodes && count; ++i) {
-    mint val{Util::combinations(k * num_of_nodes - i - 1, count) -
-             Util::combinations(k * num_of_nodes - i - 1, count - 1) * (k - 1)};
-    if (pos > val) {
-      ++bit_string[i];
-      --count;
-      pos -= val;
-    }
-  }
+// std::pair<std::string, Lexi::Res> Lexi::unrank(mint pos, int k, int num_of_nodes) {
+//   int count{num_of_nodes};
+//   std::string bit_string(num_of_nodes * k + 1, '0');
+//   for (int i{}; i < k * num_of_nodes && count; ++i) {
+//     mint val{Util::combinations(k * num_of_nodes - i - 1, count) -
+//              Util::combinations(k * num_of_nodes - i - 1, count - 1) * (k - 1)};
+//     if (pos > val) {
+//       ++bit_string[i];
+//       --count;
+//       pos -= val;
+//     }
+//   }
 
-  return {bit_string, pos == 1 ? Lexi::OK : Lexi::NOT_OK};
-}
+//   return {bit_string, pos == 1 ? Lexi::OK : Lexi::NOT_OK};
+// }
 
 std::array<int, 2> Lexi::get_k_n(std::string bit_string) {
   int n = std::ranges::count(bit_string, '1');

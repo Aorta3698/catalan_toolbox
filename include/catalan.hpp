@@ -21,19 +21,19 @@ public:
   auto self() const { return static_cast<T const *>(this); };
 
   // ------------ child functions -------------
-  std::unique_ptr<T> next_lexi() {
-    auto cur{self()};
-    std::string bit_str{cur->to_tree()->to_bitstring()};
-    auto [k, n] = Lexi::get_k_n(bit_str);
-    auto pos{Lexi::rank(bit_str, k, n) + 1};
-    auto [next_bit_str, ok] = Lexi::unrank(pos, k, n);
-    if (ok == Lexi::NOT_OK) {
-      std::cout << "The current Catalan structure is already the last one in "
-                   "lexicographical order.\n";
-      return cur;
-    }
-    return T::of_bit(next_bit_str);
-  }
+  // std::unique_ptr<T> next_lexi() {
+  //   auto cur{self()};
+  //   std::string bit_str{cur->to_tree()->to_bitstring()};
+  //   auto [k, n] = Lexi::get_k_n(bit_str);
+  //   auto pos{Lexi::rank(bit_str, k, n) + 1};
+  //   auto [next_bit_str, ok] = Lexi::unrank(pos, k, n);
+  //   if (ok == Lexi::NOT_OK) {
+  //     std::cout << "The current Catalan structure is already the last one in "
+  //                  "lexicographical order.\n";
+  //     return cur;
+  //   }
+  //   return T::of_bit(next_bit_str);
+  // }
 
   // TODO: 1. save to folder instead each files in ./out/
   // TODO: 2. offer to save avoiding patterns as svg too
