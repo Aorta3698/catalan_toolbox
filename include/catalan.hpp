@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <format>
 #include <iostream>
 #include <memory>
@@ -35,7 +36,6 @@ public:
   //   return T::of_bit(next_bit_str);
   // }
 
-  // TODO: 1. save to folder instead each files in ./out/
   // TODO: 2. offer to save avoiding patterns as svg too
   /**
    * Enumerate pattern avoiding Catalan structures, or all with n internal nodes.
@@ -49,6 +49,7 @@ public:
 
     // take input
     std::vector<Mutze::Pattern> patterns;
+    std::string folder;
     std::string file;
     if (!n) {
       patterns = Catalan<T>::get_avoid_patterns();
@@ -56,9 +57,13 @@ public:
       std::cin >> n;
       std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
+    std::cout << "Enter the desired folder name in out/: ";
+    std::getline(std::cin, folder);
     std::cout << "Enter the desired filename prefix: ";
     std::getline(std::cin, file);
     std::cin.clear();
+    std::filesystem::create_directories(std::filesystem::path{"out"} / folder);
+    file = (std::filesystem::path{folder} / file).string();
 
     std::cout << "\n\nCurrent setting is 1 second per svg.\n";
     int count{};
