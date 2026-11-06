@@ -75,6 +75,9 @@ if space >= 4:
         markeredgecolor="black",
         markeredgewidth=min(1.2, space / 10),
     )
+    if is_full:
+        inner = ids[~leaf[ids]]
+        ax.plot(x[inner], y[inner], "o", markersize=min(14, 0.7 * space), color="black")
     if pattern:
         for v in drawn:
             ax.text(x[v], y[v], v, fontsize=12, ha="center", va="center_baseline")

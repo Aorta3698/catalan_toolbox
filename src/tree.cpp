@@ -26,7 +26,9 @@ std::unique_ptr<Tree> Tree::get_random(int deg, int num_of_nodes) {
 }
 
 std::unique_ptr<Tree> Tree::of(std::unique_ptr<BaseTree> base_tree) {
-  return std::make_unique<Tree>(std::move(base_tree));
+  auto tree{std::make_unique<Tree>(std::move(base_tree))};
+  tree->type = TreeType::Full;
+  return tree;
 }
 
 std::unique_ptr<CoinStack> Tree::to_coin_stack() {
