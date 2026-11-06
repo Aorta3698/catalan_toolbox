@@ -38,9 +38,9 @@ public:
 
   // TODO: 2. offer to save avoiding patterns as svg too
   /**
-   * Enumerate pattern avoiding Catalan structures, or all with n internal nodes.
+   * Enumerate Catalan structures with n internal nodes, avoiding patterns if avoid.
    */
-  static void enumerate_avoiding(int n = 0) {
+  static void enumerate_avoiding(int n, bool avoid) {
     constexpr bool has_toString = requires { T::of; };
     if constexpr (!has_toString) {
       std::cerr << "Aborting: where is static of() function?\n";
@@ -51,11 +51,8 @@ public:
     std::vector<Mutze::Pattern> patterns;
     std::string folder;
     std::string file;
-    if (!n) {
+    if (avoid) {
       patterns = Catalan<T>::get_avoid_patterns();
-      std::cout << "\nEnter total number of nodes: ";
-      std::cin >> n;
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     }
     std::cout << "Enter the desired folder name in out/: ";
     std::getline(std::cin, folder);
@@ -107,7 +104,7 @@ private:
    * permutation and corresponding edge type list, separated by
    * comma; multiple patterns are separated by semicolon
    *
-   * For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'
+   * For examples: '132,10' and '132,00; 15234,1010'
    */
   static std::vector<Mutze::Pattern> get_avoid_patterns() {
     std::vector<Mutze::Pattern> patterns;
@@ -117,7 +114,7 @@ private:
     std::cout << "permutation and corresponding edge type list, separated by\n";
     std::cout << "comma; multiple patterns are separated by semicolon\n\n";
     std::cout << "Edge type: 1 -> contiguous, 0 -> non-contiguous\n\n";
-    std::cout << "For examples: '2134,000; 2143,111' and '2134,000; 15234,1010'\n\n";
+    std::cout << "For examples: '132,10' and '132,00; 15234,1010'\n\n";
 
     std::cout
         << "Only friendly patterns will be accepted. A friendly pattern is one "
@@ -180,9 +177,17 @@ private:
       std::string dotted_edges{"e\n"};
       dotted_edges += std::to_string(std::ranges::count(edges, '0'));
       dotted_edges += "\n";
+      std::string open{tree_str.substr(0, 1)};
       for (int i{}; i < int(edges.size()); ++i) {
+        char child{tree_str[i + 1]};
+        char parent{open.back()};
+        while (!open.empty() && open.back() < child) {
+          parent = open.back();
+          open.pop_back();
+        }
+        open += child;
         if (edges[i] == '0') {
-          dotted_edges += std::format("{},{}\n", tree_str[i], tree_str[i + 1]);
+          dotted_edges += std::format("{},{}\n", parent, child);
         }
       }
 
@@ -196,8 +201,7 @@ private:
     std::string ans;
     std::string valid{"yYnN"};
     do {
-      std::cout << "Solid grey line = edge type 1; Translucent pink lines = edge "
-                   "type 0\n";
+      std::cout << "Solid line = edge type 1; dotted line = edge type 0\n";
       std::cout << "Confirm that the avoiding patterns shown on screen are correct "
                    "(Y/n): ";
       std::getline(std::cin, ans);
