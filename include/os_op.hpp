@@ -23,13 +23,6 @@ public:
   virtual void to_file(FileOp mode = FileOp::Truncate, std::string file = "") = 0;
 
   /**
-   * Save the plot of the current Catalan structures into a svg file
-   *
-   * @param outfile:            The svg filename
-   */
-  void to_svg(std::string outfile);
-
-  /**
    * Plot the current Catalan structure. A hidden file will be created and
    * the plot will take over the window focus.
    */

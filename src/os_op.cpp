@@ -14,22 +14,6 @@ void OsOp::write_to_file(std::string outfile, std::string content, FileOp mode) 
   out << content;
 }
 
-void OsOp::to_svg(std::string outfile) {
-  to_file(FileOp::Truncate, data_file);
-
-  if (fork() == 0) {
-    std::string python{"./visualizer/bin/python3"};
-    std::string plotter{std::format("./visualizer/{}", this->plot_script)};
-    std::string cmd{
-        std::format("{} {} {} {}", python, plotter, this->data_file, outfile)};
-
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(100ms);
-    std::system(cmd.c_str());
-    std::exit(EXIT_SUCCESS);
-  }
-}
-
 void OsOp::plot() {
   to_file(FileOp::Truncate, data_file);
   _just_plot(this->data_file);

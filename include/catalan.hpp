@@ -65,10 +65,10 @@ public:
     std::filesystem::create_directories(std::filesystem::path{"out"} / folder);
     file = (std::filesystem::path{folder} / file).string();
 
-    std::cout << "\n\nCurrent setting is 1 second per svg.\n";
     int count{};
     auto mutze_tree = Mutze::Tree(n, patterns);
     auto ok{1};
+    std::string svgs;
 
     while (ok) {
       // steal cout
@@ -82,13 +82,17 @@ public:
       auto cat{T::of(std::move(tree))};
 
       // output the svg
-      cat->to_svg(file + std::to_string(count++));
+      std::string data{std::format("{}{}", T::_DEFAULT_PREFIX_FILE, count)};
+      cat->to_file(OsOp::FileOp::Truncate, data);
+      svgs += std::format("{} {}{}\n", data, file, count++);
       ok &= mutze_tree.next();
-      using namespace std::chrono_literals;
-      std::this_thread::sleep_for(1s);
-      std::cout << "\r";
-      std::cout << std::format("{} svg done!", count);
-      std::cout.flush();
+    }
+    OsOp::write_to_file(".svgs", svgs);
+    std::string cmd{std::format(
+        "./visualizer/bin/python3 ./visualizer/save-svgs.py ./visualizer/{} .svgs",
+        T::_PLOT_SCRIPT)};
+    if (std::system(cmd.c_str())) {
+      std::cerr << "\nThe svgs could not be saved.\n";
     }
     std::cout << "\n\nAll done!\n\n";
   }
