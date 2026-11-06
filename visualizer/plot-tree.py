@@ -12,7 +12,8 @@ skip = 2
 
 with open(sys.argv[1]) as infile:
     tmp = infile.readline().strip()
-    if tmp == "e":
+    pattern = tmp == "e"
+    if pattern:
         n_dotted = int(infile.readline().strip())
         for _ in range(n_dotted):
             u, v = infile.readline().strip().split(",")
@@ -61,7 +62,7 @@ linewidth = min(2.4, max(0.3, space / 6))
 xs, ys = segments(shown & ~dotted)
 ax.plot(xs, ys, color="black", alpha=0.5, linewidth=linewidth)
 xs, ys = segments(shown & dotted)
-ax.plot(xs, ys, color="pink", alpha=0.35, linewidth=linewidth)
+ax.plot(xs, ys, color="black", alpha=0.5, linewidth=linewidth, linestyle=":")
 
 if space >= 4:
     drawn = ids if is_full else ids[~leaf[ids]]
@@ -69,11 +70,14 @@ if space >= 4:
         x[drawn],
         y[drawn],
         "o",
-        markersize=min(14, 0.7 * space),
+        markersize=22 if pattern else min(14, 0.7 * space),
         markerfacecolor="white",
         markeredgecolor="black",
         markeredgewidth=min(1.2, space / 10),
     )
+    if pattern:
+        for v in drawn:
+            ax.text(x[v], y[v], v, fontsize=12, ha="center", va="center_baseline")
 ax.axis("off")
 
 if len(sys.argv) == 2:
