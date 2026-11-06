@@ -56,6 +56,7 @@ public:
     }
     std::cout << "Enter the desired folder name in out/: ";
     std::getline(std::cin, folder);
+    Util::strip(folder);
     std::cout << "Enter the desired filename prefix: ";
     std::getline(std::cin, file);
     std::cin.clear();
