@@ -139,15 +139,15 @@ void BaseTree::to_file(FileOp mode, std::string file) {
   std::string positions{};
   int node_count{};
   int leaf_count{};
-  int column{};
+  int col{};
   std::function<double(const Node *, int)> place = [&](const Node *cur_node,
                                                        int depth) {
     double x{};
     if (cur_node->is_leaf()) {
-      x = this->type == TreeType::Full ? leaf_count++ : column - 0.5;
+      x = this->type == TreeType::Full ? leaf_count++ : col - 0.5;
     } else if (this->type == TreeType::Non_Full) {
       place(cur_node->children[0].get(), depth + 1);
-      x = column++;
+      x = col++;
       place(cur_node->children[1].get(), depth + 1);
     } else {
       double first{place(cur_node->children.front().get(), depth + 1)};

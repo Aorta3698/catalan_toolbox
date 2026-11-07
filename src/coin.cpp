@@ -1,5 +1,6 @@
 #include "coin.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -32,8 +33,8 @@ void CoinStack::to_file(FileOp mode, std::string file) {
   out << this->base << "\n";
   out << rad << "\n";
 
-  for (const auto &[column, row] : this->coins) {
-    out << (column + 1) * rad << "," << row * up << "\n";
+  for (const auto &[col, row] : this->coins) {
+    out << (col + 1) * rad << "," << row * up << "\n";
   }
 }
 
@@ -49,6 +50,22 @@ std::vector<std::array<int, 2>> CoinStack::word_to_coins(const std::string &path
     }
   }
   return coins;
+}
+
+std::unique_ptr<Dyck> CoinStack::to_dyck() {
+  std::vector<int> top(2 * this->base, -1);
+  for (const auto &[col, row] : this->coins) {
+    top[col] = std::max(top[col], row);
+  }
+  std::string path(2 * this->base, '0');
+  int prev{-1};
+  for (int i{}; i < 2 * this->base; ++i) {
+    if (top[i] > prev) {
+      path[i] = '1';
+    }
+    prev = top[i];
+  }
+  return std::make_unique<Dyck>(path);
 }
 
 std::unique_ptr<CoinStack> CoinStack::get_random(int base) {

@@ -50,6 +50,13 @@ public:
   static std::vector<std::array<int, 2>> word_to_coins(const std::string &path);
 
   /**
+   * Convert a coin stack to its dyck path.
+   *
+   * @return The dyck path traced by the top coins
+   */
+  std::unique_ptr<Dyck> to_dyck();
+
+  /**
    * Store the current coin stack as file
    *
    * @param file: file to store it  - _DEFAULT_PREFIX_FILE as the default.

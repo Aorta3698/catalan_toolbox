@@ -112,11 +112,11 @@ int main(int argc, const char *argv[]) {
       } else if ((cmd == "enumerate" || avoid) && form == "tree" && tokens.at(2) == "2") {
         Tree::enumerate_avoiding(Util::get_num(tokens.at(3)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "dyck" && tokens.at(2) == "2") {
-        int length{Util::get_num(tokens.at(3))};
-        if (length % 2) {
+        int len{Util::get_num(tokens.at(3))};
+        if (len % 2) {
           throw std::invalid_argument("");
         }
-        Dyck::enumerate_avoiding(length / 2, avoid);
+        Dyck::enumerate_avoiding(len / 2, avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "coins") {
         CoinStack::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "arcs") {
