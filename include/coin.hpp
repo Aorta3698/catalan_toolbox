@@ -1,7 +1,9 @@
 #pragma once
 
+#include <array>
 #include <memory>
 #include <string>
+#include <vector>
 #include <unistd.h>
 
 #include "catalan.hpp"
@@ -15,6 +17,7 @@ public:
     // TODO: check the path
     this->path = path;
     this->base = int(path.size()) >> 1;
+    this->coins = CoinStack::word_to_coins(path);
   }
 
   auto operator<=>(const CoinStack &rhs) const = default;
@@ -38,6 +41,15 @@ public:
   static std::unique_ptr<CoinStack> get_random(int base);
 
   /**
+   * List the coins of the coin stack of a dyck path, column by column
+   *
+   * @param path:   the dyck path
+   *
+   * @return The coins as (column, row) pairs
+   */
+  static std::vector<std::array<int, 2>> word_to_coins(const std::string &path);
+
+  /**
    * Store the current coin stack as file
    *
    * @param file: file to store it  - _DEFAULT_PREFIX_FILE as the default.
@@ -58,4 +70,5 @@ public:
 private:
   std::string path;
   int base;
+  std::vector<std::array<int, 2>> coins;
 };

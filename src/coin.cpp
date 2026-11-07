@@ -5,7 +5,6 @@
 #include <iostream>
 #include <memory>
 #include <stdexcept>
-#include <unordered_map>
 
 std::unique_ptr<CoinStack> CoinStack::of(std::unique_ptr<BaseTree> base_tree) {
   auto tree{Tree::of(std::move(base_tree))};
@@ -29,29 +28,27 @@ void CoinStack::to_file(FileOp mode, std::string file) {
   double rad{1 * scaling};
   double up{std::sqrt(3) * rad};
 
-  // using double is iffy (double type key in unordered_map is kinda cringe)
-  int x_steps{};
-  int y_steps{};
-
   // meta info
   out << this->base << "\n";
   out << rad << "\n";
 
-  // y, x
-  std::unordered_map<int, int> prev_map{};
-  prev_map[0] = 0;
-  for (const auto dir : this->path) {
-    if (dir == '1') {
-      ++y_steps;
-    } else {
-      --y_steps;
-      for (int cur_x{x_steps}, end{prev_map[y_steps]}; cur_x > end; cur_x -= 2) {
-        out << cur_x * rad << "," << y_steps * up << "\n";
+  for (const auto &[column, row] : this->coins) {
+    out << (column + 1) * rad << "," << row * up << "\n";
+  }
+}
+
+std::vector<std::array<int, 2>> CoinStack::word_to_coins(const std::string &path) {
+  std::vector<std::array<int, 2>> coins;
+  int level{};
+  for (int i{}; i < int(path.size()); ++i) {
+    level += path[i] == '1' ? 1 : -1;
+    for (int row{}; row < level; ++row) {
+      if (row % 2 != level % 2) {
+        coins.push_back({i, row});
       }
     }
-    ++x_steps;
-    prev_map[y_steps] = x_steps;
   }
+  return coins;
 }
 
 std::unique_ptr<CoinStack> CoinStack::get_random(int base) {
