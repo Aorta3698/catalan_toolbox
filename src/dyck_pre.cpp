@@ -4,12 +4,9 @@
 
 #include <algorithm>
 #include <cassert>
-#include <cstring>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 std::unique_ptr<DyckPre> DyckPre::of(std::unique_ptr<BaseTree> base_tree) {
@@ -18,66 +15,41 @@ std::unique_ptr<DyckPre> DyckPre::of(std::unique_ptr<BaseTree> base_tree) {
 }
 
 std::unique_ptr<Tree> DyckPre::to_tree() {
-  // pre-compute some info
-  int score{};
-  std::unordered_map<int, std::vector<int>> zeros;
-  std::vector<int> one(1);
-  int cur_one[this->length];
-  std::memset(cur_one, -1, sizeof(cur_one));
-  for (int i{}; i < this->length; ++i) {
-    if (path[i] == '0') {
-      score -= this->r - 1;
-      zeros[score].push_back(i);
-    } else { // path[i] == '1'
-      if (++score == int(one.size())) {
-        one.emplace_back();
-      }
-      one[score] = i;
-    }
-    cur_one[i] = one[score];
-  }
-
-  // construct the tree
+  int k{this->r};
+  int level{};
   int id{};
-  std::function<std::unique_ptr<Node>(int, int, int)> build = [&](int start, int end,
-                                                                  int cur_score) {
-    if (start > end) {
-      return std::make_unique<Node>(++id);
+  std::vector<int> last(this->length + 1, -1);
+  std::vector<std::unique_ptr<Node>> opens(this->length);
+  std::vector<Node *> closes(this->length);
+  for (int i{}; i < this->length && k >= 2; ++i) {
+    level += path[i] == '1' ? 1 : 1 - k;
+    if (level < 0) {
+      break;
     }
-    // this assertion must hold
-    // maybe a better name for "end" is "cur"
-    assert(path[end] == '0');
-
-    // find right-most child split point
-    auto &cur_zero = zeros[cur_score];
-    int hi{int(cur_zero.size()) - 1};
-    int low{};
-    while (low < hi) {
-      int mid = (hi + low) >> 1;
-      if (cur_zero[mid] >= start) {
-        hi = mid;
-      } else {
-        low = mid + 1;
-      }
+    if (path[i] == '1') {
+      last[level] = i;
+      continue;
+    } 
+    // '0' here
+    auto node{std::make_unique<Node>(++id, k)};
+    for (int q{}; q < k - 1; ++q) { // assign children
+      auto &child = opens[last[level + q + 1] + 1];
+      node->children[q] = child ? std::move(child) : std::make_unique<Node>(++id);
     }
-
-    // assign right-most child
-    auto root{std::make_unique<Node>(++id, this->r)};
-    int cur_child{this->r};
-    root->children[--cur_child] = build(cur_zero[low] + 1, end, cur_score);
-
-    // assign rest of children from the right
-    end = cur_zero[low] - 1;
-    while (cur_child--) {
-      root->children[cur_child] =
-          build(cur_one[end] + 1, end, cur_score + cur_child + 1);
-      end = cur_one[end] - 1;
+    node->children[k - 1] = std::make_unique<Node>(++id);
+    int s{last[level + 1]};
+    closes[i] = node.get();
+    if (s >= 1 && path[s - 1] == '0') { // find parent
+      closes[s - 1]->children[k - 1] = std::move(node);
+    } else {
+      opens[s] = std::move(node);
     }
-
-    return root;
-  };
-
-  return std::make_unique<Tree>(build(0, this->length - 1, 0));
+  }
+  if (k < 2 || level != 0) {
+    std::cerr << std::format("Error: {} is not a dyck path\n", this->path);
+    throw std::invalid_argument("");
+  }
+  return std::make_unique<Tree>(std::move(opens[0]));
 }
 
 std::unique_ptr<CoinStack> DyckPre::to_coin_stack() {
