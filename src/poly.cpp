@@ -57,22 +57,19 @@ std::unique_ptr<Tree> Poly::to_tree() {
 
 void Poly::flip_and_plot() {
   // pre-processing - O(n)
-  enum Dir { Up, Down };
   enum Relation { Left, Right, Parent }; // left, right, parent
-  int id{int(this->poly.size())};
   int sz{int(this->poly.size())};
   int relationship[sz + this->sides][3];
-  int tables[this->sides][2];
-  std::memset(tables, 0, sizeof(tables));
   std::memset(relationship, 0, sizeof(relationship));
+  std::vector<int> slot(this->sides);
+  std::vector<int> pred(this->sides);
   std::vector<std::vector<int>> buckets(this->sides);
   std::function<Edge(int)> get_edge = [&](int idx) {
     return idx < sz ? this->poly[idx] : std::array<int, 2>{{idx - sz, idx - sz + 1}};
   };
   for (int i{}; i < this->sides - 1; ++i) {
-    tables[i][Dir::Up] = id;
-    tables[i + 1][Dir::Down] = id;
-    ++id;
+    slot[i] = sz + i;
+    pred[i + 1] = i;
   }
   for (int i{}; i < int(this->poly.size()); ++i) {
     auto [l, r] = this->poly[i];
@@ -82,14 +79,13 @@ void Poly::flip_and_plot() {
   for (int len{}; len < this->sides; ++len) {
     for (int idx : buckets[len]) {
       auto [l, r] = poly[idx];
-      int lc{tables[l][Dir::Up]};
-      int rc{tables[r][Dir::Down]};
-      relationship[idx][Relation::Left] = lc;
-      relationship[idx][Relation::Right] = rc;
-      relationship[lc][Relation::Parent] = idx;
-      relationship[rc][Relation::Parent] = idx;
-      tables[l][Dir::Up] = idx;
-      tables[r][Dir::Down] = idx;
+      int m{pred[r]};
+      relationship[idx][Relation::Left] = slot[l];
+      relationship[idx][Relation::Right] = slot[m];
+      relationship[slot[l]][Relation::Parent] = idx;
+      relationship[slot[m]][Relation::Parent] = idx;
+      slot[l] = idx;
+      pred[r] = l;
     }
   }
 
@@ -143,8 +139,7 @@ void Poly::flip_and_plot() {
     int is_left_child = relationship[parent][Relation::Left] == idx;
     int sibling{is_left_child ? relationship[parent][Relation::Right]
                               : relationship[parent][Relation::Left]};
-    auto [a, b] = get_edge(relationship[idx][Relation::Left]);
-    int opposite{v >= b && a >= u}; // left child remains a child or not
+    int opposite{!is_left_child}; // left child remains a child or not
     int tmp{relationship[idx][Relation::Left ^ opposite]};
     relationship[idx][Relation::Left ^ opposite] =
         relationship[idx][Relation::Right ^ opposite];
