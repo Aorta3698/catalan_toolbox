@@ -8,14 +8,14 @@
 #include "catalan.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck_pre.hpp"
+#include "dyck.hpp"
 #include "poly.hpp"
 
 // forward declaration
 // https://stackoverflow.com/a/29209540
 class Poly;
 class Chords;
-class DyckPre;
+class Dyck;
 class Arcs;
 class CoinStack;
 
@@ -113,9 +113,9 @@ public:
   /**
    * Convert a tree into its pre-order dyck path representation
    *
-   * @return Its DyckPre representation.
+   * @return Its Dyck representation.
    */
-  std::unique_ptr<DyckPre> to_dyck_pre();
+  std::unique_ptr<Dyck> to_dyck();
 
   /**
    * Rotate into the next tree.

@@ -1,4 +1,4 @@
-#include "dyck_pre.hpp"
+#include "dyck.hpp"
 #include "global.hpp"
 #include "tree.hpp"
 
@@ -9,12 +9,12 @@
 #include <memory>
 #include <vector>
 
-std::unique_ptr<DyckPre> DyckPre::of(std::unique_ptr<BaseTree> base_tree) {
+std::unique_ptr<Dyck> Dyck::of(std::unique_ptr<BaseTree> base_tree) {
   auto tree{Tree::of(std::move(base_tree))};
-  return tree->to_dyck_pre();
+  return tree->to_dyck();
 }
 
-std::unique_ptr<Tree> DyckPre::to_tree() {
+std::unique_ptr<Tree> Dyck::to_tree() {
   int k{this->r};
   int level{};
   int id{};
@@ -52,11 +52,11 @@ std::unique_ptr<Tree> DyckPre::to_tree() {
   return std::make_unique<Tree>(std::move(opens[0]));
 }
 
-std::unique_ptr<CoinStack> DyckPre::to_coin_stack() {
+std::unique_ptr<CoinStack> Dyck::to_coin_stack() {
   return std::make_unique<CoinStack>(this->path);
 }
 
-std::unique_ptr<DyckPre> DyckPre::get_random(int deg, int length) {
+std::unique_ptr<Dyck> Dyck::get_random(int deg, int length) {
   if (deg <= 1) {
     std::cerr << "Degree for dyck path must be >= 2\n";
     throw std::invalid_argument("");
@@ -66,22 +66,22 @@ std::unique_ptr<DyckPre> DyckPre::get_random(int deg, int length) {
     std::cerr << "Warning: Dyck Path length is invalid and truncated.\n";
   }
   auto random_tree{Tree::get_random(deg, num_of_internal_nodes)};
-  return random_tree->to_dyck_pre();
+  return random_tree->to_dyck();
 }
 
-std::unique_ptr<DyckPre> DyckPre::next() {
+std::unique_ptr<Dyck> Dyck::next() {
   // TODO
   assert(false);
 }
 
-void DyckPre::flip_mountain() {
+void Dyck::flip_mountain() {
   // TODO
   assert(false);
 }
 
-void DyckPre::to_file(FileOp mode, std::string file) {
+void Dyck::to_file(FileOp mode, std::string file) {
   if (file == "") {
-    file = DyckPre::_DEFAULT_PREFIX_FILE;
+    file = Dyck::_DEFAULT_PREFIX_FILE;
   }
   auto file_mode =
       mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
@@ -123,7 +123,7 @@ void DyckPre::to_file(FileOp mode, std::string file) {
   }
 }
 
-bool DyckPre::is_valid(const std::string &path) {
+bool Dyck::is_valid(const std::string &path) {
   int zeros = std::ranges::count(path, '0');
   int ones = std::ranges::count(path, '1');
   int sz = path.size();
@@ -144,27 +144,27 @@ bool DyckPre::is_valid(const std::string &path) {
   return score == 0;
 }
 
-void DyckPre::test_conversion() {
+void Dyck::test_conversion() {
   std::string dots{};
-  int stat_branches[DyckPre::_TEST_MAX_BRANCHES + 1];
-  std::vector<std::vector<int>> stat_internal_nodes(DyckPre::_TEST_MAX_BRANCHES + 1);
+  int stat_branches[Dyck::_TEST_MAX_BRANCHES + 1];
+  std::vector<std::vector<int>> stat_internal_nodes(Dyck::_TEST_MAX_BRANCHES + 1);
 
   // print title
-  std::cout << "====== DyckPre: Conversion Test ======\n\n";
-  int four_percent{DyckPre::_NUM_OF_TESTS / 25};
+  std::cout << "====== Dyck: Conversion Test ======\n\n";
+  int four_percent{Dyck::_NUM_OF_TESTS / 25};
   std::cout << "100% remaining.";
   std::cout.flush();
 
   // start testing
-  for (int i{DyckPre::_NUM_OF_TESTS}; i; --i) {
+  for (int i{Dyck::_NUM_OF_TESTS}; i; --i) {
     int branches{
-        std::uniform_int_distribution<>(2, DyckPre::_TEST_MAX_BRANCHES)(g_256ss)};
-    int nodes{std::uniform_int_distribution<>(1, DyckPre::_TEST_MAX_EDGES /
+        std::uniform_int_distribution<>(2, Dyck::_TEST_MAX_BRANCHES)(g_256ss)};
+    int nodes{std::uniform_int_distribution<>(1, Dyck::_TEST_MAX_EDGES /
                                                      branches)(g_256ss)};
 
-    auto dyck_path{DyckPre::get_random(branches, branches * nodes)};
+    auto dyck_path{Dyck::get_random(branches, branches * nodes)};
     auto tree{dyck_path->to_tree()};
-    auto copied_path{tree->to_dyck_pre()};
+    auto copied_path{tree->to_dyck()};
 
     ++stat_branches[branches];
     stat_internal_nodes[branches].push_back(nodes);
@@ -192,12 +192,12 @@ void DyckPre::test_conversion() {
   }
 
   std::cout << "Degree\t\tInternal Nodes (Median)\t\tNumber of Tests\n";
-  for (int i{2}; i <= DyckPre::_TEST_MAX_BRANCHES; ++i) {
+  for (int i{2}; i <= Dyck::_TEST_MAX_BRANCHES; ++i) {
     auto &n = stat_internal_nodes[i];
     int sz = n.size();
     int median = (sz & 1) ? n[sz >> 1] : (n[sz >> 1] + n[(sz >> 1) - 1]) >> 1;
     std::cout << std::format("{}\t\t\t{}\t\t\t{}\n", i, median, sz);
   }
 
-  std::cout << std::format("\nAll {} test cases passed!\n", DyckPre::_NUM_OF_TESTS);
+  std::cout << std::format("\nAll {} test cases passed!\n", Dyck::_NUM_OF_TESTS);
 }

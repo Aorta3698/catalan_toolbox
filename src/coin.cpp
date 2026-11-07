@@ -55,5 +55,5 @@ void CoinStack::to_file(FileOp mode, std::string file) {
 }
 
 std::unique_ptr<CoinStack> CoinStack::get_random(int base) {
-  return DyckPre::get_random(2, base << 1)->to_coin_stack();
+  return Dyck::get_random(2, base << 1)->to_coin_stack();
 }

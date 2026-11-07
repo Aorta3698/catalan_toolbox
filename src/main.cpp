@@ -1,7 +1,7 @@
 #include "arcs.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
-#include "dyck_pre.hpp"
+#include "dyck.hpp"
 #include "main.hpp"
 #include "poly.hpp"
 #include "tree.hpp"
@@ -39,7 +39,7 @@ int main(int argc, const char *argv[]) {
       bool avoid{cmd == "avoid"};
       if (cmd == "test" && form.empty()) {
         Tree::test_expected_height();
-        DyckPre::test_conversion();
+        Dyck::test_conversion();
         Poly::test_conversion();
         Chords::test_conversion();
         Arcs::test_conversion();
@@ -69,11 +69,11 @@ int main(int argc, const char *argv[]) {
         int length{Util::get_num(tokens.at(3))};
         int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
         while (count--) {
-          auto dyck_pre{DyckPre::get_random(r, length)};
-          dyck_pre->plot();
+          auto dyck{Dyck::get_random(r, length)};
+          dyck->plot();
         }
       } else if (cmd == "test" && form == "dyck") {
-        DyckPre::test_conversion();
+        Dyck::test_conversion();
         //----------------------------------
       } else if (cmd == "plot" && form == "arcs") {
         int num_of_arcs{Util::get_num(tokens.at(2))};
@@ -116,7 +116,7 @@ int main(int argc, const char *argv[]) {
         if (length % 2) {
           throw std::invalid_argument("");
         }
-        DyckPre::enumerate_avoiding(length / 2, avoid);
+        Dyck::enumerate_avoiding(length / 2, avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "coins") {
         CoinStack::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "arcs") {

@@ -32,10 +32,10 @@ std::unique_ptr<Tree> Tree::of(std::unique_ptr<BaseTree> base_tree) {
 }
 
 std::unique_ptr<CoinStack> Tree::to_coin_stack() {
-  return this->to_dyck_pre()->to_coin_stack();
+  return this->to_dyck()->to_coin_stack();
 }
 
-std::unique_ptr<DyckPre> Tree::to_dyck_pre() {
+std::unique_ptr<Dyck> Tree::to_dyck() {
   std::string encoded_result{};
   std::function<void(const Node *)> encode = [&](const Node *cur_node) {
     int zero{};
@@ -48,11 +48,11 @@ std::unique_ptr<DyckPre> Tree::to_dyck_pre() {
   };
 
   encode(root.get());
-  if (!DyckPre::is_valid(encoded_result)) {
+  if (!Dyck::is_valid(encoded_result)) {
     std::cerr << "Error: This tree is not a full k-ary tree\n";
     throw std::invalid_argument("");
   }
-  return std::make_unique<DyckPre>(encoded_result);
+  return std::make_unique<Dyck>(encoded_result);
 }
 
 std::unique_ptr<Arcs> Tree::to_arcs() {

@@ -5,9 +5,9 @@
 #include <unistd.h>
 
 #include "catalan.hpp"
-#include "dyck_pre.hpp"
+#include "dyck.hpp"
 
-class DyckPre;
+class Dyck;
 
 class CoinStack : public Catalan<CoinStack>, public OsOp {
 public:

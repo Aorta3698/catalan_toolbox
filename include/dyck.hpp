@@ -13,21 +13,21 @@
 class Tree;
 class CoinStack;
 
-class DyckPre : public Catalan<DyckPre>, public OsOp {
+class Dyck : public Catalan<Dyck>, public OsOp {
 public:
-  DyckPre(std::string path) : OsOp(std::string{_PLOT_SCRIPT}, _DEFAULT_PREFIX_FILE) {
+  Dyck(std::string path) : OsOp(std::string{_PLOT_SCRIPT}, _DEFAULT_PREFIX_FILE) {
     this->path = path;
     this->length = int(path.size());
     this->r = this->length / std::ranges::count(path, '0');
 
     if (this->length % this->r) {
       std::cerr << std::format(
-          "Error: DyckPre constructor received an invalid dyck path {}\n", path);
+          "Error: Dyck constructor received an invalid dyck path {}\n", path);
       throw std::invalid_argument("");
     }
   }
 
-  auto operator<=>(const DyckPre &rhs) const = default;
+  auto operator<=>(const Dyck &rhs) const = default;
 
   /**
    * Constructor a catalan structure from the current base tree
@@ -36,7 +36,7 @@ public:
    *
    * @return catalan structure of the current class
    */
-  static std::unique_ptr<DyckPre> of(std::unique_ptr<BaseTree> tree);
+  static std::unique_ptr<Dyck> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * 100,000 test cases of creating a random dyck path, converting it to tree
@@ -57,9 +57,9 @@ public:
    * @param r:   Degree of the path
    * @param len:   Length of the path
    *
-   * @return A DyckPre (dyck path in pre-order)
+   * @return A Dyck (dyck path in pre-order)
    */
-  static std::unique_ptr<DyckPre> get_random(int r, int len);
+  static std::unique_ptr<Dyck> get_random(int r, int len);
 
   /**
    * Verify if the given string is a valid dyck path or not
@@ -91,12 +91,12 @@ public:
    *
    * @return The next dyck path in pre-order
    */
-  std::unique_ptr<DyckPre> next();
+  std::unique_ptr<Dyck> next();
 
   /**
    * Store the current dyck path (above the line) into a file.
    *
-   * @param file: Where the current DyckPre would be stored - _DEFAULT_PREFIX_FILE by
+   * @param file: Where the current Dyck would be stored - _DEFAULT_PREFIX_FILE by
    * default
    */
   void to_file(FileOp mode = FileOp::Truncate, std::string file = "");
