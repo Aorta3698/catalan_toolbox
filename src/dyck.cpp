@@ -158,9 +158,9 @@ void Dyck::test_conversion() {
   // start testing
   for (int i{Dyck::_NUM_OF_TESTS}; i; --i) {
     int branches{
-        std::uniform_int_distribution<>(2, Dyck::_TEST_MAX_BRANCHES)(g_256ss)};
+        std::uniform_int_distribution<>(2, Dyck::_TEST_MAX_BRANCHES)(g_256pp)};
     int nodes{std::uniform_int_distribution<>(1, Dyck::_TEST_MAX_EDGES /
-                                                     branches)(g_256ss)};
+                                                     branches)(g_256pp)};
 
     auto dyck_path{Dyck::get_random(branches, branches * nodes)};
     auto tree{dyck_path->to_tree()};

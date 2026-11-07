@@ -61,7 +61,7 @@ std::unique_ptr<BaseTree> BaseTree::get_random(int branches, int num_of_nodes) {
   std::vector<char> seq(upper);
   std::vector<int> indexes(upper);
   std::iota(indexes.begin(), indexes.end(), 0);
-  std::shuffle(indexes.begin(), indexes.end(), g_256ss);
+  std::shuffle(indexes.begin(), indexes.end(), g_256pp);
   for (int i{}; i < num_of_nodes; ++i) {
     seq[indexes[i]] = 1;
   }
