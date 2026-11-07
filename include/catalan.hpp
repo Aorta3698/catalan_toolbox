@@ -92,6 +92,10 @@ public:
     if (std::system(cmd.c_str())) {
       std::cerr << "\nThe svgs could not be saved.\n";
     }
+    for (int i{}; i < count; ++i) {
+      std::filesystem::remove(std::format("{}{}", T::_DEFAULT_PREFIX_FILE, i));
+    }
+    std::filesystem::remove(".svgs");
     std::cout << "\n\nAll done!\n\n";
   }
 
