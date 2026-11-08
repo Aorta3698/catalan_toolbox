@@ -109,10 +109,10 @@ int main(int argc, const char *argv[]) {
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
         //---------------------------------
-      } else if ((cmd == "enumerate" || avoid) && form == "tree" && tokens.at(2) == "2") {
-        Tree::enumerate_avoiding(Util::get_num(tokens.at(3)), avoid);
-      } else if ((cmd == "enumerate" || avoid) && form == "dyck" && tokens.at(2) == "2") {
-        Dyck::enumerate_avoiding(Util::get_num(tokens.at(3)), avoid);
+      } else if ((cmd == "enumerate" || avoid) && form == "tree") {
+        Tree::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
+      } else if ((cmd == "enumerate" || avoid) && form == "dyck") {
+        Dyck::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "coins") {
         CoinStack::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "arcs") {
@@ -155,9 +155,9 @@ void print_usage() {
       {"FORM", "SIZE"},
       {"tri[angulation]", "vertices"},
       {"chords, arcs", "chords or arcs"},
-      {"dyck", "k, then down-steps"},
+      {"dyck", "k (plot only), then down-steps"},
       {"coins", "coins in the bottom row"},
-      {"tree", "k, then internal nodes"}};
+      {"tree", "k (plot only), then internal nodes"}};
 
   std::cout << "Catalan Toolbox\n\n";
   for (auto &[cmd, desc] : cmds) {
@@ -197,9 +197,9 @@ void print_hint(const std::vector<std::string> &tokens) {
   } else if (cmd == "plot") {
     std::cout << "plot needs a form and its size, e.g. plot tri 8\n";
   } else if (cmd == "enumerate") {
-    std::cout << "enumerate needs a form and its size as in plot (k = 2 only atm), e.g. enu tri 6\n";
+    std::cout << "enumerate needs a form and its size as in plot but without k, e.g. enu tree 5\n";
   } else if (cmd == "avoid") {
-    std::cout << "avoid needs a form and its size as in plot (k = 2 only atm), e.g. avoid tri 6\n";
+    std::cout << "avoid needs a form and its size as in plot but without k, e.g. avoid tree 5\n";
   } else if (cmd == "test") {
     std::cout << "test takes a form, e.g. test dyck, or none to run every test\n";
   } else {
