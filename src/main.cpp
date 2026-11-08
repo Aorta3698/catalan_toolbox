@@ -106,6 +106,13 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "test" && form == "triangulation") {
         Poly::test_conversion();
+      } else if (cmd == "plot" && form == "brackets") {
+        int num_of_factors{Util::get_num(tokens.at(2))};
+        int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
+        while (count--) {
+          auto bracketing{Bracketing::get_random(num_of_factors)};
+          bracketing->plot();
+        }
       } else if (cmd == "test" && form == "brackets") {
         Bracketing::test_conversion();
       } else if (cmd == "flip") {
@@ -158,6 +165,7 @@ void print_usage() {
   std::vector<std::pair<std::string, std::string>> forms{
       {"FORM", "SIZE"},
       {"tri[angulation]", "vertices"},
+      {"brackets", "factors"},
       {"chords, arcs", "chords or arcs"},
       {"dyck", "k (plot only), then down-steps"},
       {"coins", "coins in the bottom row"},
@@ -188,6 +196,8 @@ void print_hint(const std::vector<std::string> &tokens) {
     std::cout << "flip needs the number of vertices, e.g. flip 8\n";
   } else if (cmd == "plot" && form == "triangulation") {
     std::cout << "plot triangulation needs the number of vertices, e.g. plot tri 8\n";
+  } else if (cmd == "plot" && form == "brackets") {
+    std::cout << "plot brackets needs the number of factors, e.g. plot brackets 5\n";
   } else if (cmd == "plot" && form == "chords") {
     std::cout << "plot chords needs the number of chords, e.g. plot chords 4\n";
   } else if (cmd == "plot" && form == "arcs") {

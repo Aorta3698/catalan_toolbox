@@ -3,6 +3,7 @@
 #include "tree.hpp"
 
 #include <cassert>
+#include <fstream>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -54,6 +55,28 @@ std::unique_ptr<Poly> Bracketing::to_poly() {
     }
   }
   return std::make_unique<Poly>(poly);
+}
+
+std::unique_ptr<Bracketing> Bracketing::get_random(int num_of_factors) {
+  auto tree{Tree::get_random(2, num_of_factors - 1)};
+  auto res{tree->to_bracketing()};
+  return res;
+}
+
+void Bracketing::to_file(FileOp mode, std::string file) {
+  if (file == "") {
+    file = Bracketing::_DEFAULT_PREFIX_FILE;
+  }
+  auto file_mode =
+      mode == FileOp::Truncate ? std::ios_base::trunc : std::ios_base::app;
+
+  std::ofstream out{file, file_mode};
+  if (!out) {
+    std::cerr << file << " cannot be opened.\n";
+    throw std::invalid_argument("");
+  }
+
+  out << this->bracketing << "\n";
 }
 
 bool Bracketing::is_valid(const std::string &bracketing) {
