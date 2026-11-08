@@ -66,10 +66,10 @@ int main(int argc, const char *argv[]) {
         //----------------------------------
       } else if (cmd == "plot" && form == "dyck") {
         int r{Util::get_num(tokens.at(2))};
-        int length{Util::get_num(tokens.at(3))};
+        int num_of_nodes{Util::get_num(tokens.at(3))};
         int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
         while (count--) {
-          auto dyck{Dyck::get_random(r, length)};
+          auto dyck{Dyck::get_random(r, r * num_of_nodes)};
           dyck->plot();
         }
       } else if (cmd == "test" && form == "dyck") {
@@ -112,11 +112,7 @@ int main(int argc, const char *argv[]) {
       } else if ((cmd == "enumerate" || avoid) && form == "tree" && tokens.at(2) == "2") {
         Tree::enumerate_avoiding(Util::get_num(tokens.at(3)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "dyck" && tokens.at(2) == "2") {
-        int len{Util::get_num(tokens.at(3))};
-        if (len % 2) {
-          throw std::invalid_argument("");
-        }
-        Dyck::enumerate_avoiding(len / 2, avoid);
+        Dyck::enumerate_avoiding(Util::get_num(tokens.at(3)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "coins") {
         CoinStack::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "arcs") {
@@ -159,7 +155,7 @@ void print_usage() {
       {"FORM", "SIZE"},
       {"tri[angulation]", "vertices"},
       {"chords, arcs", "chords or arcs"},
-      {"dyck", "k, then length"},
+      {"dyck", "k, then down-steps"},
       {"coins", "coins in the bottom row"},
       {"tree", "k, then internal nodes"}};
 
@@ -193,7 +189,7 @@ void print_hint(const std::vector<std::string> &tokens) {
   } else if (cmd == "plot" && form == "arcs") {
     std::cout << "plot arcs needs the number of arcs, e.g. plot arcs 4\n";
   } else if (cmd == "plot" && form == "dyck") {
-    std::cout << "plot dyck needs k, then the length, e.g. plot dyck 2 10\n";
+    std::cout << "plot dyck needs k, then the down-steps, e.g. plot dyck 2 5\n";
   } else if (cmd == "plot" && form == "coins") {
     std::cout << "plot coins needs the coins in the bottom row, e.g. plot coins 5\n";
   } else if (cmd == "plot" && form == "tree") {
