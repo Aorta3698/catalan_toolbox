@@ -19,7 +19,7 @@ with open(sys.argv[1]) as infile:
         line = infile.readline()
         xx, yy = line.strip().split(",")
         xx, yy = float(xx), float(yy)
-        node_positions[i + 1] = (xx, yy)
+        node_positions[i] = (xx, yy)
         x.append(xx)
         y.append(yy)
     for line in infile:

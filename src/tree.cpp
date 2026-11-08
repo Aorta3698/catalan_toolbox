@@ -65,16 +65,16 @@ std::unique_ptr<Chords> Tree::to_chords() {
   Graph chords;
   int id{};
 
-  std::function<int(const Node *)> build = [&](const Node *cur_node) {
+  std::function<void(const Node *)> build = [&](const Node *cur_node) {
     if (cur_node->is_leaf()) {
-      return id++;
+      return;
     }
     assert(cur_node->child_count() == 2);
-    int assigned_id{id++};
-    int left_id{build(cur_node->children[0].get())};
-    int right_id{build(cur_node->children[1].get())};
-    chords.push_back({left_id, right_id});
-    return assigned_id;
+    int a{id++};
+    build(cur_node->children[0].get());
+    int b{id++};
+    chords.push_back({a, b});
+    build(cur_node->children[1].get());
   };
 
   build(this->root.get());

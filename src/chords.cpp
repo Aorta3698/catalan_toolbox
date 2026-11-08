@@ -4,10 +4,10 @@
 
 #include <cassert>
 #include <fstream>
-#include <functional>
 #include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <vector>
 
 std::unique_ptr<Chords> Chords::of(std::unique_ptr<BaseTree> base_tree) {
   auto tree{Tree::of(std::move(base_tree))};
@@ -15,25 +15,26 @@ std::unique_ptr<Chords> Chords::of(std::unique_ptr<BaseTree> base_tree) {
 }
 
 std::unique_ptr<Tree> Chords::to_tree() {
-  int portal[this->points];
-  int id{};
+  if (!Chords::is_valid(this->chords)) {
+    std::cerr << "Error: not a valid chords graph\n";
+    throw std::invalid_argument("");
+  }
+  std::vector<std::unique_ptr<Node>> nodes(this->points + 1);
+  std::vector<Node *> parents(this->points);
   for (const auto &[l, r] : chords) {
     assert(r > l);
-    portal[l] = r;
+    nodes[l] = std::make_unique<Node>(l, 2);
+    nodes[r] = std::make_unique<Node>(r); // leaf
+    parents[l] = nodes[l].get();
+  }
+  nodes[this->points] = std::make_unique<Node>(this->points); // leaf
+
+  for (const auto &[l, r] : chords) {
+    parents[l]->children[0] = std::move(nodes[l + 1]);
+    parents[l]->children[1] = std::move(nodes[r + 1]);
   }
 
-  std::function<std::unique_ptr<Node>(int, int)> build = [&](int lo, int hi) {
-    auto cur_node{std::make_unique<Node>(++id)};
-    if (lo >= hi) {
-      return cur_node;
-    }
-    ++lo;
-    cur_node->children.push_back(build(lo, portal[lo] - 1));
-    cur_node->children.push_back(build(portal[lo], hi));
-    return cur_node;
-  };
-
-  return std::make_unique<Tree>(build(0, this->points));
+  return std::make_unique<Tree>(std::move(nodes[0]));
 }
 
 std::unique_ptr<Arcs> Chords::to_arcs() {
@@ -88,8 +89,25 @@ void Chords::exchage_chords() {
 }
 
 bool Chords::is_valid(const Graph &graph) {
-  // TODO
-  // assert(false);
+  int points{int(graph.size()) << 1};
+  std::vector<int> portal(points, -1);
+  for (const auto &[l, r] : graph) {
+    if (portal[l] >= 0 || portal[r] >= 0) { // a point in two chords
+      return false;
+    }
+    portal[l] = r;
+    portal[r] = l;
+  }
+  std::vector<int> stack;
+  for (int i{}; i < points; ++i) {
+    if (portal[i] > i) {
+      stack.push_back(i);
+    } else if (stack.empty() || stack.back() != portal[i]) { // two chords cross
+      return false;
+    } else {
+      stack.pop_back();
+    }
+  }
   return true;
 }
 

@@ -62,9 +62,7 @@ void Arcs::exchage_arcs() {
 }
 
 bool Arcs::is_valid(const Graph &graph) {
-  // TODO
-  // assert(false);
-  return true;
+  return Chords::is_valid(graph);
 }
 
 void Arcs::test_conversion() {
