@@ -5,11 +5,6 @@
 #include <memory>
 #include <ranges>
 
-std::unique_ptr<Tree> Tree::get_from_bitstring(const std::string &bitstring) {
-  auto tree{BaseTree::get_from_bitstring(bitstring)};
-  return Tree::of(std::move(tree));
-}
-
 std::unique_ptr<Tree> Tree::get_from_traversal(const std::string &traversal) {
   auto tree{BaseTree::get_from_traversal(traversal)};
   return Tree::of(std::move(tree));

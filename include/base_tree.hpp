@@ -61,13 +61,6 @@ public:
   static double asymptote(int k, int num_of_internal_nodes);
 
   /**
-   * Get the bitstring representation of the current k-ary tree
-   *
-   * @return 01 bitstring in pre-order traversal
-   */
-  std::string to_bitstring();
-
-  /**
    * Store tree into a file
    *
    * It throws an exception if the file given
@@ -115,15 +108,6 @@ protected:
    * @return The root of the generated tree
    */
   static std::unique_ptr<BaseTree> get_random(int deg, int num_of_full_nodes);
-
-  /**
-   * Construct a catalan structure from the 01 bitstring
-   *
-   * @param bitstring: 01 bitstring in pre-order traversal
-   *
-   * @return The k-ary tree represented by the bitstring
-   */
-  static std::unique_ptr<BaseTree> get_from_bitstring(const std::string &bitstring);
 
   /**
    * Read the file that consists of one edge on each line

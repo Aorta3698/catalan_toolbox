@@ -1,6 +1,5 @@
 #include "base_tree.hpp"
 #include "global.hpp"
-#include "ktree_iter.hpp"
 #include "util.hpp"
 
 #include <algorithm>
@@ -18,37 +17,6 @@
 #include <stdexcept>
 
 // Read: https://herbsutter.com/2013/06/05/gotw-91-solution-smart-pointer-parameters/
-
-std::string BaseTree::to_bitstring() {
-  std::string bit;
-  std::function<void(const Node *)> pre_order = [&](const Node *cur_node) {
-    bit += cur_node->is_internal_node();
-    for (const auto &child : cur_node->children) {
-      pre_order(child.get());
-    }
-  };
-  pre_order(this->root.get());
-
-  return bit;
-}
-
-std::unique_ptr<BaseTree>
-BaseTree::get_from_bitstring(const std::string &bitstring) {
-  auto [k, n] = Lexi::get_k_n(bitstring);
-  std::function<std::unique_ptr<Node>(int)> build = [&](int cur) {
-    auto cur_node{std::make_unique<Node>(++cur)};
-    if (bitstring[cur] == '0') {
-      return cur_node;
-    }
-    cur_node->children.resize(k);
-    for (int i{}; i < k; ++i) {
-      cur_node->children[i] = build(cur);
-    }
-    return cur_node;
-  };
-
-  return std::make_unique<BaseTree>(build(0));
-}
 
 std::unique_ptr<BaseTree> BaseTree::get_random(int branches, int num_of_nodes) {
   if (num_of_nodes < 1) {

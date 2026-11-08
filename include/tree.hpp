@@ -72,15 +72,6 @@ public:
   static std::unique_ptr<Tree> of(std::unique_ptr<BaseTree> base_tree);
 
   /**
-   * Construct a catalan structure from the 01 bitstring
-   *
-   * @param bitstring: 01 bitstring in pre-order traversal
-   *
-   * @return The k-ary tree represented by the bitstring
-   */
-  static std::unique_ptr<Tree> get_from_bitstring(const std::string &bitstring);
-
-  /**
    * Convert a tree into its coin stack representation
    *
    * @return Its coin stack object.
