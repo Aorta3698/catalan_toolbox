@@ -105,3 +105,23 @@ std::unique_ptr<Poly> Tree::to_poly() {
   }
   return std::make_unique<Poly>(poly);
 }
+
+std::unique_ptr<Bracketing> Tree::to_bracketing() {
+  std::string res;
+
+  std::function<void(const Node *)> build = [&](const Node *cur_node) {
+    if (cur_node->is_leaf()) {
+      res += "x";
+      return;
+    }
+    for (const auto &next_node : cur_node->children) {
+      bool inner{next_node->is_internal_node()};
+      res += inner ? "(" : "";
+      build(next_node.get());
+      res += inner ? ")" : "";
+    }
+  };
+
+  build(this->root.get());
+  return std::make_unique<Bracketing>(res);
+}

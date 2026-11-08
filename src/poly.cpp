@@ -55,6 +55,28 @@ std::unique_ptr<Tree> Poly::to_tree() {
   return std::make_unique<Tree>(std::move(nodes[tables[0][Dir::Up]]));
 }
 
+std::unique_ptr<Bracketing> Poly::to_bracketing() {
+  std::vector<int> start(this->sides);
+  std::vector<int> end(this->sides);
+  for (const auto &[l, r] : this->poly) {
+    assert(r > l);
+    ++start[l];
+    ++end[r];
+  }
+
+  // walk the cut corners
+  std::string res;
+  for (int i{}; i < this->sides; ++i) {
+    res += std::string(end[i], ')') + std::string(start[i], '(');
+    if (i < this->sides - 1) {
+      res += "x";
+    }
+  }
+
+  // drop the root side's pair
+  return std::make_unique<Bracketing>(res.substr(1, res.size() - 2));
+}
+
 void Poly::flip_and_plot() {
   // pre-processing - O(n)
   enum Relation { Left, Right, Parent }; // left, right, parent

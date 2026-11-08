@@ -5,6 +5,7 @@
 
 #include "arcs.hpp"
 #include "base_tree.hpp"
+#include "bracketing.hpp"
 #include "catalan.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
@@ -18,6 +19,7 @@ class Chords;
 class Dyck;
 class Arcs;
 class CoinStack;
+class Bracketing;
 
 class Tree : public Catalan<Tree>, public BaseTree {
 
@@ -107,6 +109,13 @@ public:
    * @return Its Dyck representation.
    */
   std::unique_ptr<Dyck> to_dyck();
+
+  /**
+   * Convert the current tree into its bracketing
+   *
+   * @return Its bracketing
+   */
+  std::unique_ptr<Bracketing> to_bracketing();
 
   /**
    * Rotate into the next tree.

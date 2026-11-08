@@ -1,5 +1,6 @@
 #pragma once
 
+#include "bracketing.hpp"
 #include "catalan.hpp"
 #include "global.hpp"
 #include "tree.hpp"
@@ -8,6 +9,7 @@
 #include <string>
 
 class Tree;
+class Bracketing;
 
 class Poly : public Catalan<Poly>, public OsOp {
 public:
@@ -56,6 +58,13 @@ public:
    * @return The root of the tree represented by the polygon
    */
   std::unique_ptr<Tree> to_tree();
+
+  /**
+   * Read the bracketing off the triangulation by walking its cut corners
+   *
+   * @return Its bracketing
+   */
+  std::unique_ptr<Bracketing> to_bracketing();
 
   /**
    * Store the current polygon triangulation into a file

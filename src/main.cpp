@@ -1,4 +1,5 @@
 #include "arcs.hpp"
+#include "bracketing.hpp"
 #include "chords.hpp"
 #include "coin.hpp"
 #include "dyck.hpp"
@@ -43,6 +44,7 @@ int main(int argc, const char *argv[]) {
         Poly::test_conversion();
         Chords::test_conversion();
         Arcs::test_conversion();
+        Bracketing::test_conversion();
       } else if (cmd == "plot" && form == "tree") {
         int k{Util::get_num(tokens.at(2))};
         int num_of_nodes{Util::get_num(tokens.at(3))};
@@ -104,6 +106,8 @@ int main(int argc, const char *argv[]) {
         }
       } else if (cmd == "test" && form == "triangulation") {
         Poly::test_conversion();
+      } else if (cmd == "test" && form == "brackets") {
+        Bracketing::test_conversion();
       } else if (cmd == "flip") {
         int num_of_sides{Util::get_num(tokens.at(1))};
         auto poly{Poly::get_random(num_of_sides)};
