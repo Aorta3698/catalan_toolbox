@@ -10,6 +10,11 @@
 #include <stdexcept>
 #include <vector>
 
+std::unique_ptr<Bracketing> Bracketing::of(std::unique_ptr<BaseTree> base_tree) {
+  auto tree{Tree::of(std::move(base_tree))};
+  return tree->to_bracketing();
+}
+
 std::unique_ptr<Tree> Bracketing::to_tree() {
   if (!Bracketing::is_valid(this->bracketing)) {
     std::cerr << "Error: not a valid bracketing\n";

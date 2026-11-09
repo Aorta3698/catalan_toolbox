@@ -1,5 +1,6 @@
 #pragma once
 
+#include "catalan.hpp"
 #include "os_op.hpp"
 #include "poly.hpp"
 #include "tree.hpp"
@@ -10,7 +11,7 @@
 class Poly;
 class Tree;
 
-class Bracketing : public OsOp {
+class Bracketing : public Catalan<Bracketing>, public OsOp {
 public:
   Bracketing(std::string bracketing)
       : OsOp(std::string{_PLOT_SCRIPT}, _DEFAULT_PREFIX_FILE) {
@@ -18,6 +19,15 @@ public:
   }
 
   auto operator<=>(const Bracketing &rhs) const = default;
+
+  /**
+   * Convert a base tree into its bracketing
+   *
+   * @param tree:  A base tree
+   *
+   * @return Its bracketing
+   */
+  static std::unique_ptr<Bracketing> of(std::unique_ptr<BaseTree> tree);
 
   /**
    * Create a random bracketing

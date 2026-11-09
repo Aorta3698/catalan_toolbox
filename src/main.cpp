@@ -141,6 +141,12 @@ int main(int argc, const char *argv[]) {
           throw std::invalid_argument("");
         }
         Poly::enumerate_avoiding(num_of_sides - 2, avoid);
+      } else if ((cmd == "enumerate" || avoid) && form == "brackets") {
+        int num_of_factors{Util::get_num(tokens.at(2))};
+        if (num_of_factors < 2) {
+          throw std::invalid_argument("");
+        }
+        Bracketing::enumerate_avoiding(num_of_factors - 1, avoid);
       } else if (cmd == "quit") {
         break;
       } else {
