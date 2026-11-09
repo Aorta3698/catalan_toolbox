@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import math
 import os
+import screen
 import sys
 import time
 
@@ -160,6 +161,7 @@ if __name__ == "__main__":
         fig.canvas.mpl_connect("button_press_event", on_click)
 
     if len(sys.argv) == 2:
+        screen.fit(fig)
         plt.show()
     else:
         path = "./out"

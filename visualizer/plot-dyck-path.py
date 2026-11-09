@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import screen
 import sys
 
 from matplotlib.ticker import AutoMinorLocator, MultipleLocator
@@ -41,7 +42,6 @@ def draw(ax, file):
 
     ## grid
     ax.set_xlim(auto=True)
-    ax.set_ylim(auto=True)
     ## set minor (https://stackoverflow.com/questions/24943991/change-grid-interval-and-specify-tick-labels)
     ax.xaxis.set_minor_locator(MultipleLocator(scale))
     ax.yaxis.set_minor_locator(MultipleLocator(scale))
@@ -65,6 +65,9 @@ def draw(ax, file):
         markeredgewidth=0.75,
     )
 
+    ## same box for every path
+    top = sum(max(y2 - y1, 0) for y1, y2 in zip(ys, ys[1:]))
+    ax.set_ylim(-scale / 2, top + scale / 2)
     ax.set_xticks([])
     ax.set_yticks([])
     ax.set_aspect("equal")
@@ -78,6 +81,7 @@ if __name__ == "__main__":
     plt.gcf().set_size_inches(width, height)
 
     if len(sys.argv) == 2:
+        screen.fit(plt.gcf())
         plt.show()
     else:
         path = "./out"

@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import os
+import screen
 import sys
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
@@ -31,6 +32,10 @@ if __name__ == "__main__":
     plt.gcf().set_size_inches(width, height)
 
     if len(sys.argv) == 2:
+        s = screen.fit(plt.gcf())
+        ## shrink the text with the window
+        for text in plt.gca().texts:
+            text.set_fontsize(text.get_fontsize() * s)
         plt.show()
     else:
         path = "./out"

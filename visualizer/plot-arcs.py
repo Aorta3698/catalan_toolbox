@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import os
+import screen
 import sys
 from matplotlib.patches import Arc
 
@@ -68,6 +69,7 @@ if __name__ == "__main__":
     plt.gcf().set_size_inches(width, height)
 
     if len(sys.argv) == 2:
+        screen.fit(plt.gcf())
         plt.show()
     else:
         path = "./out"

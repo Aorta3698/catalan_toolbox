@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import runpy
+import screen
 import sys
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
@@ -20,6 +21,7 @@ forms = [
 
 ## four on top, three below
 fig = plt.figure(figsize=(16, 7))
+screen.fit(fig)
 grid = fig.add_gridspec(2, 8)
 panels = [fig.add_subplot(grid[0, 2 * i : 2 * i + 2]) for i in range(4)]
 panels += [fig.add_subplot(grid[1, 2 * i + 1 : 2 * i + 3]) for i in range(3)]

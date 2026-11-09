@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import screen
 import sys
 
 ## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
@@ -87,6 +88,7 @@ if __name__ == "__main__":
     plt.gcf().set_size_inches(width, height)
 
     if len(sys.argv) == 2:
+        screen.fit(plt.gcf())
         plt.show()
     else:
         path = "./out"
