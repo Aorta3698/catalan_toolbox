@@ -6,44 +6,50 @@ import sys
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-T = []
-node_positions = {}
-k = 0
 
-## add circle outline
-num_of_coins_at_base = 0
-rad = 0
+def draw(ax, file):
+    T = []
+    node_positions = {}
+    k = 0
 
-with open(sys.argv[1]) as infile:
+    ## add circle outline
+    num_of_coins_at_base = 0
+    rad = 0
 
-    ## read needed info
-    num_of_coins_at_base = int(infile.readline())
-    rad = float(infile.readline())
+    with open(file) as infile:
 
-    for line in infile:
-        xx, yy = line.strip().split(",")
-        xx, yy = float(xx), float(yy)
-        node_positions[k] = (xx, yy)
-        k = k + 1
+        ## read needed info
+        num_of_coins_at_base = int(infile.readline())
+        rad = float(infile.readline())
 
-## set image dimension
-width = 4.8 + 0.40 * num_of_coins_at_base
-height = 3.2 + 0.40 * num_of_coins_at_base
-plt.figure(figsize=(width, height))
+        for line in infile:
+            xx, yy = line.strip().split(",")
+            xx, yy = float(xx), float(yy)
+            node_positions[k] = (xx, yy)
+            k = k + 1
 
-ax = plt.gca()
-for xx, yy in node_positions.values():
-    ax.add_patch(
-        plt.Circle((xx, yy), rad, facecolor="white", edgecolor="black", linewidth=0.75)
-    )
-ax.autoscale_view()
-ax.set_aspect("equal")
-ax.axis("off")
+    ## set image dimension
+    width = 4.8 + 0.40 * num_of_coins_at_base
+    height = 3.2 + 0.40 * num_of_coins_at_base
 
-if len(sys.argv) == 2:
-    plt.show()
-else:
-    path = "./out"
-    if not os.path.exists(path):
-        os.makedirs(path)
-    plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")
+    for xx, yy in node_positions.values():
+        ax.add_patch(
+            plt.Circle((xx, yy), rad, facecolor="white", edgecolor="black", linewidth=0.75)
+        )
+    ax.autoscale_view()
+    ax.set_aspect("equal")
+    ax.axis("off")
+    return width, height
+
+
+if __name__ == "__main__":
+    width, height = draw(plt.gca(), sys.argv[1])
+    plt.gcf().set_size_inches(width, height)
+
+    if len(sys.argv) == 2:
+        plt.show()
+    else:
+        path = "./out"
+        if not os.path.exists(path):
+            os.makedirs(path)
+        plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")

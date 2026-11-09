@@ -6,28 +6,34 @@ import sys
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-with open(sys.argv[1]) as infile:
-    bracketing = infile.readline().strip()
 
-## one line per 80 characters
-lines = [bracketing[i : i + 80] for i in range(0, len(bracketing), 80)]
+def draw(ax, file):
+    with open(file) as infile:
+        bracketing = infile.readline().strip()
 
-## set image dimension
-width = 1.6 + 0.15 * len(lines[0])
-height = 0.6 + 0.5 * len(lines)
-plt.figure(figsize=(width, height))
+    ## one line per 80 characters
+    lines = [bracketing[i : i + 80] for i in range(0, len(bracketing), 80)]
 
-## draw it as math, like the thesis
-plt.rcParams["mathtext.fontset"] = "cm"
-ax = plt.gca()
-text = "\n".join(f"${line}$" for line in lines)
-ax.text(0.5, 0.5, text, fontsize=20, ha="center", va="center", multialignment="left")
-ax.axis("off")
+    ## set image dimension
+    width = 1.6 + 0.15 * len(lines[0])
+    height = 0.6 + 0.5 * len(lines)
 
-if len(sys.argv) == 2:
-    plt.show()
-else:
-    path = "./out"
-    if not os.path.exists(path):
-        os.makedirs(path)
-    plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")
+    ## draw it as math, like the thesis
+    plt.rcParams["mathtext.fontset"] = "cm"
+    text = "\n".join(f"${line}$" for line in lines)
+    ax.text(0.5, 0.5, text, fontsize=20, ha="center", va="center", multialignment="left")
+    ax.axis("off")
+    return width, height
+
+
+if __name__ == "__main__":
+    width, height = draw(plt.gca(), sys.argv[1])
+    plt.gcf().set_size_inches(width, height)
+
+    if len(sys.argv) == 2:
+        plt.show()
+    else:
+        path = "./out"
+        if not os.path.exists(path):
+            os.makedirs(path)
+        plt.savefig(f"{path}/{sys.argv[2]}.svg", bbox_inches="tight")

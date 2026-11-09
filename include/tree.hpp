@@ -118,6 +118,11 @@ public:
   std::unique_ptr<Bracketing> to_bracketing();
 
   /**
+   * Draw the current tree in all seven forms side by side
+   */
+  void show_all();
+
+  /**
    * Rotate into the next tree.
    * @return The next tree.
    */
@@ -126,6 +131,7 @@ public:
   static constexpr std::string _DEFAULT_PREFIX_FILE{".tree"};
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
+  static constexpr std::string _SHOW_SCRIPT{"plot-show.py"};
 
 private:
 };

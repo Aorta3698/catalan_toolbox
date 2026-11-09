@@ -120,6 +120,11 @@ int main(int argc, const char *argv[]) {
         auto poly{Poly::get_random(num_of_sides)};
         poly->flip_and_plot();
         //---------------------------------
+      } else if (cmd == "show") {
+        int num_of_nodes{Util::get_num(tokens.at(1))};
+        auto tree{Tree::get_random(2, num_of_nodes)};
+        tree->show_all();
+        //---------------------------------
       } else if ((cmd == "enumerate" || avoid) && form == "tree") {
         Tree::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);
       } else if ((cmd == "enumerate" || avoid) && form == "dyck") {
@@ -157,6 +162,7 @@ void print_usage() {
       {"plot <form> <size> [count]", "draw random objects of one form"},
       {"enu[merate] <form> <size>", "save every object of one size as an svg"},
       {"flip <vertices>", "flip the diagonals with its dual tree beside it"},
+      {"show <internal nodes>", "draw one random object in all seven forms"},
       {"avoid <form> <size>", "list the objects that avoid given patterns"},
       {"test [form]", "run the tests (every form if none is given)"},
       {"help", "show help menu"},
@@ -194,6 +200,8 @@ void print_hint(const std::vector<std::string> &tokens) {
   std::string form{tokens.size() > 1 ? form_name(tokens[1]) : ""};
   if (cmd == "flip") {
     std::cout << "flip needs the number of vertices, e.g. flip 8\n";
+  } else if (cmd == "show") {
+    std::cout << "show needs the number of internal nodes, e.g. show 4\n";
   } else if (cmd == "plot" && form == "triangulation") {
     std::cout << "plot triangulation needs the number of vertices, e.g. plot tri 8\n";
   } else if (cmd == "plot" && form == "brackets") {

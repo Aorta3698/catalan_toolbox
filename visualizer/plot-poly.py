@@ -4,15 +4,21 @@ import os
 import sys
 import time
 
+G = []
+node_positions = {}
+tree_positions = {}
+tree_edges = []
+diagonals = {}
 
-def load():
+
+def load(file):
     global num_of_points
     G.clear()
     node_positions.clear()
     tree_positions.clear()
     tree_edges.clear()
 
-    with open(sys.argv[1]) as infile:
+    with open(file) as infile:
         num_of_points = int(infile.readline())
         for i in range(num_of_points):
             line = infile.readline()
@@ -38,13 +44,13 @@ def check():
     if not os.path.exists(".polylog") or os.stat(".polylog").st_mtime_ns == stamp:
         return
     try:
-        load()
+        load(sys.argv[1])
     except ValueError:
         return
     stamp = os.stat(".polylog").st_mtime_ns
 
     ## TODO: right now, whole graph gets redrawn every flip, which is bad for performance
-    draw()
+    draw_poly(axs[0])
     plt.gcf().canvas.draw_idle()
 
 
@@ -55,8 +61,12 @@ def on_click(event):
             return
 
 
-def draw():
-    ax = axs[0]
+def draw(ax, file):
+    load(file)
+    draw_poly(ax)
+
+
+def draw_poly(ax):
     ax.clear()
     diagonals.clear()
     for i, (u, v) in enumerate(G):
@@ -131,12 +141,7 @@ if __name__ == "__main__":
     os.environ["OPENBLAS_NUM_THREADS"] = "1"
     os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-    G = []
-    node_positions = {}
-    tree_positions = {}
-    tree_edges = []
-    diagonals = {}
-    load()
+    load(sys.argv[1])
 
     width = 4.8 + 0.30 * num_of_points
     height = 3.2 + 0.30 * num_of_points
@@ -145,7 +150,7 @@ if __name__ == "__main__":
     else:
         fig, ax = plt.subplots(figsize=(width, height))
         axs = [ax]
-    draw()
+    draw_poly(axs[0])
 
     if tree_edges:
         stamp = None
