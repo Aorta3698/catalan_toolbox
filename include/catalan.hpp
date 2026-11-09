@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include <thread>
+#include <type_traits>
 #include <unistd.h>
 
 #include "base_tree.hpp"
@@ -77,11 +78,15 @@ public:
 
       // get the corresponding catalan structure
       auto tree{BaseTree::get_from_traversal(buffer.str())};
-      auto cat{T::of(std::move(tree))};
 
       // output the svg
       std::string data{std::format("{}{}", T::_DEFAULT_PREFIX_FILE, count)};
-      cat->to_file(OsOp::FileOp::Truncate, data);
+      if (avoid && std::is_base_of_v<BaseTree, T>) {
+        tree->to_file(OsOp::FileOp::Truncate, data); // no leaves
+      } else {
+        auto cat{T::of(std::move(tree))};
+        cat->to_file(OsOp::FileOp::Truncate, data);
+      }
       svgs += std::format("{} {}{}\n", data, file, count++);
       ok &= mutze_tree.next();
     }
