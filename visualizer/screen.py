@@ -11,4 +11,6 @@ def fit(fig):
     ## leaving some rooms for title bar and whatnot
     new_w, new_h = min(width, 0.9 * w / ppi), min(height, 0.8 * h / ppi)
     fig.set_size_inches(new_w, new_h)
+    ## shrink the toolbar
+    fig.canvas.manager.toolbar.configure(width=fig.canvas.get_width_height()[0])
     return min(new_w / width, new_h / height)
