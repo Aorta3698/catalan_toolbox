@@ -3,6 +3,7 @@
 DIR=./visualizer
 PIP=$DIR/bin/pip
 PYTHON=python3
+PACKAGES="build-essential python3-venv python3-tk"
 
 BLACK=$(tput setaf 0)
 RED=$(tput setab 1)
@@ -19,6 +20,13 @@ NORMAL=$(tput sgr0)
 BLINK=$(tput blink)
 REVERSE=$(tput smso)
 UNDERLINE=$(tput smul)
+
+if command -v apt-get &> /dev/null && ! dpkg -s $PACKAGES &> /dev/null; then
+  if ! (sudo apt-get update && sudo apt-get install -y $PACKAGES); then
+    echo >&2 "System package installation ${BOLD}${UNDERLINE}FAILED!${NORMAL}"
+    exit 1
+  fi
+fi
 
 if ! command -v $PYTHON &> /dev/null; then
   PYTHON=python
