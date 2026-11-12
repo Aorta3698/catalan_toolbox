@@ -34,6 +34,7 @@ else
         LDFLAGS += -L/opt/homebrew/lib
     endif
     UNAME_P := $(shell uname -p)
+    UNAME_M := $(shell uname -m)
     ifeq ($(UNAME_P),x86_64)
         CXXFLAGS += -D AMD64
     endif
@@ -43,6 +44,9 @@ else
     ifneq ($(filter arm%,$(UNAME_P)),)
         CXXFLAGS += -D ARM
         LDLIBS += -lmutze_arm
+    else ifeq ($(UNAME_M),aarch64)
+        CXXFLAGS += -D ARM
+        LDLIBS += -lmutze_aarch64
     else
     	LDLIBS += -lmutze
     endif
