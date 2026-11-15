@@ -123,7 +123,7 @@ int main(int argc, const char *argv[]) {
       } else if (cmd == "show") {
         int num_of_nodes{Util::get_num(tokens.at(1))};
         auto tree{Tree::get_random(2, num_of_nodes)};
-        tree->show_all();
+        tree->plot_forms(Tree::Form::All);
         //---------------------------------
       } else if ((cmd == "enumerate" || avoid) && form == "tree") {
         Tree::enumerate_avoiding(Util::get_num(tokens.at(2)), avoid);

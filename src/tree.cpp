@@ -126,27 +126,6 @@ std::unique_ptr<Bracketing> Tree::to_bracketing() {
   return std::make_unique<Bracketing>(res);
 }
 
-void Tree::show_all() {
-  this->to_file();
-  this->to_dyck()->to_file();
-  this->to_poly()->to_file();
-  this->to_bracketing()->to_file();
-  this->to_arcs()->to_file();
-  this->to_chords()->to_file();
-  this->to_coin_stack()->to_file();
-
-  std::string window{std::format(
-      "./visualizer/bin/python3 ./visualizer/{} {} {} {} {} {} {} {}",
-      Tree::_SHOW_SCRIPT, BaseTree::_DEFAULT_PREFIX_FILE, Dyck::_DEFAULT_PREFIX_FILE,
-      Poly::_DEFAULT_PREFIX_FILE, Bracketing::_DEFAULT_PREFIX_FILE,
-      Arcs::_DEFAULT_PREFIX_FILE, Chords::_DEFAULT_PREFIX_FILE,
-      CoinStack::_DEFAULT_PREFIX_FILE)};
-  std::cout << "Close the window to return.\n";
-  if (std::system(window.c_str())) {
-    std::cerr << "The show window could not be started.\n";
-  }
-}
-
 void Tree::plot_forms(Form first) {
   static int count{};
   std::string files;
