@@ -146,3 +146,30 @@ void Tree::show_all() {
     std::cerr << "The show window could not be started.\n";
   }
 }
+
+void Tree::plot_forms(Form first) {
+  static int count{};
+  std::string files;
+  auto save = [&](OsOp &form, std::string prefix) {
+    std::string file{std::format("{}-{}", prefix, count)};
+    form.to_file(FileOp::Truncate, file);
+    files += " " + file;
+  };
+  save(*this, BaseTree::_DEFAULT_PREFIX_FILE);
+  save(*this->to_dyck(), Dyck::_DEFAULT_PREFIX_FILE);
+  if (this->k == 2) { // binary only
+    save(*this->to_poly(), Poly::_DEFAULT_PREFIX_FILE);
+    save(*this->to_bracketing(), Bracketing::_DEFAULT_PREFIX_FILE);
+    save(*this->to_arcs(), Arcs::_DEFAULT_PREFIX_FILE);
+    save(*this->to_chords(), Chords::_DEFAULT_PREFIX_FILE);
+    save(*this->to_coin_stack(), CoinStack::_DEFAULT_PREFIX_FILE);
+  }
+  ++count;
+
+  std::string window{std::format(
+      "./visualizer/bin/python3 ./visualizer/{} {}{} &", Tree::_FORMS_SCRIPT,
+      static_cast<int>(first), files)};
+  if (std::system(window.c_str())) {
+    std::cerr << "The plot window could not be started.\n";
+  }
+}

@@ -51,7 +51,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
         while (count--) {
           auto tree{Tree::get_random(k, num_of_nodes)};
-          tree->plot();
+          tree->plot_forms(Tree::Form::Tree);
         }
       } else if (cmd == "test" && form == "tree") {
         // skip
@@ -61,7 +61,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto coins{CoinStack::get_random(base)};
-          coins->plot();
+          coins->to_dyck()->to_tree()->plot_forms(Tree::Form::Coins);
         }
       } else if (cmd == "test" && form == "coins") {
         // SKIP
@@ -72,7 +72,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 4 ? 1 : Util::get_num(tokens.at(4))};
         while (count--) {
           auto dyck{Dyck::get_random(r, r * num_of_nodes)};
-          dyck->plot();
+          dyck->to_tree()->plot_forms(Tree::Form::Dyck);
         }
       } else if (cmd == "test" && form == "dyck") {
         Dyck::test_conversion();
@@ -82,7 +82,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto arcs{Arcs::get_random(2 * num_of_arcs)};
-          arcs->plot();
+          arcs->to_tree()->plot_forms(Tree::Form::Arcs);
         }
       } else if (cmd == "test" && form == "arcs") {
         Arcs::test_conversion();
@@ -92,7 +92,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto chords{Chords::get_random(2 * num_of_chords)};
-          chords->plot();
+          chords->to_tree()->plot_forms(Tree::Form::Chords);
         }
       } else if (cmd == "test" && form == "chords") {
         Chords::test_conversion();
@@ -102,7 +102,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto poly{Poly::get_random(num_of_sides)};
-          poly->plot();
+          poly->to_tree()->plot_forms(Tree::Form::Triangulation);
         }
       } else if (cmd == "test" && form == "triangulation") {
         Poly::test_conversion();
@@ -111,7 +111,7 @@ int main(int argc, const char *argv[]) {
         int count{tokens.size() == 3 ? 1 : Util::get_num(tokens.at(3))};
         while (count--) {
           auto bracketing{Bracketing::get_random(num_of_factors)};
-          bracketing->plot();
+          bracketing->to_tree()->plot_forms(Tree::Form::Brackets);
         }
       } else if (cmd == "test" && form == "brackets") {
         Bracketing::test_conversion();

@@ -8,7 +8,6 @@ import sys
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 os.environ["XDG_SESSION_TYPE"] = "xcb"
 
-## the seven forms, in Figure 1.1's order
 forms = [
     ("plot-tree.py", "(a) full binary tree"),
     ("plot-dyck-path.py", "(b) Dyck path"),

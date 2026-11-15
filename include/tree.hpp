@@ -24,6 +24,8 @@ class Bracketing;
 class Tree : public Catalan<Tree>, public BaseTree {
 
 public:
+  enum class Form { Tree, Dyck, Triangulation, Brackets, Arcs, Chords, Coins };
+
   Tree(std::unique_ptr<BaseTree> tree) : BaseTree(std::move(tree)){};
 
   Tree(std::unique_ptr<Node> root, TreeType type = TreeType::Full)
@@ -123,6 +125,13 @@ public:
   void show_all();
 
   /**
+   * Plot with a button for each form
+   *
+   * @param first:  The form shown first
+   */
+  void plot_forms(Form first);
+
+  /**
    * Rotate into the next tree.
    * @return The next tree.
    */
@@ -132,6 +141,7 @@ public:
   static constexpr std::string _DEFAULT_DB_FILE{".tree_db"};
   static constexpr std::string _PLOT_SCRIPT{"plot-tree.py"};
   static constexpr std::string _SHOW_SCRIPT{"plot-show.py"};
+  static constexpr std::string _FORMS_SCRIPT{"plot-forms.py"};
 
 private:
 };

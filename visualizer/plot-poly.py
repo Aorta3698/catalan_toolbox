@@ -65,6 +65,7 @@ def on_click(event):
 def draw(ax, file):
     load(file)
     draw_poly(ax)
+    return 4.8 + 0.30 * num_of_points, 3.2 + 0.30 * num_of_points
 
 
 def draw_poly(ax):
