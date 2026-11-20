@@ -1,7 +1,0 @@
-![](tree_non_full.svg)
-![](tree.svg)
-![](poly.svg)
-![](chords.svg)
-![](arcs.svg)
-![](dyck_path.svg)
-![](coins.svg)

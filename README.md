@@ -1,42 +1,52 @@
-# Goals
-These are the goals that I'd like to achieve:
+# A Personal Note
+I started this project in 2023. Then my health fell apart, and the project stalled for a long time. I finally finished it in November 2026.
 
-- [x] Conversion between tree to other well-known (generalized) Catalan structures in linear time. 
+Honestly, with how far AI has come, finishing it felt kind of pointless. But I had fun doing this project regardless.
 
-- [ ] Support for common operations such as triangulation flip for each type of Catalan structures.
+---
+# Usage
+Build it first (see [Compile Instruction](#Compile-Instruction)), then run `./catalan_toolbox` and type a command:
+```
+  plot <form> <size> [count]  draw random objects of one form
+  enu[merate] <form> <size>   save every object of one size as an svg
+  flip <vertices>             flip the diagonals with its dual tree beside it
+  show <internal nodes>       draw one random object in all seven forms
+  avoid <form> <size>         list the objects that avoid given patterns
+  test [form]                 run the tests (every form if none is given)
+  help                        show help menu
+  q[uit]                      quit
 
-- [x] A visualizer tool that produces publication level of svg.
+  FORM                  SIZE
+  tri[angulation]       vertices
+  brackets              factors
+  chords, arcs          chords or arcs
+  dyck                  k (plot only), then down-steps
+  coins                 coins in the bottom row
+  tree                  k (plot only), then internal nodes
+```
+For example, `plot tri 8` draws a random triangulation of an octagon.
 
-- [ ] Enumeration of well-known Catalan structures (including $k$-ary trees and $r$-dyck paths).
-
-- [x] Enumeration of `pattarn avoiding` Catalan structures.
-
-See [Milestones](#Milestones) for sub items break down.
+- Every `plot` window has a button for each form.
+- In a `flip` window, click a diagonal to flip it.
+- `enu` and `avoid` save their svg files into a folder in `out/`.
 
 ---
 # Conversion Flow
-![](./flow.svg)
+![](galleries/readme/flow.svg)
 
 ---
 # Galleries
 Here shows the visualization for `catalan(4)` in each Catalan structure. There are 14 of them for each. 
 
-For `catalan(5)`, please click [here](galleries/c5/README.md) (42 of them for each Catalan structure).
+For `catalan(5)`, please click [here](galleries/readme/c5/README.md) (42 of them for each Catalan structure).
 
-![](galleries/c4/tree_non_full.svg)
-![](galleries/c4/tree.svg)
-![](galleries/c4/poly.svg)
-![](galleries/c4/chords.svg)
-![](galleries/c4/arcs.svg)
-![](galleries/c4/dyck_path.svg)
-![](galleries/c4/coins.svg)
-
-# For MacOS users
-You will likely encounter this error below when attempting to do triangulation flip:
-```
-nextEventMatchingMask should only be called from the Main Thread!
-```
-It is because that the visualizer is not started on the main thread and apparently Apple does not allow that - read more about it [here](https://forums.developer.apple.com/forums/thread/659010).
+![](galleries/readme/c4/tree.svg)
+![](galleries/readme/c4/dyck_path.svg)
+![](galleries/readme/c4/poly.svg)
+![](galleries/readme/c4/brackets.svg)
+![](galleries/readme/c4/arcs.svg)
+![](galleries/readme/c4/chords.svg)
+![](galleries/readme/c4/coins.svg)
 
 ---
 # Milestones
@@ -48,8 +58,7 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Gallery for $C_4$ and $C_5$
 
 ### Dyck Path
-- [x] Convert between `r`-dyck path *mirrored* pre-order bit string and tree in `O(n)`
-- [x] Convert between `r`-dyck path pre-order bit string and tree in `O(nlog(n/r))`
+- [x] Convert between `r`-dyck path pre-order bit string and tree in `O(n)`
 - [x] Visualizer for `r`-dyck path
 - [x] Verify a given path is a valid `r`-dyck path or not
 - [ ] Flip mountain
@@ -62,21 +71,29 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Verify a given polygon triangulation is a valid polygon triangulation or not
 - [x] Gallery for $C_4$ and $C_5$
 
+### Bracketing
+- [x] Convert between bracketing and binary tree in `O(n)`
+- [x] Convert between bracketing and polygon triangulation in `O(n)`
+- [x] Visualizer for bracketing
+- [x] Verify a given bracketing is a valid bracketing or not
+- [x] Gallery for $C_4$ and $C_5$
+
 ### Non-intersecting Chord Graph
 - [x] Convert between non-intersecting chord graph and binary tree in `O(n)`
 - [x] Visualizer for non-intersecting chord graph
 - [ ] Exchange a chord and visualize the result
-- [ ] Verify a given chord graph is a valid non-intersecting chord graph or not
+- [x] Verify a given chord graph is a valid non-intersecting chord graph or not
 - [x] Gallery for $C_4$ and $C_5$
 
 ### Non-crossing Arcs
 - [x] Convert between non-crossing arcs and binary tree in `O(n)`
 - [x] Visualizer for non-crossing arcs 
 - [ ] Exchange an arc and visualize the result
-- [ ] Verify a given arcs is a valid non-crossing arcs or not
+- [x] Verify a given arcs is a valid non-crossing arcs or not
 - [x] Gallery for $C_4$ and $C_5$
 
 ### Coin Stack
+- [x] Convert between coin stack and Dyck path
 - [x] Visualizer for coin stack
 - [x] Gallery for $C_4$ and $C_5$
 
@@ -84,52 +101,38 @@ It is because that the visualizer is not started on the main thread and apparent
 - [x] Package Mutze codes into a C++ library.
 - [x] Use the above to enumerate pattern avoiding binary trees.
 - [x] Generalize the above to all Catalan structures.
-- [x] Plot the patterns and ask users to comfirm the patterns.
-- [x] Plot pattern avoiding Calatan structures.
+- [x] Plot the patterns and ask users to confirm the patterns.
+- [x] Plot pattern avoiding Catalan structures.
 - [x] Save all of the above as svg files onto the disk.
-- [ ] Able to enumerate generalized Catalan structures lexicographically via an interator.
+- [ ] Able to enumerate generalized Catalan structures lexicographically via an iterator.
+
+### Visualizer
+- [x] Draw everything with matplotlib
+- [x] Draw one object in all seven forms side by side
+- [x] Switch a window between forms with buttons
+- [x] Fit every window on the screen
 
 ### Other
-- [x] Output full `k`-ary tree as a file and read from it to recreate it
 - [ ] A website that hosts all visualization for well-known Catalan structures for `n >= 3 to n < ?`.
-
-### Organization
-- [x] Documentation
-- [x] Code base rewrite to follow OOP
-- [x] Code base rewrite to follow modern C++
-- [x] Refactor Project structure to follow `include/`, `obj/`, `src/`, `lib/` format.
-- [x] Refactor Makefile to follow modern standard.
-- [x] Compile [related work](#Related-Work)
 
 ---
 # Compile Instruction
 ## C++23
-The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version supports it.
-
-Additionally, make sure that [GNU GMP library](https://gmplib.org/) is installed (bignum lib).
+The `Makefile` uses `-std=c++23`, so make sure your `g++` compiler version supports it (g++ 14 or newer).
 
 ## MacOS
-Install GNU GMP and g++-14 from [Homebrew](https://brew.sh).
+Install g++-14 from [Homebrew](https://brew.sh).
+
+## Linux on ARM
+The Makefile links `lib/libmutze_aarch64.a` instead of `lib/libmutze.a`.
 
 ## Steps To Follow
 - Run `./install.sh`
 
 This will create a python virtual environment, install all dependencies, and then run Makefile.
 
-It also attempts to silence the warning described below.
-
 The provided script has been tested on:
-- Arch Linux (Distrobox within Fedora Silverblue)
-- Macbook M1 first gen
-
-## RuntimeWarning: invalid value encountered in divide
-Netgraph lib currently has this warning as discussed by the library creator [here](https://github.com/paulbrodersen/netgraph/issues/81); to suppress this harming warning, put
-```
-np.seterr(divide='ignore', invalid='ignore')
-```
-where the warning occurrs.
-
-credit to this [post](https://stackoverflow.com/questions/14861891/runtimewarning-invalid-value-encountered-in-divide).
+- Ubuntu 26.04 on WSL2
 
 ----
 # Related Work
