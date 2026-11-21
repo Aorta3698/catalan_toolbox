@@ -204,3 +204,11 @@ The provided script has been tested on:
 ## Other
 - [A Transformation of the Catalan Numbers and Related Counted Sets](https://shareok.org/bitstream/handle/11244/323386/Davis_okstate_0664M_16189.pdf?sequence=1&isAllowed=y)
 - [AN ENUMERATIVE-PROBABILISTIC STUDY OF CHORD DIAGRAMS](https://etd.ohiolink.edu/acprod/odb_etd/ws/send_file/send?accession=osu1373310487&disposition=inline)
+
+---
+# License
+Copyright (C) 2023-2026 Aorta3698
+
+Licensed under the GNU General Public License. See [LICENSE](LICENSE).
+
+`lib/` holds Torsten Mütze and Namrata's [pattern-avoiding binary tree code](http://www.combos.org/code/btree/btree.zip).
